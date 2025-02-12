@@ -1,3 +1,4 @@
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,8 +7,9 @@ public class EnemyControl : MonoBehaviour
     private Transform player;
     
     public float speed = 5;
-    public float health = 2;
-    public float maxHealth;
+
+    public float health;
+    public float maxHealth = 2;
     public Image healthBar;
 
     public GameObject deathParticlePrefab; // 死亡粒子的预制体
@@ -15,7 +17,7 @@ public class EnemyControl : MonoBehaviour
     void Start()
     {
         player = FindAnyObjectByType<PlayerControl>().transform;
-        maxHealth = health;
+        health = maxHealth;
         healthBar.fillAmount = 1;
     }
 

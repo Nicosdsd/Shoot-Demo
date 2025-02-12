@@ -45,8 +45,8 @@ public class PlayerControl : MonoBehaviour
     void Update()
     {
         // 左摇杆控制移动输入
-        float moveX = leftJoystick.Horizontal;
-        float moveZ = leftJoystick.Vertical;
+        float moveX = leftJoystick.Horizontal+ Input.GetAxis("Horizontal");;
+        float moveZ = leftJoystick.Vertical+ Input.GetAxis("Vertical"); ;
         movement = new Vector3(moveX, 0, moveZ).normalized;
 
         // 使用右摇杆进入手动瞄准/射击模式
