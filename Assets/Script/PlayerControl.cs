@@ -7,23 +7,14 @@ public class PlayerControl : MonoBehaviour
     private Rigidbody rb;
     private Vector3 movement;
 
-    [Header("基础")]
-    public float moveSpeed = 5f;       // 移动速度
-    public float rotationSpeed = 720f;// 旋转速度
-    public float health = 5;          // 生命值
+    [Header("基础")] public float moveSpeed = 5f; // 移动速度
+    public float rotationSpeed = 720f; // 旋转速度
+    public float health = 5; // 生命值
 
-    public Joystick leftJoystick;     // 左摇杆（移动）
-    public Joystick rightJoystick;    // 右摇杆（瞄准）
-
-    [Header("锁敌")]
-    public GameObject targetIcon;     // 锁定目标图标
-    public float targetRadius = 10f;  // 索敌半径
-    public LayerMask targetLayers;    // 敌人图层
-    public float autoLockBuffer = 0.5f; // 锁敌缓冲时间
-    private float lastManualInputTime = 0f;
-
-    [Header("子弹")]
-    public Animator camAnim;
+    public Joystick leftJoystick; // 左摇杆（移动）
+    public Joystick rightJoystick; // 右摇杆（瞄准）
+    
+    [Header("子弹")] public Animator camAnim;
     public float bulletForce = 50f;
     public GameObject bulletPrefab;
     public Transform bulletSpawnPoint;
@@ -32,8 +23,7 @@ public class PlayerControl : MonoBehaviour
     public int maxBulletCount = 6;
     private bool canReload = true;
 
-    [Header("开火")]
-    public bool canFire = true;
+    [Header("开火")] public bool canFire = true;
     public ParticleSystem firePartices;
     public GameObject shellPartices;
     private Animator playerAnim;
@@ -47,9 +37,9 @@ public class PlayerControl : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        targetIcon.SetActive(false);
+       // targetIcon.SetActive(false);
         playerAnim = GetComponent<Animator>();
-        bulletCount = maxBulletCount;  
+        bulletCount = maxBulletCount;
     }
 
     void Update()
@@ -64,34 +54,14 @@ public class PlayerControl : MonoBehaviour
         if (aimDirection.magnitude > 0.1f)
         {
             isManualShooting = true;
-            lastManualInputTime = Time.time; // 更新最后手动操作时间
             currentTarget = null;
-            targetIcon.SetActive(false);
-
             RotateTowardsAimDirection(aimDirection);
             if (canFire && Time.time >= nextFireTime)
             {
                 Fire();
                 nextFireTime = Time.time + fireRate;
             }
-
             return; // 如果是手动射击，跳过后续逻辑（锁敌等）
-        }
-
-        // 如果时间超过缓冲期，进入锁敌状态
-        if (Time.time - lastManualInputTime > autoLockBuffer)
-        {
-            isManualShooting = false;
-
-            if (FindNearestTarget())
-            {
-                RotateTowardsTarget();
-                if (canFire && Time.time >= nextFireTime)
-                {
-                    Fire();
-                    nextFireTime = Time.time + fireRate;
-                }
-            }
         }
 
         // 如果没有任何操作，则旋转朝向移动方向
@@ -106,49 +76,7 @@ public class PlayerControl : MonoBehaviour
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 
-    bool FindNearestTarget()
-    {
-        Collider[] objectsInRange = Physics.OverlapSphere(transform.position, targetRadius, targetLayers);
-
-        Transform nearestTarget = null;
-        float nearestDistance = Mathf.Infinity;
-
-        foreach (Collider collider in objectsInRange)
-        {
-            float distance = Vector3.Distance(transform.position, collider.transform.position);
-            if (distance < nearestDistance)
-            {
-                nearestTarget = collider.transform;
-                nearestDistance = distance;
-            }
-        }
-
-        if (nearestTarget != null)
-        {
-            currentTarget = nearestTarget;
-            targetIcon.SetActive(true);
-            targetIcon.transform.position = currentTarget.position;
-            return true;
-        }
-
-        currentTarget = null;
-        targetIcon.SetActive(false);
-        return false;
-    }
-
-    void RotateTowardsTarget()
-    {
-        if (currentTarget == null) return;
-
-        Vector3 direction = currentTarget.position - transform.position;
-        float angle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-
-        transform.rotation = Quaternion.RotateTowards(
-            transform.rotation,
-            Quaternion.Euler(0, angle, 0),
-            rotationSpeed * Time.deltaTime);
-    }
-
+    
     void RotateTowardsAimDirection(Vector3 aimDirection)
     {
         float angle = Mathf.Atan2(aimDirection.x, aimDirection.z) * Mathf.Rad2Deg;
@@ -174,8 +102,12 @@ public class PlayerControl : MonoBehaviour
 
     void Fire()
     {
-        /*if (bulletCount <= 0) return; 
-        bulletCount--;*/
+        /*if (bulletCount <= 0) return;
+        bulletCount--;
+        if (bulletCount == 0 && canReload)
+        {
+            StartCoroutine(Reload());
+        }*/
         
         camAnim?.SetTrigger("CameraShakeTrigger");
         playerAnim?.SetTrigger("Fire");
@@ -188,11 +120,7 @@ public class PlayerControl : MonoBehaviour
         GameObject shellInstance = Instantiate(shellPartices, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
         shellInstance.transform.parent = null;
         Destroy(shellInstance, 0.5f);
-
-        /*if (bulletCount == 0 && canReload)
-        {
-            StartCoroutine(Reload());
-        }*/
+        
     }
 
     IEnumerator Reload()
@@ -201,9 +129,5 @@ public class PlayerControl : MonoBehaviour
         bulletCount = maxBulletCount;
     }
 
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, targetRadius);
-    }
+   
 }
