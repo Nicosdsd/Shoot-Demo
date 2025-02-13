@@ -27,7 +27,6 @@ public class PlayerControl : MonoBehaviour
 
     [Header("子弹")]
     public Animator camAnim;
-    public GameObject bulletPrefab;
     public Transform bulletSpawnPoint;
     
     public ParticleSystem firePartices;
@@ -105,19 +104,17 @@ public class PlayerControl : MonoBehaviour
     {
         if (currentAmmoCount <= 0 )
         {
-            return;
-        }
-
-        if (currentWeapon != defaultWeapon)
-        {
-            currentAmmoCount--;
+            currentWeapon = defaultWeapon;
+            bulletLimit.fillAmount = 1; // 重置子弹 UI 显示
+            weaponText.text = currentWeapon.weaponName;
         }
         
-        if (bulletLimit != null)
+        if (currentWeapon!=defaultWeapon)
         {
+            currentAmmoCount--;
             bulletLimit.fillAmount = (float)currentAmmoCount / currentWeapon.ammoCapacity; // 更新UI进度条
         }
-
+        
         camAnim?.SetTrigger("CameraShakeTrigger");
         firePartices?.Play();
 

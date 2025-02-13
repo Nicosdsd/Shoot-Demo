@@ -15,5 +15,5 @@ MonoBehaviour:
   weaponName: "\u673A\u67AA"
   damage: 1
   fireRate: 0.1
-  ammoCapacity: 100
+  ammoCapacity: 50
   bulletPrefab: {fileID: 2928178143791889286, guid: caddb6528f6aab74ebd9bb08c9663d55, type: 3}
