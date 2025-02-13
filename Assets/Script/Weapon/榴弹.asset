@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3079caf5863a91f4eb393ace31dd3155, type: 3}
+  m_Name: "\u69B4\u5F39"
+  m_EditorClassIdentifier: 
+  weaponName: "\u69B4\u5F39"
+  damage: 2
+  fireRate: 0.5
+  ammoCapacity: 30
+  bulletPrefab: {fileID: 2928178143791889286, guid: 7ebdf5850d5837244ab5c3258f6de5e0, type: 3}

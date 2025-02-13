@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1038736012447079694}
   - component: {fileID: 5054635962559246663}
   - component: {fileID: -9025946691480291440}
-  - component: {fileID: 6550473000862480874}
+  - component: {fileID: 7531536566714920968}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Enemy
@@ -134,8 +134,8 @@ MonoBehaviour:
   maxHealth: 2
   healthBar: {fileID: 2762071599509612969}
   deathParticlePrefab: {fileID: 204989309917258822, guid: fbd33188b4f36194280132e3e256dac0, type: 3}
---- !u!135 &6550473000862480874
-SphereCollider:
+--- !u!65 &7531536566714920968
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -153,7 +153,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.50000006
+  m_Size: {x: 1.0000001, y: 1, z: 1.0000001}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1255661859316077433
 GameObject:
@@ -349,7 +349,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8340601105541930774
 Transform:
   m_ObjectHideFlags: 0

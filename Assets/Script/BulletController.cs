@@ -7,12 +7,21 @@ public class BulletController : MonoBehaviour
     public float knockbackForce = 10f;
     public float upwardForce = 5f; // 控制新添加的向上力
     public GameObject hitEffectPrefab; // 命中粒子效果的预制体
-
+    private WeaponData weaponData;
+   
+    
     PlayerControl player; 
     void Start()
     {
+        // 让音效播完
+        GameObject shootSound = GetComponentInChildren<AudioSource>().gameObject;
+        shootSound.transform.parent = null;
+        Destroy(shootSound, 0.5f);
+        
         Destroy(gameObject, destroyAfter);
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
+
+        weaponData = player.currentWeapon;
     }
 
     void OnTriggerEnter(Collider other)
@@ -42,7 +51,7 @@ public class BulletController : MonoBehaviour
                 EnemyControl enemyControl = other.GetComponent<EnemyControl>();
                 if (enemyControl != null)
                 {
-                    enemyControl.health -= 1;
+                    enemyControl.health -= weaponData.damage;
                 }
 
                 // 子弹溅射效果
@@ -56,8 +65,11 @@ public class BulletController : MonoBehaviour
                     Destroy(hitEffect, 0.5f);
                 }
 
+                
                 // 销毁子弹
                 Destroy(gameObject);
+               
+
             }
         }
     }

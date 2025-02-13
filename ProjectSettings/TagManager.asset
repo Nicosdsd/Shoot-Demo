@@ -9,6 +9,7 @@ TagManager:
   - FX
   - World
   - Target
+  - WeaponGift
   layers:
   - Default
   - TransparentFX
