@@ -98,8 +98,8 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 203470639039350454}
   serializedVersion: 4
-  m_Mass: 0.2
-  m_Drag: 0
+  m_Mass: 1
+  m_Drag: 0.5
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -129,9 +129,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27be494305c09bf42bd8aea2dc473019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
-  health: 2
-  maxHealth: 2
+  speed: 5
+  rotationSpeed: 2
+  health: 1
+  maxHealth: 1
   healthBar: {fileID: 2762071599509612969}
   deathParticlePrefab: {fileID: 204989309917258822, guid: fbd33188b4f36194280132e3e256dac0, type: 3}
 --- !u!65 &7531536566714920968
