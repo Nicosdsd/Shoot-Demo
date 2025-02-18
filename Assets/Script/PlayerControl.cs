@@ -12,7 +12,8 @@ public class PlayerControl : MonoBehaviour
     public float moveSpeed = 5f; // 移动速度
     public float rotationSpeed = 720f; // 旋转速度
     public float health = 5; // 生命值
-
+    public float level; // 经验
+    
     public Joystick leftJoystick; // 左摇杆（移动）
     public Joystick rightJoystick; // 右摇杆（瞄准）
     
@@ -22,7 +23,7 @@ public class PlayerControl : MonoBehaviour
     public WeaponData defaultWeapon;     // 默认武器
     private int currentAmmoCount = 1;        // 当前武器剩余子弹数量
     private bool canReload = true;       // 是否能够使用装弹
-    public Image bulletLimit;            // 子弹 UI 显示进度条
+    public Slider bulletLimit;            // 子弹 UI 显示进度条
     public Text weaponText;              // 当前选中的武器文本
 
     [Header("子弹")]
@@ -122,14 +123,14 @@ public class PlayerControl : MonoBehaviour
         if (currentAmmoCount <= 0 )
         {
             currentWeapon = defaultWeapon;
-            bulletLimit.fillAmount = 1; // 重置子弹 UI 显示
+            bulletLimit.value = 1; // 重置子弹 UI 显示
             weaponText.text = currentWeapon.weaponName;
         }
         
         if (currentWeapon != defaultWeapon)
         {
             currentAmmoCount--;
-            bulletLimit.fillAmount = (float)currentAmmoCount / currentWeapon.ammoCapacity; // 更新UI进度条
+            bulletLimit.value = (float)currentAmmoCount / currentWeapon.ammoCapacity; // 更新UI进度条
         }
 
         camAnim?.SetTrigger("CameraShakeTrigger");
@@ -177,7 +178,7 @@ public class PlayerControl : MonoBehaviour
 
         if (bulletLimit != null)
         {
-            bulletLimit.fillAmount = 1; // 重置子弹 UI 显示
+            bulletLimit.value = 1; // 重置子弹 UI 显示
             weaponText.text = currentWeapon.weaponName;
         }
     }
