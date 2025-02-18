@@ -11,10 +11,7 @@ public class PiercingBullet : MonoBehaviour
     PlayerControl player; 
     void Start()
     {
-        // 让音效播完
-        GameObject shootSound = GetComponentInChildren<AudioSource>().gameObject;
-        shootSound.transform.parent = null;
-        Destroy(shootSound, 0.5f);
+        AudioManager.Instance.PlaySound("普通子弹");
         
         Destroy(gameObject, destroyAfter);
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();

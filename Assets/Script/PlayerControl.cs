@@ -32,14 +32,14 @@ public class PlayerControl : MonoBehaviour
     public ParticleSystem firePartices;
     public GameObject shellPartices;
     public bool canFire = true;
-    private float nextFireTime = 0f;
+    private float nextFireTime;
 
     [Header("辅助瞄准")]
     private Transform currentTarget;         // 自动瞄准的当前目标
     public float autoAimRadius = 15f;        // 自动瞄准半径（范围）
     public float autoAimAngle = 30f;         // 自动瞄准角度限制
 
-    private bool isManualShooting = false;
+    private bool isManualShooting;
 
     void Start()
     {
