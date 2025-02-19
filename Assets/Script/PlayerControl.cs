@@ -36,15 +36,19 @@ public class PlayerControl : MonoBehaviour
 
     [Header("辅助瞄准")]
     private Transform currentTarget;         // 自动瞄准的当前目标
-    public float autoAimRadius = 15f;        // 自动瞄准半径（范围）
-    public float autoAimAngle = 30f;         // 自动瞄准角度限制
 
-    private bool isManualShooting;
+    public Transform aimIconPrefab;          //准星
+    private Vector3 fireDirection;          //瞄准方向
+    public float autoAimRadius = 20;        //锁定范围
+    
+    public float rightJoystickThreshold = 0.5f; // 右摇杆触发阈值
+    public float aimAngleThreshold = 45f; // 锁定角度阈值
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         currentWeapon = defaultWeapon;
+        aimIconPrefab?.gameObject.SetActive(false);  // 初始禁用准星图标
     }
 
     void Update()
@@ -53,38 +57,16 @@ public class PlayerControl : MonoBehaviour
         float moveX = leftJoystick.Horizontal + Input.GetAxis("Horizontal");
         float moveZ = leftJoystick.Vertical + Input.GetAxis("Vertical");
         movement = new Vector3(moveX, 0, moveZ).normalized;
-
-        // 使用右摇杆进入手动瞄准/射击模式
-        Vector3 aimDirection = new Vector3(rightJoystick.Horizontal, 0, rightJoystick.Vertical);
-        if (aimDirection.magnitude > 0.1f)
+        //发射
+        if (canFire && Time.time >= nextFireTime)
         {
-            isManualShooting = true;
-            RotateTowardsAimDirection(aimDirection);
-
-            // 自动寻找瞄准目标
-            currentTarget = FindClosestTarget(autoAimRadius, autoAimAngle);
-
-            if (canFire && Time.time >= nextFireTime)
-            {
-                Fire();
-                nextFireTime = Time.time + currentWeapon.fireRate; // 根据当前武器的射速调整开火时间
-            }
-            return; // 如果是手动射击，不旋转到移动方向
+            Fire();
+            nextFireTime = Time.time + currentWeapon.fireRate; // 根据当前武器的射速调整开火时间
         }
-        
-        if (aimDirection.magnitude <= 0.1f) 
-        {
-            isManualShooting = false; // 当右摇杆松开，自动返回旋转朝向移动方向
-        }
-
-        // 如果没有任何操作，则旋转朝向移动方向
-        if (!isManualShooting && movement.magnitude > 0.1f)
-        {
-            RotateTowardsMovementDirection();
-        }
-
-        // 如果没有手动操作，清除当前目标锁定
-        currentTarget = null;
+        //瞄准
+        FireAim();
+        //旋转
+        RotateTowardsMovementDirection();
     }
 
     void FixedUpdate()
@@ -92,28 +74,54 @@ public class PlayerControl : MonoBehaviour
         rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
     
-    //右摇杆
-    void RotateTowardsAimDirection(Vector3 aimDirection)
-    {
-        float angle = Mathf.Atan2(aimDirection.x, aimDirection.z) * Mathf.Rad2Deg;
-        Quaternion targetRotation = Quaternion.Euler(0, angle, 0);
-        transform.rotation = Quaternion.RotateTowards(
-            transform.rotation,
-            targetRotation,
-            rotationSpeed * Time.deltaTime);
-    }
-
+    
     //左摇杆
     void RotateTowardsMovementDirection()
     {
-        if (movement.magnitude > 0)
+        if (movement.magnitude > 0 && currentTarget ==null)
         {
             float angle = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;
             Quaternion targetRotation = Quaternion.Euler(0, angle, 0);
-            transform.rotation = Quaternion.RotateTowards(
-                transform.rotation,
-                targetRotation,
-                rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+    }
+    
+    //瞄准
+    private void FireAim()
+    {
+        // 获取右摇杆输入
+        Vector2 rightInput = new Vector2(rightJoystick.Horizontal, rightJoystick.Vertical);
+    
+        if (rightInput.magnitude > rightJoystickThreshold)
+        {
+            // 根据右摇杆方向搜索目标
+            Vector3 inputDirection = new Vector3(rightInput.x, 0, rightInput.y).normalized;
+            currentTarget = FindTargetInDirection(inputDirection);
+        }
+        else
+        {
+            // 默认自动索敌
+            currentTarget = FindClosestTarget(autoAimRadius);
+        }
+
+        // 更新准星和旋转逻辑
+        if (currentTarget != null)
+        {
+            aimIconPrefab?.gameObject.SetActive(true);
+            float aimIconY = aimIconPrefab.position.y;
+            aimIconPrefab.position = new Vector3(currentTarget.position.x, aimIconY, currentTarget.position.z);
+
+            // 计算射击方向
+            fireDirection = (currentTarget.position - bulletSpawnPoint.position).normalized;
+        
+            // 平滑转向目标
+            Quaternion targetRotation = Quaternion.LookRotation(fireDirection);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+        else
+        {
+            aimIconPrefab?.gameObject.SetActive(false);
+            fireDirection = transform.forward;
         }
     }
 
@@ -135,21 +143,7 @@ public class PlayerControl : MonoBehaviour
 
         camAnim?.SetTrigger("CameraShakeTrigger");
         firePartices?.Play();
-
-        Vector3 fireDirection;
-
-        // 如果有目标锁定，则朝向目标开火
-        if (currentTarget != null)
-        {
-            fireDirection = (currentTarget.position - bulletSpawnPoint.position).normalized;
-            Quaternion targetRotation = Quaternion.LookRotation(fireDirection);
-            transform.rotation = targetRotation;
-        }
-        else
-        {
-            fireDirection = transform.forward; // 使用默认方向
-        }
-
+        
         GameObject bulletInstance = Instantiate(currentWeapon.bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(fireDirection));
         Rigidbody bulletRigidbody = bulletInstance.GetComponent<Rigidbody>();
         bulletRigidbody.AddForce(fireDirection * 50f, ForceMode.Impulse); // 固定发射力
@@ -182,31 +176,60 @@ public class PlayerControl : MonoBehaviour
             weaponText.text = currentWeapon.weaponName;
         }
     }
-
-    //辅助瞄准
-    private Transform FindClosestTarget(float radius, float maxAngle)
+    
+    //索敌
+    private Transform FindClosestTarget(float radius)
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, radius);
-        
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, radius);
         Transform closestTarget = null;
-        float closestDistanceSqr = radius * radius;
+        float closestDistanceSqr = Mathf.Infinity;
 
-        foreach (Collider hit in hits)
+        foreach (Collider hitCollider in hitColliders)
         {
-            if (!hit.CompareTag("Enemy")) continue;
-
-            Vector3 directionToTarget = hit.transform.position - transform.position;
-            float distanceSqrToTarget = directionToTarget.sqrMagnitude;
-
-            // 检查距离和角度条件是否满足
-            float angleToTarget = Vector3.Angle(transform.forward, directionToTarget);
-            if (distanceSqrToTarget < closestDistanceSqr && angleToTarget <= maxAngle)
+            if (hitCollider.CompareTag("Enemy"))  // 确保只检查带有 "Enemy" 标签的对象
             {
-                closestDistanceSqr = distanceSqrToTarget;
-                closestTarget = hit.transform;
+                Vector3 directionToTarget = hitCollider.transform.position - transform.position;
+                float dSqrToTarget = directionToTarget.sqrMagnitude;
+                if (dSqrToTarget < closestDistanceSqr)
+                {
+                    closestDistanceSqr = dSqrToTarget;
+                    closestTarget = hitCollider.transform;
+                }
             }
         }
 
         return closestTarget;
     }
+    
+    private Transform FindTargetInDirection(Vector3 inputDirection)
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, autoAimRadius);
+        Transform bestTarget = null;
+        float bestScore = 0f;
+
+        foreach (Collider hitCollider in hitColliders)
+        {
+            if (!hitCollider.CompareTag("Enemy")) continue;
+
+            Vector3 toEnemy = (hitCollider.transform.position - transform.position).normalized;
+            float angle = Vector3.Angle(inputDirection, toEnemy);
+
+            // 计算综合评分（方向一致性 + 距离）
+            if (angle < aimAngleThreshold)
+            {
+                float distance = Vector3.Distance(transform.position, hitCollider.transform.position);
+                float score = (1 - angle/aimAngleThreshold) + (1 - Mathf.Clamp01(distance/autoAimRadius));
+
+                if (score > bestScore)
+                {
+                    bestScore = score;
+                    bestTarget = hitCollider.transform;
+                }
+            }
+        }
+
+        // 如果没有找到符合方向的，返回最近目标
+        return bestTarget != null ? bestTarget : FindClosestTarget(autoAimRadius);
+    }
+    
 }
