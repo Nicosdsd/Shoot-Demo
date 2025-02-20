@@ -37,6 +37,10 @@ public Transform aimIconPrefab;          //准星
 private Vector3 fireDirection;          //瞄准方向
 public float autoAimRadius = 20;        //锁定范围
 
+[Header("右摇杆瞄准")]
+public float rightStickThreshold = 0.2f; // 摇杆激活阈值
+public float raycastDistance = 50f;     // 射线检测距离
+
 void Start()
 {
     rb = GetComponent<Rigidbody>();
@@ -80,32 +84,73 @@ void RotateTowardsMovementDirection()
 }
 
 //瞄准
-private void FireAim()
-{
-    // 调用寻敌的方法，并更新当前目标
-    currentTarget = FindClosestTarget(autoAimRadius);
-
-    if (currentTarget != null)
+    private void FireAim()
     {
-        aimIconPrefab?.gameObject.SetActive(true); // 启用准星图标
+        // 获取右摇杆输入
+        Vector2 rightInput = new Vector2(rightJoystick.Horizontal, rightJoystick.Vertical);
+
+        // 右摇杆超过阈值时优先处理
+        if (rightInput.magnitude > rightStickThreshold)
+        {
+            // 根据右摇杆方向旋转
+            fireDirection = new Vector3(rightInput.x, 0, rightInput.y).normalized;
+            Quaternion targetRotation = Quaternion.LookRotation(fireDirection);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 
+                rotationSpeed * Time.deltaTime);
+
+            // 发射射线检测敌人
+            RaycastHit hit;
+            if (Physics.Raycast(bulletSpawnPoint.position, fireDirection, out hit, raycastDistance))
+            {
+                if (hit.collider.CompareTag("Enemy"))
+                {
+                    currentTarget = hit.transform;
+                    UpdateAimIcon(currentTarget);
+                    return;
+                }
+            }
+        
+            // 没有命中敌人时清除目标
+            currentTarget = null;
+            aimIconPrefab?.gameObject.SetActive(false);
+        }
+        else
+        {
+            // 右摇杆未激活时使用自动索敌
+            currentTarget = FindClosestTarget(autoAimRadius);
+            if (currentTarget != null)
+            {
+                UpdateAimIcon(currentTarget);
+                fireDirection = (currentTarget.position - bulletSpawnPoint.position).normalized;
+                Quaternion targetRotation = Quaternion.LookRotation(fireDirection);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 
+                    rotationSpeed * Time.deltaTime);
+            }
+            else
+            {
+                aimIconPrefab?.gameObject.SetActive(false);
+                fireDirection = transform.forward;
+            }
+        }
+    }
     
-        // 获取当前准星的Y轴位置
+    // 更新准星位置
+    private void UpdateAimIcon(Transform target)
+    {
+        aimIconPrefab?.gameObject.SetActive(true);
         float aimIconY = aimIconPrefab.position.y;
-    
-        // 更新准星的位置，使其X和Z指向敌人，而Y保持不变
-        aimIconPrefab.position = new Vector3(currentTarget.position.x, aimIconY, currentTarget.position.z);
-
-        fireDirection = (currentTarget.position - bulletSpawnPoint.position).normalized;
-        Quaternion targetRotation = Quaternion.LookRotation(fireDirection);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        aimIconPrefab.position = new Vector3(target.position.x, aimIconY, target.position.z);
     }
-    else
+
+// 在Scene视图显示射线（调试用）
+    void OnDrawGizmos()
     {
-        aimIconPrefab?.gameObject.SetActive(false); // 若无目标，禁用准星图标
-
-        fireDirection = transform.forward;
+        if (bulletSpawnPoint && fireDirection != Vector3.zero)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(bulletSpawnPoint.position, fireDirection * raycastDistance);
+        }
     }
-}
 
 //发射
 void Fire()
