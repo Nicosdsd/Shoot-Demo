@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 8403413849801873998}
   - component: {fileID: 5458442468497744009}
   - component: {fileID: -1070506756152740757}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: "\u6B66\u5668\u66F4\u6362"
   m_TagString: WeaponGift
   m_Icon: {fileID: 0}
