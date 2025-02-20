@@ -3,7 +3,7 @@ using UnityEngine;
 // 敌人在规定范围内生成
 public class EnemySpawner : MonoBehaviour
 {
-    public GameObject enemyPrefab; // 拖入敌人预制体
+    public GameObject[] enemyPrefabs; // 敌人预制体数组
     public float spawnInterval;
     public float spawnAmount;
     public float enemySpawnArea; // 敌人生成范围
@@ -24,7 +24,8 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < spawnAmount; i++)
         {
             Vector3 randomPosition = GetRandomPositionInEnemyArea();
-            Instantiate(enemyPrefab, randomPosition, Quaternion.identity);
+            GameObject randomEnemyPrefab = GetRandomEnemyPrefab();
+            Instantiate(randomEnemyPrefab, randomPosition, Quaternion.identity);
         }
     }
 
@@ -37,7 +38,7 @@ public class EnemySpawner : MonoBehaviour
     private Vector3 GetRandomPositionInEnemyArea()
     {
         float halfArea = enemySpawnArea * 0.5f;
-        Vector3 centerPosition = Center.position; // 使用 Center 作为中心
+        Vector3 centerPosition = Center.position;
         float randomX = Random.Range(centerPosition.x - halfArea, centerPosition.x + halfArea);
         float randomY = centerPosition.y;
         float randomZ = Random.Range(centerPosition.z - halfArea, centerPosition.z + halfArea);
@@ -56,14 +57,20 @@ public class EnemySpawner : MonoBehaviour
         return new Vector3(randomX, randomY, randomZ);
     }
 
+    private GameObject GetRandomEnemyPrefab()
+    {
+        int randomIndex = Random.Range(0, enemyPrefabs.Length);
+        return enemyPrefabs[randomIndex];
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = new Color(1, 0, 0, 0.5f);
         if (Center != null)
         {
-            Gizmos.DrawCube(Center.position, new Vector3(enemySpawnArea, 1, enemySpawnArea)); // 显示敌人生成区域
+            Gizmos.DrawCube(Center.position, new Vector3(enemySpawnArea, 1, enemySpawnArea));
             Gizmos.color = new Color(0, 1, 0, 0.5f);
-            Gizmos.DrawCube(Center.position, new Vector3(weaponGiftSpawnArea, 1, weaponGiftSpawnArea)); // 显示武器生成区域
+            Gizmos.DrawCube(Center.position, new Vector3(weaponGiftSpawnArea, 1, weaponGiftSpawnArea));
         }
     }
 }

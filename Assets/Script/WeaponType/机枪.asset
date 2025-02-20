@@ -16,4 +16,4 @@ MonoBehaviour:
   damage: 1
   fireRate: 0.1
   ammoCapacity: 50
-  bulletPrefab: {fileID: 2928178143791889286, guid: caddb6528f6aab74ebd9bb08c9663d55, type: 3}
+  bulletPrefab: {fileID: 2928178143791889286, guid: bd513639f1b53ae4fbd31fa9bf4a9ac9, type: 3}

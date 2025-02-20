@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -9025946691480291440}
   - component: {fileID: 7531536566714920968}
   m_Layer: 6
-  m_Name: "\u654C\u4EBA"
+  m_Name: "\u654C\u4EBA 1"
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1d8718e58b76b8b4389c5adfccb3ee00, type: 2}
+  - {fileID: 2100000, guid: 9396af4a278dec44fb6df79abe174850, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -130,10 +130,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   rotationSpeed: 2
-  health: 1
-  maxHealth: 1
-  healthBar: {fileID: 0}
-  deathParticlePrefab: {fileID: 204989309917258822, guid: fbd33188b4f36194280132e3e256dac0, type: 3}
+  health: 2
+  maxHealth: 2
+  deathParticlePrefab: {fileID: 204989309917258822, guid: 7aa4fd15d25ae894b832ff02bf69e788, type: 3}
   expPrefab: {fileID: 1594516158341045276, guid: 02b35d6a2a175514c976fac25faefdfc, type: 3}
 --- !u!65 &7531536566714920968
 BoxCollider:
