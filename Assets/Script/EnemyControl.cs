@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class EnemyControl : MonoBehaviour
 {
+    public float attack = 1;
     public float speed = 5;
     public float rotationSpeed = 5; // 控制旋转跟随速度
 
@@ -76,5 +78,13 @@ public class EnemyControl : MonoBehaviour
 
         Instantiate(expPrefab, transform.position, Quaternion.identity);//实例化经验
         Destroy(gameObject); // 销毁敌人对象本身
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+           player.Injuried(attack);
+        }
     }
 }

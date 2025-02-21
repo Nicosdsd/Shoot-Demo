@@ -4,10 +4,22 @@ using UnityEngine.SceneManagement;
 
 public class SystemManager : MonoBehaviour
 {
-    /*private void Awake()
+
+    public GameObject gameOver;
+    public GameObject gameStart;
+    private void Awake()
     {
         PauseGame();
-    }*/
+    }
+    
+    /// <summary>
+    /// 重新加载当前场景
+    /// </summary>
+    public void StartScene()
+    {
+        gameStart.SetActive(false);
+        Time.timeScale = 1;
+    }
 
     /// <summary>
     /// 重新加载当前场景
@@ -17,6 +29,7 @@ public class SystemManager : MonoBehaviour
         // 获取当前活动的场景，并重新加载它
         Scene currentScene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(currentScene.name);
+        Time.timeScale = 1;
     }
 
     /// <summary>
@@ -44,6 +57,16 @@ public class SystemManager : MonoBehaviour
     {
         Time.timeScale = 1f; // 恢复游戏时间
     }
+    
+    /// <summary>
+    /// 游戏结束
+    /// </summary>
+    public void GameOver()
+    {
+        Time.timeScale = 0f;
+        gameOver.SetActive(true);
+    }
+    
 
 
 }

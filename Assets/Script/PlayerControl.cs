@@ -6,15 +6,17 @@ public class PlayerControl : MonoBehaviour
 {
     private Rigidbody rb;
     private Vector3 movement;
+    private SystemManager systemManager;
 
     [Header("基础")]
     public float moveSpeed = 5f; // 移动速度
     public float rotationSpeed = 720f; // 旋转速度
     public float health = 5; // 生命值
+    private float healthMax ; //初始生命
+    public Slider HealthSlider; // 血量进度条
     public float level; // 经验
 
     public Joystick leftJoystick; // 左摇杆（移动）
-    public Joystick rightJoystick; // 右摇杆（瞄准）
 
     [Header("武器管理")]
     public WeaponData[] WeaponDatas; // 所有武器数据数组
@@ -34,17 +36,18 @@ public class PlayerControl : MonoBehaviour
     private float nextFireTime;
 
     [Header("辅助瞄准")]
-    public Transform currentTarget; // 自动瞄准的当前目标
-
+    private Transform currentTarget; // 自动瞄准的当前目标
     public Transform aimIconPrefab; //准星
     private Vector3 fireDirection; //瞄准方向
     public float autoAimRadius = 20; //锁定范围
 
     void Start()
     {
+        healthMax = health;
         rb = GetComponent<Rigidbody>();
         currentWeapon = defaultWeapon;
         aimIconPrefab?.gameObject.SetActive(false); // 初始禁用准星图标
+        systemManager = FindAnyObjectByType<SystemManager>();
     }
 
     void Update()
@@ -193,11 +196,24 @@ public class PlayerControl : MonoBehaviour
 
         return closestTarget;
     }
+    
+    //受伤
+    public void Injuried(float damage)
+    {
+        if (health>=0)
+        {
+            health -= damage;
+            HealthSlider.value = health / healthMax;
+        }
+        else
+        {
+            systemManager.GameOver();
+        }
+    }
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = new Color(0, 1, 0, 0.25f); // 设置Gizmos颜色为绿色，透明度为0.25
-
         // 在玩家的位置绘制球体表示自动锁定区域
         Gizmos.DrawSphere(transform.position, autoAimRadius);
     }
