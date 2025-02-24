@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-
+//榴弹子弹
 public class ExplosiveBullet : BulletBase
 {
     public GameObject explodePrefab;

@@ -38,7 +38,7 @@ public class PiercingBullet : MonoBehaviour
                 EnemyControl enemyControl = other.GetComponent<EnemyControl>();
                 if (enemyControl != null)
                 {
-                    enemyControl.health -= weaponData.damage;
+                    enemyControl.Hit(weaponData.damage);
                 }
 
                 /*// 子弹溅射效果

@@ -17,6 +17,7 @@ Shader "PlayerLit"
 		_OcclusionMap("_OcclusionMap", 2D) = "white" {}
 		_OcclusionStrength("_OcclusionStrength", Range( 0 , 1)) = 1
 		_BlinkColor("BlinkColor", Color) = (1,1,1,1)
+		_BlinkInt("BlinkInt", Range( 0 , 1)) = 0
 		[HideInInspector] _texcoord( "", 2D ) = "white" {}
 
 
@@ -307,14 +308,15 @@ Shader "PlayerLit"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _BlinkColor;
 			float4 _BaseMap_ST;
 			float4 _BaseColor;
+			float4 _BlinkColor;
 			float4 _BumpMap_ST;
 			float4 _EmissionMap_ST;
 			float4 _EmissionColor;
 			float4 _MetallicGlossMap_ST;
 			float4 _OcclusionMap_ST;
+			float _BlinkInt;
 			float _BumpScale;
 			float _Metallic;
 			float _Smoothness;
@@ -563,6 +565,7 @@ Shader "PlayerLit"
 
 				float2 uv_BaseMap = input.ase_texcoord9.xy * _BaseMap_ST.xy + _BaseMap_ST.zw;
 				float4 tex2DNode10 = tex2D( _BaseMap, uv_BaseMap );
+				float3 lerpResult32 = lerp( ( tex2DNode10.rgb * _BaseColor.rgb ) , _BlinkColor.rgb , _BlinkInt);
 				
 				float2 uv_BumpMap = input.ase_texcoord9.xy * _BumpMap_ST.xy + _BumpMap_ST.zw;
 				float3 unpack18 = UnpackNormalScale( tex2D( _BumpMap, uv_BumpMap ), _BumpScale );
@@ -575,7 +578,7 @@ Shader "PlayerLit"
 				float2 uv_OcclusionMap = input.ase_texcoord9.xy * _OcclusionMap_ST.xy + _OcclusionMap_ST.zw;
 				
 
-				float3 BaseColor = ( _BlinkColor.rgb + ( tex2DNode10.rgb * _BaseColor.rgb ) );
+				float3 BaseColor = lerpResult32;
 				float3 Normal = unpack18;
 				float3 Emission = ( tex2D( _EmissionMap, uv_EmissionMap ).rgb * _EmissionColor.rgb );
 				float3 Specular = 0.5;
@@ -917,14 +920,15 @@ Shader "PlayerLit"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _BlinkColor;
 			float4 _BaseMap_ST;
 			float4 _BaseColor;
+			float4 _BlinkColor;
 			float4 _BumpMap_ST;
 			float4 _EmissionMap_ST;
 			float4 _EmissionColor;
 			float4 _MetallicGlossMap_ST;
 			float4 _OcclusionMap_ST;
+			float _BlinkInt;
 			float _BumpScale;
 			float _Metallic;
 			float _Smoothness;
@@ -1245,14 +1249,15 @@ Shader "PlayerLit"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _BlinkColor;
 			float4 _BaseMap_ST;
 			float4 _BaseColor;
+			float4 _BlinkColor;
 			float4 _BumpMap_ST;
 			float4 _EmissionMap_ST;
 			float4 _EmissionColor;
 			float4 _MetallicGlossMap_ST;
 			float4 _OcclusionMap_ST;
+			float _BlinkInt;
 			float _BumpScale;
 			float _Metallic;
 			float _Smoothness;
@@ -1541,14 +1546,15 @@ Shader "PlayerLit"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _BlinkColor;
 			float4 _BaseMap_ST;
 			float4 _BaseColor;
+			float4 _BlinkColor;
 			float4 _BumpMap_ST;
 			float4 _EmissionMap_ST;
 			float4 _EmissionColor;
 			float4 _MetallicGlossMap_ST;
 			float4 _OcclusionMap_ST;
+			float _BlinkInt;
 			float _BumpScale;
 			float _Metallic;
 			float _Smoothness;
@@ -1751,11 +1757,12 @@ Shader "PlayerLit"
 
 				float2 uv_BaseMap = input.ase_texcoord4.xy * _BaseMap_ST.xy + _BaseMap_ST.zw;
 				float4 tex2DNode10 = tex2D( _BaseMap, uv_BaseMap );
+				float3 lerpResult32 = lerp( ( tex2DNode10.rgb * _BaseColor.rgb ) , _BlinkColor.rgb , _BlinkInt);
 				
 				float2 uv_EmissionMap = input.ase_texcoord4.xy * _EmissionMap_ST.xy + _EmissionMap_ST.zw;
 				
 
-				float3 BaseColor = ( _BlinkColor.rgb + ( tex2DNode10.rgb * _BaseColor.rgb ) );
+				float3 BaseColor = lerpResult32;
 				float3 Emission = ( tex2D( _EmissionMap, uv_EmissionMap ).rgb * _EmissionColor.rgb );
 				float Alpha = ( tex2DNode10.a * _BaseColor.a );
 				float AlphaClipThreshold = 0.5;
@@ -1847,14 +1854,15 @@ Shader "PlayerLit"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _BlinkColor;
 			float4 _BaseMap_ST;
 			float4 _BaseColor;
+			float4 _BlinkColor;
 			float4 _BumpMap_ST;
 			float4 _EmissionMap_ST;
 			float4 _EmissionColor;
 			float4 _MetallicGlossMap_ST;
 			float4 _OcclusionMap_ST;
+			float _BlinkInt;
 			float _BumpScale;
 			float _Metallic;
 			float _Smoothness;
@@ -2037,9 +2045,10 @@ Shader "PlayerLit"
 
 				float2 uv_BaseMap = input.ase_texcoord2.xy * _BaseMap_ST.xy + _BaseMap_ST.zw;
 				float4 tex2DNode10 = tex2D( _BaseMap, uv_BaseMap );
+				float3 lerpResult32 = lerp( ( tex2DNode10.rgb * _BaseColor.rgb ) , _BlinkColor.rgb , _BlinkInt);
 				
 
-				float3 BaseColor = ( _BlinkColor.rgb + ( tex2DNode10.rgb * _BaseColor.rgb ) );
+				float3 BaseColor = lerpResult32;
 				float Alpha = ( tex2DNode10.a * _BaseColor.a );
 				float AlphaClipThreshold = 0.5;
 
@@ -2144,14 +2153,15 @@ Shader "PlayerLit"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _BlinkColor;
 			float4 _BaseMap_ST;
 			float4 _BaseColor;
+			float4 _BlinkColor;
 			float4 _BumpMap_ST;
 			float4 _EmissionMap_ST;
 			float4 _EmissionColor;
 			float4 _MetallicGlossMap_ST;
 			float4 _OcclusionMap_ST;
+			float _BlinkInt;
 			float _BumpScale;
 			float _Metallic;
 			float _Smoothness;
@@ -2540,14 +2550,15 @@ Shader "PlayerLit"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _BlinkColor;
 			float4 _BaseMap_ST;
 			float4 _BaseColor;
+			float4 _BlinkColor;
 			float4 _BumpMap_ST;
 			float4 _EmissionMap_ST;
 			float4 _EmissionColor;
 			float4 _MetallicGlossMap_ST;
 			float4 _OcclusionMap_ST;
+			float _BlinkInt;
 			float _BumpScale;
 			float _Metallic;
 			float _Smoothness;
@@ -2791,6 +2802,7 @@ Shader "PlayerLit"
 
 				float2 uv_BaseMap = input.ase_texcoord9.xy * _BaseMap_ST.xy + _BaseMap_ST.zw;
 				float4 tex2DNode10 = tex2D( _BaseMap, uv_BaseMap );
+				float3 lerpResult32 = lerp( ( tex2DNode10.rgb * _BaseColor.rgb ) , _BlinkColor.rgb , _BlinkInt);
 				
 				float2 uv_BumpMap = input.ase_texcoord9.xy * _BumpMap_ST.xy + _BumpMap_ST.zw;
 				float3 unpack18 = UnpackNormalScale( tex2D( _BumpMap, uv_BumpMap ), _BumpScale );
@@ -2803,7 +2815,7 @@ Shader "PlayerLit"
 				float2 uv_OcclusionMap = input.ase_texcoord9.xy * _OcclusionMap_ST.xy + _OcclusionMap_ST.zw;
 				
 
-				float3 BaseColor = ( _BlinkColor.rgb + ( tex2DNode10.rgb * _BaseColor.rgb ) );
+				float3 BaseColor = lerpResult32;
 				float3 Normal = unpack18;
 				float3 Emission = ( tex2D( _EmissionMap, uv_EmissionMap ).rgb * _EmissionColor.rgb );
 				float3 Specular = 0.5;
@@ -2990,14 +3002,15 @@ Shader "PlayerLit"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _BlinkColor;
 			float4 _BaseMap_ST;
 			float4 _BaseColor;
+			float4 _BlinkColor;
 			float4 _BumpMap_ST;
 			float4 _EmissionMap_ST;
 			float4 _EmissionColor;
 			float4 _MetallicGlossMap_ST;
 			float4 _OcclusionMap_ST;
+			float _BlinkInt;
 			float _BumpScale;
 			float _Metallic;
 			float _Smoothness;
@@ -3257,14 +3270,15 @@ Shader "PlayerLit"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _BlinkColor;
 			float4 _BaseMap_ST;
 			float4 _BaseColor;
+			float4 _BlinkColor;
 			float4 _BumpMap_ST;
 			float4 _EmissionMap_ST;
 			float4 _EmissionColor;
 			float4 _MetallicGlossMap_ST;
 			float4 _OcclusionMap_ST;
+			float _BlinkInt;
 			float _BumpScale;
 			float _Metallic;
 			float _Smoothness;
@@ -3533,14 +3547,15 @@ Shader "PlayerLit"
 			};
 
 			CBUFFER_START(UnityPerMaterial)
-			float4 _BlinkColor;
 			float4 _BaseMap_ST;
 			float4 _BaseColor;
+			float4 _BlinkColor;
 			float4 _BumpMap_ST;
 			float4 _EmissionMap_ST;
 			float4 _EmissionColor;
 			float4 _MetallicGlossMap_ST;
 			float4 _OcclusionMap_ST;
+			float _BlinkInt;
 			float _BumpScale;
 			float _Metallic;
 			float _Smoothness;
@@ -3683,13 +3698,14 @@ Node;AmplifyShaderEditor.SamplerNode;22;-208,448;Inherit;True;Property;_Occlusio
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;20;560,576;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.SamplerNode;19;192,512;Inherit;True;Property;_EmissionMap;_EmissionMap;7;0;Create;True;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.ColorNode;21;208,784;Inherit;False;Property;_EmissionColor;_EmissionColor;8;0;Create;True;0;0;0;False;0;False;0,0,0,1;0,0,0,1;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
-Node;AmplifyShaderEditor.ColorNode;29;384,-608;Inherit;False;Property;_BlinkColor;BlinkColor;11;0;Create;True;0;0;0;False;0;False;1,1,1,1;1,1,1,1;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;13;-160,64;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;25;80,16;Inherit;False;Property;_Smoothness;_Smoothness;4;0;Create;True;0;0;0;False;0;False;0.5;0.5;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode;18;480,-144;Inherit;True;Property;_BumpMap;_BumpMap;5;1;[Normal];Create;True;0;0;0;False;0;False;-1;None;None;True;0;False;bump;Auto;True;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;6;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.RangedFloatNode;27;112,-112;Inherit;False;Property;_BumpScale;_BumpScale;6;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.SimpleMultiplyOpNode;12;32,-240;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.SimpleAddOpNode;31;775.3484,-326.7562;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.LerpOp;32;800,-464;Inherit;False;3;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT;0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.RangedFloatNode;33;464,-256;Inherit;False;Property;_BlinkInt;BlinkInt;12;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;12;16,-384;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.ColorNode;29;256,-336;Inherit;False;Property;_BlinkColor;BlinkColor;11;0;Create;True;0;0;0;False;0;False;1,1,1,1;1,1,1,1;True;True;0;6;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4;FLOAT3;5
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;0;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ExtraPrePass;0;0;ExtraPrePass;5;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;True;1;1;False;;0;False;;0;1;False;;0;False;;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;0;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;2;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;ShadowCaster;0;2;ShadowCaster;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;False;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;True;3;False;;False;True;1;LightMode=ShadowCaster;False;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;3;0,0;Float;False;False;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;New Amplify Shader;94348b07e5e8bab40bd6c8a1e3df54cd;True;DepthOnly;0;3;DepthOnly;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;1;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;UniversalMaterialType=Lit;True;5;True;12;all;0;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;False;False;True;True;False;False;False;0;False;;False;False;False;False;False;False;False;False;False;True;1;False;;False;False;True;1;LightMode=DepthOnly;False;False;0;;0;0;Standard;0;False;0
@@ -3710,11 +3726,12 @@ WireConnection;20;1;21;5
 WireConnection;13;0;10;4
 WireConnection;13;1;11;4
 WireConnection;18;5;27;0
+WireConnection;32;0;12;0
+WireConnection;32;1;29;5
+WireConnection;32;2;33;0
 WireConnection;12;0;10;5
 WireConnection;12;1;11;5
-WireConnection;31;0;29;5
-WireConnection;31;1;12;0
-WireConnection;1;0;31;0
+WireConnection;1;0;32;0
 WireConnection;1;1;18;0
 WireConnection;1;2;20;0
 WireConnection;1;3;16;0
@@ -3722,4 +3739,4 @@ WireConnection;1;4;25;0
 WireConnection;1;5;24;0
 WireConnection;1;6;13;0
 ASEEND*/
-//CHKSM=88D3AD759E89CB70DFB3079BD172093F1A5BA2EB
+//CHKSM=24F55BAAF90D7421836C90E8CD162FE4E851D6BB

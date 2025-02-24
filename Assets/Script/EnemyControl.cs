@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,18 +17,19 @@ public class EnemyControl : MonoBehaviour
 
     public GameObject expPrefab;
     private PlayerControl player;//玩家控制器
-  
     private Rigidbody rb;
-    
+    //受击闪白
+    public float blinkTime = 0.2f;
+    public Material blinkMat;
+    private Material defaultMat;
     void Start()
     {
         player = FindAnyObjectByType<PlayerControl>();
-      
-        
+
         // 初始化血量
         health = maxHealth;
 
-
+        defaultMat = GetComponent<Renderer>().material;
         // 获取自身的 Rigidbody 组件
         rb = GetComponent<Rigidbody>();
 
@@ -60,6 +62,19 @@ public class EnemyControl : MonoBehaviour
         {
             Die();
         }
+    }
+
+    public void Hit(float damage)
+    {
+        health -= damage;
+        GetComponent<Renderer>().material = blinkMat;
+        Invoke("LateHit",blinkTime);
+        StartCoroutine(LateHit());
+    }
+    private IEnumerator LateHit()
+    {
+        yield return new WaitForSeconds(blinkTime);
+        GetComponent<Renderer>().material = defaultMat;
     }
 
     void Die()

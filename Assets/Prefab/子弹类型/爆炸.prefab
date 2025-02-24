@@ -145,5 +145,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionForce: 50
-  explosionDamage: 2
+  explosionDamage: 4
   destroyTime: 0.5

@@ -1,5 +1,5 @@
 using UnityEngine;
-
+//榴弹爆炸
 public class Explode : MonoBehaviour
 {
     public float explosionForce = 15f;    // 爆炸击退力
@@ -31,7 +31,7 @@ public class Explode : MonoBehaviour
             EnemyControl enemyControl = other.GetComponent<EnemyControl>();
             if (enemyControl != null)
             {
-                enemyControl.health -= explosionDamage;
+                enemyControl.Hit(explosionDamage);
             }
         }
     }

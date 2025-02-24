@@ -19,10 +19,11 @@ public class PlayerControl : MonoBehaviour
     public Slider HealthSlider; // 血量进度条
     public float level; // 经验
     
-    private bool isInvincible = false; // 标志变量，表示当前是否处于无敌状态
-    public float invincibleTime = 0.5f; // 无敌时间
+    private bool isInvincible; // 标志变量，表示当前是否处于无敌状态
+    public float invincibleTime = 0.2f; // 无敌时间
+    public Material blinkMat;
+    private Material defaultMat;
     public GameObject HitEffect;
-
     public Joystick leftJoystick; // 左摇杆（移动）
 
     [Header("武器管理")]
@@ -56,6 +57,7 @@ public class PlayerControl : MonoBehaviour
         aimIconPrefab?.gameObject.SetActive(false); // 初始禁用准星图标
         systemManager = FindAnyObjectByType<SystemManager>();
         playerAni = GetComponent<Animator>();
+        defaultMat = GetComponent<Renderer>().material;
     }
 
     void Update()
@@ -148,10 +150,11 @@ public class PlayerControl : MonoBehaviour
             currentAmmoCount--;
             bulletLimit.value = (float)currentAmmoCount / currentWeapon.ammoCapacity; // 更新UI进度条
         }
-
+        
+        playerAni?.SetTrigger("Fire");
         camAnim?.SetTrigger("CameraShakeTrigger");
         firePartices?.Play();
-
+        
         GameObject bulletInstance = Instantiate(currentWeapon.bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(fireDirection));
         Rigidbody bulletRigidbody = bulletInstance.GetComponent<Rigidbody>();
         bulletRigidbody.AddForce(fireDirection * 50f, ForceMode.Impulse); // 固定发射力
@@ -222,10 +225,11 @@ public class PlayerControl : MonoBehaviour
         {
             health -= damage;
             HealthSlider.value = health / healthMax ;
-            playerAni?.SetBool("Hit",true);
+            playerAni?.SetTrigger("Hit");
             camAnim?.SetTrigger("CameraShakeTrigger");
             HitEffect.SetActive(true);
             AudioManager.Instance.PlaySound("主角受伤");
+            GetComponent<Renderer>().material = blinkMat;
         }
 
     }
@@ -235,10 +239,10 @@ public class PlayerControl : MonoBehaviour
         isInvincible = true; // 开始无敌
         yield return new WaitForSeconds(invincibleTime); // 等待无敌时间
         isInvincible = false; // 恢复正常状态
-        playerAni?.SetBool("Hit",false);
         HitEffect.SetActive(false);
         canFire = true;
         canMove = true;
+        GetComponent<Renderer>().material = defaultMat;
         if (health <= 0)
         {
             systemManager.GameOver();
