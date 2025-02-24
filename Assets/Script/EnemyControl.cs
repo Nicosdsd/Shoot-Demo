@@ -7,6 +7,7 @@ public class EnemyControl : MonoBehaviour
     public float attack = 1;
     public float speed = 5;
     public float rotationSpeed = 5; // 控制旋转跟随速度
+    public Vector2 attackForce;
 
     public float health;
     public float maxHealth = 2;
@@ -84,7 +85,28 @@ public class EnemyControl : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-           player.Injuried(attack);
+            // 玩家受到伤害
+            player.Hit(attack);
+
+            // 给玩家添加一个向后和向上的力
+            Rigidbody playerRb = other.gameObject.GetComponent<Rigidbody>();
+            if (playerRb != null)
+            {
+                // 计算一个方向向量，让玩家"弹开"
+                Vector3 knockbackDirection = (other.transform.position - transform.position).normalized;
+                knockbackDirection.y = 0; // 去掉 Y 轴的分量，保证向后的水平力
+
+                float forceStrength = attackForce.x; // 调整这个值来控制水平力度
+                float upwardForce = attackForce.y;  // 向上的力大小
+
+                // 添加水平和垂直的力
+                Vector3 force = knockbackDirection * forceStrength + Vector3.up * upwardForce;
+                playerRb.AddForce(force, ForceMode.Impulse); // Impulse 模式，立即施加冲量
+                player.canFire = false;
+                player.canMove = false;
+                
+            }
         }
     }
+
 }

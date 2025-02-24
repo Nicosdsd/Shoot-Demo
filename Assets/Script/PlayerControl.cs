@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -7,14 +8,20 @@ public class PlayerControl : MonoBehaviour
     private Rigidbody rb;
     private Vector3 movement;
     private SystemManager systemManager;
+    private Animator playerAni;
 
     [Header("基础")]
+    public bool canMove = true;
     public float moveSpeed = 5f; // 移动速度
     public float rotationSpeed = 720f; // 旋转速度
     public float health = 5; // 生命值
     private float healthMax ; //初始生命
     public Slider HealthSlider; // 血量进度条
     public float level; // 经验
+    
+    private bool isInvincible = false; // 标志变量，表示当前是否处于无敌状态
+    public float invincibleTime = 0.5f; // 无敌时间
+    public GameObject HitEffect;
 
     public Joystick leftJoystick; // 左摇杆（移动）
 
@@ -48,14 +55,19 @@ public class PlayerControl : MonoBehaviour
         currentWeapon = defaultWeapon;
         aimIconPrefab?.gameObject.SetActive(false); // 初始禁用准星图标
         systemManager = FindAnyObjectByType<SystemManager>();
+        playerAni = GetComponent<Animator>();
     }
 
     void Update()
     {
-        // 左摇杆控制移动输入
-        float moveX = leftJoystick.Horizontal + Input.GetAxis("Horizontal");
-        float moveZ = leftJoystick.Vertical + Input.GetAxis("Vertical");
-        movement = new Vector3(moveX, 0, moveZ).normalized;
+        if (canMove)
+        {
+            // 左摇杆控制移动输入
+            float moveX = leftJoystick.Horizontal + Input.GetAxis("Horizontal");
+            float moveZ = leftJoystick.Vertical + Input.GetAxis("Vertical");
+            movement = new Vector3(moveX, 0, moveZ).normalized;
+        }
+
         //发射
         if (canFire && Time.time >= nextFireTime)
         {
@@ -198,19 +210,41 @@ public class PlayerControl : MonoBehaviour
     }
     
     //受伤
-    public void Injuried(float damage)
+    public void Hit(float damage)
     {
-        if (health>=0)
+        // 如果角色正处于无敌状态，直接退出
+        if (isInvincible)
+            return;
+        // 触发无敌状态
+        StartCoroutine(ActivateInvincibility());
+        
+        if (health>0)
         {
             health -= damage;
-            HealthSlider.value = health / healthMax;
+            HealthSlider.value = health / healthMax ;
+            playerAni?.SetBool("Hit",true);
+            camAnim?.SetTrigger("CameraShakeTrigger");
+            HitEffect.SetActive(true);
+            AudioManager.Instance.PlaySound("主角受伤");
         }
-        else
+
+    }
+
+    private IEnumerator ActivateInvincibility()
+    {
+        isInvincible = true; // 开始无敌
+        yield return new WaitForSeconds(invincibleTime); // 等待无敌时间
+        isInvincible = false; // 恢复正常状态
+        playerAni?.SetBool("Hit",false);
+        HitEffect.SetActive(false);
+        canFire = true;
+        canMove = true;
+        if (health <= 0)
         {
             systemManager.GameOver();
         }
     }
-
+    
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = new Color(0, 1, 0, 0.25f); // 设置Gizmos颜色为绿色，透明度为0.25

@@ -128,8 +128,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27be494305c09bf42bd8aea2dc473019, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attack: 1
   speed: 5
   rotationSpeed: 4
+  attackForce: {x: 10, y: 5}
   health: 2
   maxHealth: 2
   deathParticlePrefab: {fileID: 204989309917258822, guid: 7aa4fd15d25ae894b832ff02bf69e788, type: 3}

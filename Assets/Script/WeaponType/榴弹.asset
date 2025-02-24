@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponName: "\u69B4\u5F39"
   damage: 2
-  fireRate: 0.5
+  fireRate: 1
   ammoCapacity: 10
   bulletPrefab: {fileID: 2928178143791889286, guid: 7ebdf5850d5837244ab5c3258f6de5e0, type: 3}

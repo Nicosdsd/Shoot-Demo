@@ -10,6 +10,7 @@ public class SystemManager : MonoBehaviour
     private void Awake()
     {
         PauseGame();
+        gameStart.SetActive(true);
     }
     
     /// <summary>

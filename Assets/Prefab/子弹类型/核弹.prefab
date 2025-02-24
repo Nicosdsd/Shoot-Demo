@@ -123,7 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionForce: 20
-  explosionDamage: 1
+  explosionDamage: 5
   destroyTime: 1
 --- !u!95 &8214002456436844974
 Animator:

@@ -333,7 +333,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   destroyAfter: 2
-  knockbackForce: 10
+  knockbackForce: 50
   hitEffectPrefab: {fileID: 6001502747594127042, guid: 647a997c8e2e2ac489a9d7749113b77f, type: 3}
 --- !u!1 &6179975659602721728
 GameObject:
