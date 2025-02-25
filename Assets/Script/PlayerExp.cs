@@ -11,12 +11,15 @@ public class PlayerExp : MonoBehaviour
     public int level = 1; 
     public float currentExp; 
     public float expToNextLevel = 100; 
-    public float expGrowthRate = 1.5f; 
+    public float expGrowthRate = 1.5f;
+    private float localScore;
 
+    
     [Header("UI 显示")]
     public Text levelText; 
     public Slider expSlider; 
     public GameObject buffManu;
+    public Text ScoreText;
 
     public GameObject bombPrefab; //核弹清屏
 
@@ -37,6 +40,13 @@ public class PlayerExp : MonoBehaviour
         }
         UpdateUI();
     }
+
+    public void GainScore(float score)
+    {
+       localScore += score;
+       ScoreText.text = "分数："+ localScore;
+    }
+    
 
     private void LevelUp()
     {

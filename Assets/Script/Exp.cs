@@ -40,6 +40,7 @@ public class Exp : MonoBehaviour
         {
             Destroy(gameObject);
             playerExp.GainExperience(exp);//主角获取经验
+            playerExp.GainScore(exp);
             AudioManager.Instance.PlaySound("获取经验");
         }
     }
