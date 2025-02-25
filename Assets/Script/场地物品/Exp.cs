@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
-
+//掉落的经验值
 public class Exp : MonoBehaviour
 {
     public float flySpeed = 10f; // 飞行速度

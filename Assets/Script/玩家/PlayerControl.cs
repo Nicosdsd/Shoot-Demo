@@ -12,25 +12,29 @@ public class PlayerControl : MonoBehaviour
 
     [Header("基础")]
     public bool canMove = true;
-    public float moveSpeed = 5f; // 移动速度
-    public float rotationSpeed = 720f; // 旋转速度
-    public float health = 5; // 生命值
-    private float healthMax ; //初始生命
     public Slider HealthSlider; // 血量进度条
-    public float level; // 经验
-    
     private bool isInvincible; // 标志变量，表示当前是否处于无敌状态
     public float invincibleTime = 0.2f; // 无敌时间
     public Material blinkMat;
     private Material defaultMat;
     public GameObject HitEffect;
     public Joystick leftJoystick; // 左摇杆（移动）
-
+    
+    [Header("可增幅属性")]
+    public float health = 5; // 生命值
+    private float healthMax ; //初始生命
+    public float moveSpeed = 5f; // 移动速度
+    public float rotationSpeed = 720f; // 旋转速度
+    public float levelUp; // 经验获取效率
+    public float damageUp; // 伤害提升
+    public float fireRateUp; // 射速提升
+    public float ammoCapacityUp; // 弹药容量提升
+    
     [Header("武器管理")]
     public WeaponData[] WeaponDatas; // 所有武器数据数组
     public WeaponData currentWeapon; // 当前选中的武器
     public WeaponData defaultWeapon; // 默认武器
-    private int currentAmmoCount = 1; // 当前武器剩余子弹数量
+    private float currentAmmoCount = 1; // 当前武器剩余子弹数量
     private bool canReload = true; // 是否能够使用装弹
     public Slider bulletLimit; // 子弹 UI 显示进度条
     public Text weaponText; // 当前选中的武器文本
@@ -74,7 +78,7 @@ public class PlayerControl : MonoBehaviour
         if (canFire && Time.time >= nextFireTime)
         {
             Fire();
-            nextFireTime = Time.time + currentWeapon.fireRate; // 根据当前武器的射速调整开火时间
+            nextFireTime = Time.time + currentWeapon.fireRate * (1 - fireRateUp); // 根据当前武器的射速调整开火时间
         }
         //瞄准
         FireAim();
@@ -179,7 +183,7 @@ public class PlayerControl : MonoBehaviour
 
         int randomIndex = Random.Range(0, WeaponDatas.Length); // 从数组中随机选择一个武器索引
         currentWeapon = WeaponDatas[randomIndex];
-        currentAmmoCount = currentWeapon.ammoCapacity;
+        currentAmmoCount = currentWeapon.ammoCapacity * (1 + ammoCapacityUp);
 
         if (bulletLimit != null)
         {
