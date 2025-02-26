@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -60,6 +61,7 @@ public class PlayerControl : MonoBehaviour
     public Transform aimIconPrefab; //准星
     private Vector3 fireDirection; //瞄准方向
     public float autoAimRadius = 20; //锁定范围
+    float minAimAngleThreshold = 5f; //瞄准允许射击角度
 
     void Start()
     {
@@ -82,15 +84,12 @@ public class PlayerControl : MonoBehaviour
             float moveZ = leftJoystick.Vertical + Input.GetAxis("Vertical");
             movement = new Vector3(moveX, 0, moveZ).normalized;
         }
-        //发射
+        /*//发射
         if (canFire && Time.time >= nextFireTime)
         {
             Fire();
-            nextFireTime = Time.time + currentWeapon.fireRate * (1 - fireRateUp); // 根据当前武器的射速调整开火时间
-          
-        }
+        }*/
         //瞄准
-        
         FireAim();
     }
 
@@ -119,33 +118,45 @@ public class PlayerControl : MonoBehaviour
         // 保持垂直速度（重力）
         currentVelocity.y = rb.linearVelocity.y;
         rb.linearVelocity = currentVelocity;
-        
-       // rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 
     //角色旋转
     void RotateMovement()
     {
-        if (currentTarget == null && movement.magnitude > 0.1f)
+        if ( movement.magnitude > 0.1f)
         {
             float angle = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;
             Quaternion targetRotation = Quaternion.Euler(0, angle, 0);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
-        
-        if (movement.magnitude > 0.1 || currentTarget == null)
+       
+    }
+    //瞄准转向
+    void FireRotat()
+    {
+        if (currentTarget == null || movement.magnitude > 0.1f) return;
+
+        // 计算目标方向
+        fireDirection = (currentTarget.position - bulletSpawnPoint.position).normalized;
+        Quaternion targetRotation = Quaternion.LookRotation(fireDirection);
+
+        // 计算当前角色旋转与目标方向之间的角度差
+        float angleDifference = Quaternion.Angle(transform.rotation, targetRotation);
+
+        // 平滑插值使角色逐渐旋转到目标方向
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+
+        // 当角度差小于设定的阈值，并且可以射击时，才允许开火
+        if (angleDifference < minAimAngleThreshold && Time.time >= nextFireTime)
         {
-            canFire = false;
-        }
-        else
-        {
-            canFire = true;
+            Fire();
         }
     }
 
     //瞄准
     private void FireAim()
     {
+        FireRotat();
         // 调用寻敌的方法，并更新当前目标
         currentTarget = FindClosestTarget(autoAimRadius);
 
@@ -158,48 +169,45 @@ public class PlayerControl : MonoBehaviour
 
             // 更新准星的位置，使其X和Z指向敌人，而Y保持不变
             aimIconPrefab.position = new Vector3(currentTarget.position.x, aimIconY, currentTarget.position.z);
-
-            fireDirection = (currentTarget.position - bulletSpawnPoint.position).normalized;
-
-            // 计算目标方向
-            Quaternion targetRotation = Quaternion.LookRotation(fireDirection);
-
-            // 平滑插值地旋转角色朝向目标
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
         else
         {
             aimIconPrefab?.gameObject.SetActive(false); // 若无目标，禁用准星图标
-            fireDirection = transform.forward;
         }
     }
 
     //发射
     void Fire()
     {
-        if (currentAmmoCount <= 0)
+        if (canFire)
         {
-            currentWeapon = defaultWeapon;
-            bulletLimit.value = 1; // 重置子弹 UI 显示
-            weaponText.text = currentWeapon.weaponName;
-        }
+            nextFireTime = Time.time + currentWeapon.fireRate * (1 - fireRateUp); // 根据当前武器的射速调整开火时间
 
-        if (currentWeapon != defaultWeapon)
-        {
-            currentAmmoCount--;
-            bulletLimit.value = (float)currentAmmoCount / currentWeapon.ammoCapacity; // 更新UI进度条
-        }
-        
-        playerAni?.SetTrigger("Fire");
-        camAnim?.SetTrigger("CameraShakeTrigger");
-        firePartices?.Play();
-        
-        GameObject bulletInstance = Instantiate(currentWeapon.bulletPrefab, bulletSpawnPoint.position, Quaternion.LookRotation(fireDirection));
-        Rigidbody bulletRigidbody = bulletInstance.GetComponent<Rigidbody>();
-        bulletRigidbody.AddForce(fireDirection * 50f, ForceMode.Impulse); // 固定发射力
+            if (currentAmmoCount <= 0)
+            {
+                currentWeapon = defaultWeapon;
+                bulletLimit.value = 1; // 重置子弹 UI 显示
+                weaponText.text = currentWeapon.weaponName;
+            }
 
-        GameObject shellInstance = Instantiate(shellPartices, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-        Destroy(shellInstance, 0.5f);
+            if (currentWeapon != defaultWeapon)
+            {
+                currentAmmoCount--;
+                bulletLimit.value = (float)currentAmmoCount / currentWeapon.ammoCapacity; // 更新UI进度条
+            }
+
+            playerAni?.SetTrigger("Fire");
+            camAnim?.SetTrigger("CameraShakeTrigger");
+            firePartices?.Play();
+
+            GameObject bulletInstance = Instantiate(currentWeapon.bulletPrefab, bulletSpawnPoint.position,
+                Quaternion.LookRotation(fireDirection));
+            Rigidbody bulletRigidbody = bulletInstance.GetComponent<Rigidbody>();
+            bulletRigidbody.AddForce(fireDirection * 50f, ForceMode.Impulse); // 固定发射力
+
+            GameObject shellInstance = Instantiate(shellPartices, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+            Destroy(shellInstance, 0.5f);
+        }
     }
 
     private void OnCollisionEnter(Collision other)

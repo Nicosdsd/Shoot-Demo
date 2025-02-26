@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attack: 1
-  speed: 5
+  speed: 4
   rotationSpeed: 4
   attackForce: {x: 10, y: 5}
   health: 2
