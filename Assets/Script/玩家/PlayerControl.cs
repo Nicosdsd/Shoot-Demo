@@ -11,14 +11,22 @@ public class PlayerControl : MonoBehaviour
     private Animator playerAni;
 
     [Header("基础")]
-    public bool canMove = true;
+    //标识
     public Slider HealthSlider; // 血量进度条
     private bool isInvincible; // 标志变量，表示当前是否处于无敌状态
     public float invincibleTime = 0.2f; // 无敌时间
+    //材质效果
     public Material blinkMat;
     private Material defaultMat;
     public GameObject HitEffect;
+    //移动控制
     public Joystick leftJoystick; // 左摇杆（移动）
+    public bool canMove = true;
+    
+    [Header("移动优化参数")] 
+    [SerializeField] float speedLerpUp = 10f;    // 加速系数
+    [SerializeField] float speedLerpDown = 20f;   // 减速系数
+    private Vector3 currentVelocity; // 当前实际速度
     
     [Header("可增幅属性")]
     public float health = 5; // 生命值
@@ -57,6 +65,7 @@ public class PlayerControl : MonoBehaviour
     {
         healthMax = health;
         rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true; // 防止物理旋转
         currentWeapon = defaultWeapon;
         aimIconPrefab?.gameObject.SetActive(false); // 初始禁用准星图标
         systemManager = FindAnyObjectByType<SystemManager>();
@@ -73,34 +82,57 @@ public class PlayerControl : MonoBehaviour
             float moveZ = leftJoystick.Vertical + Input.GetAxis("Vertical");
             movement = new Vector3(moveX, 0, moveZ).normalized;
         }
-
         //发射
         if (canFire && Time.time >= nextFireTime)
         {
             Fire();
             nextFireTime = Time.time + currentWeapon.fireRate * (1 - fireRateUp); // 根据当前武器的射速调整开火时间
+          
         }
         //瞄准
+        
         FireAim();
-        //旋转
-        RotateTowardsMovementDirection();
     }
 
     void FixedUpdate()
     {
-        rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
+       Movement();
+       RotateMovement();
+    }
+    
+    //角色移动
+    private void Movement()
+    {
+        Vector3 targetVelocity = movement * moveSpeed;
+        // 水平速度插值
+        currentVelocity.x = Mathf.Lerp(
+            currentVelocity.x, 
+            targetVelocity.x, 
+            (movement.magnitude > 0.1f ? speedLerpUp : speedLerpDown) * Time.fixedDeltaTime
+        );
+        
+        currentVelocity.z = Mathf.Lerp(
+            currentVelocity.z, 
+            targetVelocity.z, 
+            (movement.magnitude > 0.1f ? speedLerpUp : speedLerpDown) * Time.fixedDeltaTime
+        );
+        // 保持垂直速度（重力）
+        currentVelocity.y = rb.linearVelocity.y;
+        rb.linearVelocity = currentVelocity;
+        
+       // rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
     }
 
-    //左摇杆
-    void RotateTowardsMovementDirection()
+    //角色旋转
+    void RotateMovement()
     {
-        if (movement.magnitude > 0 && currentTarget == null)
+        if (currentTarget == null && movement.magnitude > 0.1f)
         {
             float angle = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;
             Quaternion targetRotation = Quaternion.Euler(0, angle, 0);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
-
+        
         if (movement.magnitude > 0.1 || currentTarget == null)
         {
             canFire = false;
@@ -128,13 +160,16 @@ public class PlayerControl : MonoBehaviour
             aimIconPrefab.position = new Vector3(currentTarget.position.x, aimIconY, currentTarget.position.z);
 
             fireDirection = (currentTarget.position - bulletSpawnPoint.position).normalized;
+
+            // 计算目标方向
             Quaternion targetRotation = Quaternion.LookRotation(fireDirection);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+
+            // 平滑插值地旋转角色朝向目标
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
         }
         else
         {
             aimIconPrefab?.gameObject.SetActive(false); // 若无目标，禁用准星图标
-
             fireDirection = transform.forward;
         }
     }

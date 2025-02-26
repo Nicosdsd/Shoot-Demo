@@ -1090,15 +1090,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14bc90d695fdc594b996009f521bb173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canMove: 1
   HealthSlider: {fileID: 1479818863}
   invincibleTime: 0.2
   blinkMat: {fileID: 2100000, guid: 8bb48878ff60d864b9b0e6f58d8673d5, type: 2}
   HitEffect: {fileID: 1492974053}
   leftJoystick: {fileID: 1018618653}
+  canMove: 1
+  speedLerpUp: 20
+  speedLerpDown: 40
   health: 5
-  moveSpeed: 10
-  rotationSpeed: 720
+  moveSpeed: 15
+  rotationSpeed: 10
   levelUp: 0
   damageUp: 0
   fireRateUp: 0
@@ -1186,8 +1188,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 5, z: 1}
+  m_Center: {x: 0, y: 2, z: 0}
 --- !u!1 &271593107
 GameObject:
   m_ObjectHideFlags: 0
@@ -14897,7 +14899,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1468416733
 Transform:
   m_ObjectHideFlags: 0
@@ -26271,7 +26273,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1865830062
 MonoBehaviour:
   m_ObjectHideFlags: 0
