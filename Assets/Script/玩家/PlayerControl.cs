@@ -38,25 +38,14 @@ public class PlayerControl : MonoBehaviour
     public float damageUp; // 伤害提升
     public float fireRateUp; // 射速提升
     public float ammoCapacityUp; // 弹药容量提升
-    
-    [Header("武器管理")]
-    public WeaponData[] WeaponDatas; // 所有武器数据数组
-    public WeaponData currentWeapon; // 当前选中的武器
-    public WeaponData defaultWeapon; // 默认武器
-    private float currentAmmoCount = 1; // 当前武器剩余子弹数量
-    private bool canReload = true; // 是否能够使用装弹
-    public Slider bulletLimit; // 子弹 UI 显示进度条
-    public Text weaponText; // 当前选中的武器文本
 
-    [Header("子弹")]
-    public Animator camAnim;
-    public Transform bulletSpawnPoint;
-    public ParticleSystem firePartices;
-    public GameObject shellPartices;
+    [Header("射击")] 
     public bool canFire = true;
-    private float nextFireTime;
-
-    [Header("辅助瞄准")]
+   // public Weapon defaultWeapon;
+    public Weapon currentWeapon;
+    public Animator camAnim;
+    private WeaponManager weaponManager;
+    public Transform weaponPos;
     private Transform currentTarget; // 自动瞄准的当前目标
     public Transform aimIconPrefab; //准星
     private Vector3 fireDirection; //瞄准方向
@@ -68,11 +57,12 @@ public class PlayerControl : MonoBehaviour
         healthMax = health;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true; // 防止物理旋转
-        currentWeapon = defaultWeapon;
         aimIconPrefab?.gameObject.SetActive(false); // 初始禁用准星图标
         systemManager = FindAnyObjectByType<SystemManager>();
         playerAni = GetComponent<Animator>();
         defaultMat = GetComponent<Renderer>().material;
+        weaponManager = FindAnyObjectByType<WeaponManager>();
+        currentWeapon = GetComponentInChildren<Weapon>();
     }
 
     void Update()
@@ -84,11 +74,6 @@ public class PlayerControl : MonoBehaviour
             float moveZ = leftJoystick.Vertical + Input.GetAxis("Vertical");
             movement = new Vector3(moveX, 0, moveZ).normalized;
         }
-        /*//发射
-        if (canFire && Time.time >= nextFireTime)
-        {
-            Fire();
-        }*/
         //瞄准
         FireAim();
     }
@@ -136,8 +121,9 @@ public class PlayerControl : MonoBehaviour
     {
         if (currentTarget == null || movement.magnitude > 0.1f) return;
 
+       
         // 计算目标方向
-        fireDirection = (currentTarget.position - bulletSpawnPoint.position).normalized;
+        fireDirection = (currentTarget.position -  currentWeapon.bulletSpawnPoint.position).normalized;
         Quaternion targetRotation = Quaternion.LookRotation(fireDirection);
 
         // 计算当前角色旋转与目标方向之间的角度差
@@ -147,9 +133,12 @@ public class PlayerControl : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
 
         // 当角度差小于设定的阈值，并且可以射击时，才允许开火
-        if (angleDifference < minAimAngleThreshold && Time.time >= nextFireTime)
+        if (angleDifference < minAimAngleThreshold && canFire)
         {
-            Fire();
+            //开火
+            currentWeapon.Fire(fireDirection);
+            playerAni?.SetTrigger("Fire");
+            camAnim?.SetTrigger("CameraShakeTrigger");
         }
     }
 
@@ -176,65 +165,16 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    //发射
-    void Fire()
-    {
-        if (canFire)
-        {
-            nextFireTime = Time.time + currentWeapon.fireRate * (1 - fireRateUp); // 根据当前武器的射速调整开火时间
-
-            if (currentAmmoCount <= 0)
-            {
-                currentWeapon = defaultWeapon;
-                bulletLimit.value = 1; // 重置子弹 UI 显示
-                weaponText.text = currentWeapon.weaponName;
-            }
-
-            if (currentWeapon != defaultWeapon)
-            {
-                currentAmmoCount--;
-                bulletLimit.value = (float)currentAmmoCount / currentWeapon.ammoCapacity; // 更新UI进度条
-            }
-
-            playerAni?.SetTrigger("Fire");
-            camAnim?.SetTrigger("CameraShakeTrigger");
-            firePartices?.Play();
-
-            GameObject bulletInstance = Instantiate(currentWeapon.bulletPrefab, bulletSpawnPoint.position,
-                Quaternion.LookRotation(fireDirection));
-            Rigidbody bulletRigidbody = bulletInstance.GetComponent<Rigidbody>();
-            bulletRigidbody.AddForce(fireDirection * 50f, ForceMode.Impulse); // 固定发射力
-
-            GameObject shellInstance = Instantiate(shellPartices, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-            Destroy(shellInstance, 0.5f);
-        }
-    }
-
+    
     private void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("WeaponGift")) // 判断是否碰撞到“WeaponGift”
         {
-            EquipRandomWeapon(); // 遇到 WeaponGift 就随机切换武器
+           weaponManager.EquipRandomWeapon();//拾取随机武器
             Destroy(other.gameObject); // 销毁奖励物体
         }
     }
-
-    //拾取随机武器
-    private void EquipRandomWeapon()
-    {
-        if (WeaponDatas.Length == 0) return;
-
-        int randomIndex = Random.Range(0, WeaponDatas.Length); // 从数组中随机选择一个武器索引
-        currentWeapon = WeaponDatas[randomIndex];
-        currentAmmoCount = currentWeapon.ammoCapacity * (1 + ammoCapacityUp);
-
-        if (bulletLimit != null)
-        {
-            bulletLimit.value = 1; // 重置子弹 UI 显示
-            weaponText.text = currentWeapon.weaponName;
-        }
-    }
-
+    
     //索敌
     private Transform FindClosestTarget(float radius)
     {

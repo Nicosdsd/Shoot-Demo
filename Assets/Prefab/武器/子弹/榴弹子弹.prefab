@@ -247,7 +247,7 @@ GameObject:
   - component: {fileID: 95278135704085655}
   - component: {fileID: -8846119228040182272}
   m_Layer: 0
-  m_Name: "\u69B4\u5F39"
+  m_Name: "\u69B4\u5F39\u5B50\u5F39"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -280,7 +280,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2928178143791889286}
   serializedVersion: 4
-  m_Mass: 2
+  m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}

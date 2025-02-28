@@ -7,8 +7,7 @@ public class BulletBase : MonoBehaviour
     public float destroyAfter = 5f;
     public float knockbackForce = 10f;
     public GameObject hitEffectPrefab; // 命中粒子效果的预制体
-    private WeaponData weaponData;
-   
+    private Weapon defaultWeapon;
     
     PlayerControl player; 
     void Start()
@@ -17,7 +16,7 @@ public class BulletBase : MonoBehaviour
         Destroy(gameObject, destroyAfter);
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
 
-        weaponData = player.currentWeapon;
+        defaultWeapon = player.currentWeapon;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -39,7 +38,7 @@ public class BulletBase : MonoBehaviour
                 EnemyControl enemyControl = other.GetComponent<EnemyControl>();
                 if (enemyControl != null)
                 {
-                    enemyControl.Hit(weaponData.damage);
+                    enemyControl.Hit(defaultWeapon.damage);
                 }
 
                 // 子弹溅射效果
