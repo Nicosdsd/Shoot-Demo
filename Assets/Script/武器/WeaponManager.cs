@@ -52,7 +52,7 @@ public class WeaponManager : MonoBehaviour
         CurrentWeapon.parent = null;
         //弹射丢弃武器
         Rigidbody weaponRigidbody = CurrentWeapon.gameObject.AddComponent<Rigidbody>();
-        weaponRigidbody.AddForce(Vector3.up * 30f, ForceMode.Impulse);
+        weaponRigidbody.AddForce(Vector3.up * 20f, ForceMode.Impulse);
         
         Destroy(CurrentWeapon.gameObject,1);
         Invoke("ReloadWeapon",0.5f);

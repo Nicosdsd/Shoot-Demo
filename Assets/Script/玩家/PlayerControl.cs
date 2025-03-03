@@ -136,9 +136,9 @@ public class PlayerControl : MonoBehaviour
         if (angleDifference < minAimAngleThreshold && canFire)
         {
             //开火
-            currentWeapon.Fire(fireDirection);
             playerAni?.SetTrigger("Fire");
             camAnim?.SetTrigger("CameraShakeTrigger");
+            currentWeapon.Fire(fireDirection);
         }
     }
 
