@@ -51,6 +51,7 @@ public class PlayerControl : MonoBehaviour
     private Vector3 fireDirection; //瞄准方向
     public float autoAimRadius = 20; //锁定范围
     float minAimAngleThreshold = 5f; //瞄准允许射击角度
+    public Slider reloadAmmoUI; //
 
     void Start()
     {
@@ -67,6 +68,7 @@ public class PlayerControl : MonoBehaviour
 
     void Update()
     {
+        //输入
         if (canMove)
         {
             // 左摇杆控制移动输入
@@ -74,14 +76,25 @@ public class PlayerControl : MonoBehaviour
             float moveZ = leftJoystick.Vertical + Input.GetAxis("Vertical");
             movement = new Vector3(moveX, 0, moveZ).normalized;
         }
-        //瞄准
-        FireAim();
-    }
+        
+        //位移
+        Movement();
+        
+        //索敌
+        currentTarget = FindClosestTarget(autoAimRadius);
+        
+        //转向
+        if (currentTarget != null)
+        {
+            FireAim();
+        }
+        else
+        {
+            RotateMovement();
+            aimIconPrefab?.gameObject.SetActive(false); // 若无目标，禁用准星图标
+        }
+      
 
-    void FixedUpdate()
-    {
-       Movement();
-       RotateMovement();
     }
     
     //角色移动
@@ -108,22 +121,15 @@ public class PlayerControl : MonoBehaviour
     //角色旋转
     void RotateMovement()
     {
-        if ( movement.magnitude > 0.1f)
-        {
-            float angle = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;
-            Quaternion targetRotation = Quaternion.Euler(0, angle, 0);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-        }
-       
+        float angle = Mathf.Atan2(movement.x, movement.z) * Mathf.Rad2Deg;
+        Quaternion targetRotation = Quaternion.Euler(0, angle, 0);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
     }
-    //瞄准转向
-    void FireRotat()
+    //瞄准
+    private void FireAim()
     {
-        if (currentTarget == null || movement.magnitude > 0.1f) return;
-
-       
         // 计算目标方向
-        fireDirection = (currentTarget.position -  currentWeapon.bulletSpawnPoint.position).normalized;
+        fireDirection = (currentTarget.position - currentWeapon.bulletSpawnPoint.position).normalized;
         Quaternion targetRotation = Quaternion.LookRotation(fireDirection);
 
         // 计算当前角色旋转与目标方向之间的角度差
@@ -131,40 +137,22 @@ public class PlayerControl : MonoBehaviour
 
         // 平滑插值使角色逐渐旋转到目标方向
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-
+        aimIconPrefab?.gameObject.SetActive(true); // 启用准星图标
+        // 获取当前准星的Y轴位置
+        float aimIconY = aimIconPrefab.position.y;
+        // 更新准星的位置，使其X和Z指向敌人，而Y保持不变
+        aimIconPrefab.position = new Vector3(currentTarget.position.x, aimIconY, currentTarget.position.z);
+        
         // 当角度差小于设定的阈值，并且可以射击时，才允许开火
         if (angleDifference < minAimAngleThreshold && canFire)
         {
             //开火
-            playerAni?.SetTrigger("Fire");
+            //playerAni?.SetTrigger("Fire");
             camAnim?.SetTrigger("CameraShakeTrigger");
             currentWeapon.Fire(fireDirection);
         }
     }
-
-    //瞄准
-    private void FireAim()
-    {
-        FireRotat();
-        // 调用寻敌的方法，并更新当前目标
-        currentTarget = FindClosestTarget(autoAimRadius);
-
-        if (currentTarget != null)
-        {
-            aimIconPrefab?.gameObject.SetActive(true); // 启用准星图标
-
-            // 获取当前准星的Y轴位置
-            float aimIconY = aimIconPrefab.position.y;
-
-            // 更新准星的位置，使其X和Z指向敌人，而Y保持不变
-            aimIconPrefab.position = new Vector3(currentTarget.position.x, aimIconY, currentTarget.position.z);
-        }
-        else
-        {
-            aimIconPrefab?.gameObject.SetActive(false); // 若无目标，禁用准星图标
-        }
-    }
-
+    
     
     private void OnCollisionEnter(Collision other)
     {

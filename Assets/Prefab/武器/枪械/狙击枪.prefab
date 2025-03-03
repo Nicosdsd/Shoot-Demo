@@ -19501,8 +19501,9 @@ MonoBehaviour:
   damage: 4
   speed: 50
   fireRate: 0.8
-  ammoMax: 10
+  ammoMax: 1
   currentAmmo: 0
+  reloadTime: 2
   bulletPrefab: {fileID: 2928178143791889286, guid: bb9d2936f34f8c342877c2514312fe81, type: 3}
   bulletSpawnPoint: {fileID: 7140404688937279448}
   firePartices: {fileID: 3399235101800937669}

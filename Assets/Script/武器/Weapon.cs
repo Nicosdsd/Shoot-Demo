@@ -9,7 +9,8 @@ public class Weapon : MonoBehaviour
     public float fireRate;             // 射速（每秒射击次数）
     public float ammoMax ;           // 弹药容量
     public float currentAmmo ; // 当前武器剩余子弹数量
-
+    public float reloadTime = 1; //上弹时间
+    
     [Header("子弹")] 
     public GameObject bulletPrefab;
     public Transform bulletSpawnPoint;
@@ -19,16 +20,51 @@ public class Weapon : MonoBehaviour
     private PlayerControl player;
     private WeaponManager weaponManager;
     
+    private bool isReloading; // 用于跟踪是否正在换弹
+    private float reloadCooldownTimer; // 用于计时的变量
+    
     void Awake()
     {
         player = FindObjectOfType<PlayerControl>();
         weaponManager = FindAnyObjectByType<WeaponManager>();
         currentAmmo = ammoMax;
     }
-    
-    //发射
+
+    void Update()
+    {
+        // 如果正在进行换弹CD，那么更新计时器
+        if (isReloading)
+        {
+            reloadCooldownTimer -= Time.deltaTime;
+
+            if (reloadCooldownTimer <= 0)
+            {
+                isReloading = false;
+            }
+        
+            player.reloadAmmoUI.value = 1 - reloadCooldownTimer/reloadTime + 0.1f;  //换弹进度条
+        }
+    }
+
+
+//发射
     public void Fire(Vector3 fireDirection)
     {
+        if (isReloading)
+        {
+            return; // 如果在换弹CD中，不能开火
+        }
+    
+        // 子弹耗光换回默认武器
+        if (currentAmmo == 0)
+        {
+            Invoke("ReloadAmmo", reloadTime);
+            player.canFire = false;
+            player.reloadAmmoUI.gameObject.SetActive(true);
+            isReloading = true; // 开始换弹
+            reloadCooldownTimer = reloadTime; // 重置换弹CD计时器
+        }
+    
         if (Time.time >= nextFireTime)
         {
             nextFireTime = Time.time + fireRate * (1 - player.fireRateUp); // 根据当前武器的射速调整开火时间
@@ -50,17 +86,21 @@ public class Weapon : MonoBehaviour
             GameObject shellInstance = Instantiate(shellPartices, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
             Destroy(shellInstance, 0.5f);
 
-            // 减少当前弹药数量（默认武器不消耗子弹）
+            currentAmmo--;
+        
+            /*// 减少当前弹药数量（默认武器不消耗子弹）
             if (player.currentWeapon.tag != "DefaultWeapon")
             {
                 currentAmmo--;
-            }
-            
-            // 子弹耗光换回默认武器
-            if (currentAmmo == 0)
-            {
-                weaponManager.SwithDefaultWeapon();
-            }
+            }*/
+        
         }
+    }
+
+    void ReloadAmmo()
+    {
+        currentAmmo = ammoMax;
+        player.canFire = true;
+        player.reloadAmmoUI.gameObject.SetActive(false);
     }
 }
