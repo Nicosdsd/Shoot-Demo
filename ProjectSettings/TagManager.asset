@@ -11,6 +11,8 @@ TagManager:
   - Target
   - WeaponGift
   - DefaultWeapon
+  - Weapon
+  - ExpArea
   layers:
   - Default
   - TransparentFX

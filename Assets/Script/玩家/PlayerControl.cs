@@ -156,9 +156,9 @@ public class PlayerControl : MonoBehaviour
     
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("WeaponGift")) // 判断是否碰撞到“WeaponGift”
+        if (other.gameObject.CompareTag("Weapon")) // 判断是否碰撞到“WeaponGift”
         {
-           weaponManager.EquipRandomWeapon();//拾取随机武器
+            weaponManager.EquipRandomWeapon();//拾取随机武器
             Destroy(other.gameObject); // 销毁奖励物体
         }
     }

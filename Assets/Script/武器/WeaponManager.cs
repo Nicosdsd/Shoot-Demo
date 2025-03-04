@@ -42,7 +42,7 @@ public class WeaponManager : MonoBehaviour
             weaponText.text = player.currentWeapon.weaponName;
         }
     }
-
+    
     //武器耗尽
     public void WeaponOut()
     {
@@ -63,6 +63,15 @@ public class WeaponManager : MonoBehaviour
     {
         player.canFire = true;
     }
+
+    public void SelectWeapon(Weapon selectWeapon)
+    {
+        Destroy(player.currentWeapon.gameObject); 
+        Weapon newWeapon =  Instantiate(selectWeapon, player.weaponPos);
+        player.currentWeapon = newWeapon;
+
+    }
+    
     
     //子弹耗尽切换为默认武器
     public void SwithDefaultWeapon()

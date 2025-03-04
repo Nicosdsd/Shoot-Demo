@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class EnemyControl : MonoBehaviour
 {
@@ -22,9 +23,12 @@ public class EnemyControl : MonoBehaviour
     public float blinkTime = 0.2f;
     public Material blinkMat;
     private Material defaultMat;
+    private SpawnerManager spawnerManager;
+    
     void Start()
     {
         player = FindAnyObjectByType<PlayerControl>();
+        spawnerManager = FindObjectOfType<SpawnerManager>();
 
         // 初始化血量
         health = maxHealth;
@@ -91,9 +95,11 @@ public class EnemyControl : MonoBehaviour
             // 销毁粒子对象自身
             Destroy(particle, 2f); // 2秒后销毁实例
         }
-
-        Instantiate(expPrefab, transform.position, Quaternion.identity);//实例化经验
+        
+        Vector3 expPos = new Vector3(transform.position.x, transform.position.y-0.3f, transform.position.z);
+        Instantiate(expPrefab, expPos, Quaternion.identity);//实例化经验
         Destroy(gameObject); // 销毁敌人对象本身
+        
     }
 
     private void OnCollisionEnter(Collision other)
@@ -123,5 +129,18 @@ public class EnemyControl : MonoBehaviour
             }
         }
     }
+
+    /*public void GiftReward()
+    {
+        foreach (var weaponGift in spawnerManager.weaponGifts)
+        {
+            // 使用随机数决定是否掉落物品
+            if (Random.value < weaponGift.dropChance) // Random.value 返回 [0, 1) 的随机浮点数
+            {
+                Instantiate(weaponGift.itemPrefab, transform.position, Quaternion.identity); // 在敌人当前位置生成掉落物品
+                break; // 掉落一个物品后退出，防止掉落多个
+            }
+        }
+    }*/
 
 }

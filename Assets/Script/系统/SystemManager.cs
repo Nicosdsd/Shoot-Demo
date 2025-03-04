@@ -18,7 +18,6 @@ public class SystemManager : MonoBehaviour
     /// </summary>
     public void StartScene()
     {
-        gameStart.SetActive(false);
         Time.timeScale = 1;
     }
 

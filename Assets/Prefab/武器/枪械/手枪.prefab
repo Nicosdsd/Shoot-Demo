@@ -19390,7 +19390,7 @@ GameObject:
   - component: {fileID: 8561290778286337905}
   m_Layer: 0
   m_Name: "\u624B\u67AA"
-  m_TagString: DefaultWeapon
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19503,6 +19503,7 @@ MonoBehaviour:
   fireRate: 0.3
   ammoMax: 6
   currentAmmo: 1
+  reloadTime: 1
   bulletPrefab: {fileID: 2928178143791889286, guid: caddb6528f6aab74ebd9bb08c9663d55, type: 3}
   bulletSpawnPoint: {fileID: 7140404688937279448}
   firePartices: {fileID: 3399235101800937669}

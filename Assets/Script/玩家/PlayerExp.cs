@@ -30,7 +30,7 @@ public class PlayerExp : MonoBehaviour
         currentExp += amount * (1 + player.levelUp);
         if (currentExp >= expToNextLevel)
         {
-            //LevelUp();
+            LevelUp();
         }
         UpdateUI();
     }
