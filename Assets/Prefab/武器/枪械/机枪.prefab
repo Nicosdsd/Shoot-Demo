@@ -19500,7 +19500,7 @@ MonoBehaviour:
   weaponName: "\u673A\u67AA"
   damage: 2
   speed: 50
-  fireRate: 0.1
+  fireRate: 0.15
   ammoMax: 20
   currentAmmo: 0
   reloadTime: 2

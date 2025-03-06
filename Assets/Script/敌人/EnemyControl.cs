@@ -20,15 +20,13 @@ public class EnemyControl : MonoBehaviour
     private PlayerControl player;//玩家控制器
     private Rigidbody rb;
     //受击闪白
-    public float blinkTime = 0.2f;
+    private float blinkTime = 0.2f;
     public Material blinkMat;
     private Material defaultMat;
-    private SpawnerManager spawnerManager;
     
     void Start()
     {
         player = FindAnyObjectByType<PlayerControl>();
-        spawnerManager = FindObjectOfType<SpawnerManager>();
 
         // 初始化血量
         health = maxHealth;
@@ -58,7 +56,7 @@ public class EnemyControl : MonoBehaviour
         //rb.AddForce(direction * speed, ForceMode.Acceleration);
         rb.linearVelocity = direction * speed;
         // 控制敌人朝向玩家（逐步旋转以平滑过渡，看起来更自然）
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        Quaternion targetRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z)); // 忽略 Y 轴变化
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         
         // 检查敌人是否死亡
