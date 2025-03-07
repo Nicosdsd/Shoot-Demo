@@ -6,23 +6,31 @@ using Random = UnityEngine.Random;
 
 public class EnemyControl : MonoBehaviour
 {
+    [Header("基础")]
     public float attack = 1;
     public float speed = 5;
     public float rotationSpeed = 5; // 控制旋转跟随速度
     public Vector2 attackForce;
-
     public float health;
     public float maxHealth = 2;
-
-    public GameObject deathParticlePrefab;
-
-    public GameObject expPrefab;
+    public GameObject[] dropItems; //掉落物
     private PlayerControl player;//玩家控制器
     private Rigidbody rb;
-    //受击闪白
+    
+    [Header("受击")]
     private float blinkTime = 0.2f;
     public Material blinkMat;
     private Material defaultMat;
+    public GameObject deathParticlePrefab;
+
+    [Header("发射物")] 
+    public bool canShoot;
+    public GameObject targetPrefab;      // 目标点
+    public GameObject bulletPrefab;  // 子弹的预制体
+    public float launchAngle = 45f; // 发射角度
+    public float shootInterval = 2;
+    public float destoryBullet = 1;
+
     
     void Start()
     {
@@ -43,7 +51,9 @@ public class EnemyControl : MonoBehaviour
         {
             rb.constraints = RigidbodyConstraints.FreezeRotation; // 防止不必要的旋转
         }
+        
     }
+    
 
     void FixedUpdate() // 推荐使用 FixedUpdate 因为牵涉到物理模拟
     {
@@ -93,11 +103,24 @@ public class EnemyControl : MonoBehaviour
             // 销毁粒子对象自身
             Destroy(particle, 2f); // 2秒后销毁实例
         }
-        
-        Vector3 expPos = new Vector3(transform.position.x, transform.position.y-0.3f, transform.position.z);
-        Instantiate(expPrefab, expPos, Quaternion.identity);//实例化经验
+
+        // 循环生成掉落物品
+        foreach (var item in dropItems)
+        {
+            if (item != null)
+            {
+                // 在敌人位置上生成掉落物品，稍微随机化一下位置，避免重叠
+                Vector3 randomOffset = new Vector3(
+                    Random.Range(-0.5f, 0.5f), 
+                    0, 
+                    Random.Range(-0.5f, 0.5f)
+                );
+
+                Instantiate(item, transform.position + randomOffset, Quaternion.identity);
+            }
+        }
+
         Destroy(gameObject); // 销毁敌人对象本身
-        
     }
 
     private void OnCollisionEnter(Collision other)
@@ -127,6 +150,55 @@ public class EnemyControl : MonoBehaviour
             }
         }
     }
+    
+    public IEnumerator ShootingRoutine()
+    {
+        // 开始射击状态
+        canShoot = true;
+
+        while (canShoot)
+        {
+            Shooting(); // 执行射击逻辑
+            yield return new WaitForSeconds(shootInterval); // 每隔 shootInterval 秒进行一次射击
+        }
+    }
+    
+    public void Shooting()
+    {
+        // 实例化子弹目标点
+        Vector3 targetPos = player.transform.position;
+        targetPos.y = 0;
+        GameObject targetInstance = Instantiate(targetPrefab, targetPos, Quaternion.identity);
+
+        // 实例化子弹
+        GameObject bulletInstance = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        Rigidbody bulletRigidbody = bulletInstance.GetComponent<Rigidbody>();
+
+        // 计算发射所需的速度
+        Vector3 direction = targetInstance.transform.position - transform.position;
+        float h = direction.y;              // 高度差
+        direction.y = 0;                    // 水平方向距离
+        float distance = direction.magnitude; // 水平方向长度
+        float angleRad = Mathf.Deg2Rad * launchAngle;
+
+        // 计算初速度
+        float velocity = Mathf.Sqrt(distance * -Physics.gravity.y / Mathf.Sin(2 * angleRad));
+
+        // 计算速度分量
+        Vector3 velocityVector = direction.normalized * velocity * Mathf.Cos(angleRad);
+        velocityVector.y = velocity * Mathf.Sin(angleRad);
+
+        // Debug 输出查看速度向量
+        Debug.Log($"Calculated Velocity: {velocityVector}");
+
+        // 应用初速度
+        bulletRigidbody.linearVelocity = velocityVector;
+
+        // 销毁临时对象
+        Destroy(targetInstance, destoryBullet);
+        Destroy(bulletInstance, destoryBullet);
+    }
+    
 
     /*public void GiftReward()
     {

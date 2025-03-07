@@ -128,8 +128,13 @@ public class PlayerControl : MonoBehaviour
     //瞄准
     private void FireAim()
     {
-        // 计算目标方向
-        fireDirection = (currentTarget.position - currentWeapon.bulletSpawnPoint.position).normalized;
+        // 计算目标方向，并忽略Y轴上的变化
+        Vector3 adjustedDirection = currentTarget.position - currentWeapon.bulletSpawnPoint.position;
+        adjustedDirection.y = 0; // 忽略Y轴的旋转
+
+        // 归一化方向向量
+        fireDirection = adjustedDirection.normalized;
+
         Quaternion targetRotation = Quaternion.LookRotation(fireDirection);
 
         // 计算当前角色旋转与目标方向之间的角度差
@@ -137,12 +142,18 @@ public class PlayerControl : MonoBehaviour
 
         // 平滑插值使角色逐渐旋转到目标方向
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-        aimIconPrefab?.gameObject.SetActive(true); // 启用准星图标
-        // 获取当前准星的Y轴位置
-        float aimIconY = aimIconPrefab.position.y;
-        // 更新准星的位置，使其X和Z指向敌人，而Y保持不变
-        aimIconPrefab.position = new Vector3(currentTarget.position.x, aimIconY, currentTarget.position.z);
-        
+    
+        if (aimIconPrefab != null)
+        {
+            aimIconPrefab.gameObject.SetActive(true); // 启用准星图标
+
+            // 获取当前准星的Y轴位置
+            float aimIconY = aimIconPrefab.position.y;
+
+            // 更新准星的位置，使其X和Z指向敌人，而Y保持不变
+            aimIconPrefab.position = new Vector3(currentTarget.position.x, aimIconY, currentTarget.position.z);
+        }
+    
         // 当角度差小于设定的阈值，并且可以射击时，才允许开火
         if (angleDifference < minAimAngleThreshold && canFire)
         {
@@ -153,12 +164,10 @@ public class PlayerControl : MonoBehaviour
         }
     }
     
-    
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.CompareTag("Weapon")) // 判断是否碰撞到“WeaponGift”
+        if (other.gameObject.CompareTag("Gift")) 
         {
-            weaponManager.EquipRandomWeapon();//拾取随机武器
             Destroy(other.gameObject); // 销毁奖励物体
         }
     }

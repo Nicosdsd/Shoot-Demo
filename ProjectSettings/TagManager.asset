@@ -9,10 +9,10 @@ TagManager:
   - FX
   - World
   - Target
-  - WeaponGift
   - DefaultWeapon
   - Weapon
   - ExpArea
+  - Gift
   layers:
   - Default
   - TransparentFX
@@ -22,8 +22,8 @@ TagManager:
   - UI
   - Enemy
   - Explode
-  - WeaponGift
   - 
+  - "\u654C\u4EBA\u5B50\u5F39"
   - 
   - 
   - 

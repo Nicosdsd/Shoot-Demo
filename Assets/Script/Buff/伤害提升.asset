@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: beddaaf52ed255e42b1a66c943712bc5, type: 3}
-  m_Name: DamageUp
+  m_Name: "\u4F24\u5BB3\u63D0\u5347"
   m_EditorClassIdentifier: 
   buffName: "\u6B66\u5668\u4F24\u5BB3\u63D0\u5347"
-  damageUp: 1
+  damageUp: 1.1
   fireRateUp: 0
   ammoCapacityUp: 0
   levelUp: 0

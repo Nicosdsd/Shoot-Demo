@@ -11,10 +11,10 @@ public class BuffData : ScriptableObject
 
     public void ApplyToPlayer(PlayerControl player)
     {
-        player.damageUp += damageUp;
-        player.fireRateUp += fireRateUp;
-        player.ammoCapacityUp += ammoCapacityUp;
-        player.levelUp += levelUp;
+        player.damageUp *= damageUp;
+        player.fireRateUp *= fireRateUp;
+        player.ammoCapacityUp *= ammoCapacityUp;
+        player.levelUp *= levelUp;
     }
     
 

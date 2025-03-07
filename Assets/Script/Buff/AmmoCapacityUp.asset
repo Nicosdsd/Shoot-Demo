@@ -15,5 +15,5 @@ MonoBehaviour:
   buffName: "\u5B50\u5F39\u5BB9\u91CF\u63D0\u53475%"
   damageUp: 0
   fireRateUp: 0
-  ammoCapacityUp: 0.05
+  ammoCapacityUp: 1.1
   levelUp: 0
