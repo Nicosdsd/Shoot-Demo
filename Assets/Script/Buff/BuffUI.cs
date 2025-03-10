@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-
+//Buff UI单元素
 public class BuffUI : MonoBehaviour
 {
     public BuffData buffData;
@@ -13,12 +13,12 @@ public class BuffUI : MonoBehaviour
         player = FindAnyObjectByType<PlayerControl>();
     }
 
+    //执行bufff
     public void SelectBuff()
     {
         buffData.ApplyToPlayer(player);
         transform.parent.gameObject.SetActive(false);
         buffManu.SetActive(false);
-        Time.timeScale = 1;
         Instantiate(bombPrefab, player.transform.position, Quaternion.identity);
     }
 }

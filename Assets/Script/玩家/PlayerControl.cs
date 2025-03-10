@@ -34,10 +34,11 @@ public class PlayerControl : MonoBehaviour
     private float healthMax ; //初始生命
     public float moveSpeed = 5f; // 移动速度
     public float rotationSpeed = 720f; // 旋转速度
-    public float levelUp; // 经验获取效率
-    public float damageUp; // 伤害提升
-    public float fireRateUp; // 射速提升
-    public float ammoCapacityUp; // 弹药容量提升
+    public float levelGet = 1; // 经验获取效率系数
+    public float damage = 1; // 伤害系数
+    public float fireRate = 1; // 射速系数
+    public float ammoCapacity = 1; // 弹药容量系数
+    public float ammoReloading = 1; // 上弹速度系数
 
     [Header("射击")] 
     public bool canFire = true;
@@ -51,6 +52,7 @@ public class PlayerControl : MonoBehaviour
     private Vector3 fireDirection; //瞄准方向
     public float autoAimRadius = 20; //锁定范围
     float minAimAngleThreshold = 5f; //瞄准允许射击角度
+    public GameObject expArea;
     public Slider reloadAmmoUI; //
 
     void Start()

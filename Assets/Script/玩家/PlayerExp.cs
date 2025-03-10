@@ -27,7 +27,7 @@ public class PlayerExp : MonoBehaviour
 
     public void GainExperience(float amount)
     {
-        currentExp += amount * (1 + player.levelUp);
+        currentExp += amount * player.levelGet;
         if (currentExp >= expToNextLevel)
         {
             LevelUp();
@@ -49,7 +49,6 @@ public class PlayerExp : MonoBehaviour
         expToNextLevel *= expGrowthRate;
         UpdateUI();
         buffManu.SetActive(true);
-        Time.timeScale = 0;
     }
 
     private void UpdateUI()

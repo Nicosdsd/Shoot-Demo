@@ -84,7 +84,7 @@ public class WeaponManager : MonoBehaviour
     //武器ui显示
     void UpdateUI()
     {
-        bulletLimit.value = player.currentWeapon.currentAmmo * (1 + player.ammoCapacityUp) / player.currentWeapon.ammoMax; // 更新UI进度条
+        bulletLimit.value = player.currentWeapon.currentAmmo  / player.currentWeapon.ammoMax; // 更新UI进度条
         weaponText.text = "" + player.currentWeapon.weaponName;
     }
     

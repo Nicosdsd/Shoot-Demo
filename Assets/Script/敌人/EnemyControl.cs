@@ -187,10 +187,7 @@ public class EnemyControl : MonoBehaviour
         // 计算速度分量
         Vector3 velocityVector = direction.normalized * velocity * Mathf.Cos(angleRad);
         velocityVector.y = velocity * Mathf.Sin(angleRad);
-
-        // Debug 输出查看速度向量
-        Debug.Log($"Calculated Velocity: {velocityVector}");
-
+        
         // 应用初速度
         bulletRigidbody.linearVelocity = velocityVector;
 

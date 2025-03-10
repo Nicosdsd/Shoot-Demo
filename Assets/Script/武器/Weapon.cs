@@ -42,7 +42,7 @@ public class Weapon : MonoBehaviour
                 isReloading = false;
             }
         
-            player.reloadAmmoUI.value = 1 - reloadCooldownTimer/reloadTime + 0.1f;  //换弹进度条
+            player.reloadAmmoUI.value = 1 - reloadCooldownTimer/(reloadTime/player.ammoReloading) + 0.1f;  //换弹进度条
         }
     }
 
@@ -58,16 +58,16 @@ public class Weapon : MonoBehaviour
         // 子弹耗光换回默认武器
         if (currentAmmo == 0)
         {
-            Invoke("ReloadAmmo", reloadTime);
+            Invoke("ReloadAmmo", (reloadTime/player.ammoReloading));
             player.canFire = false;
             player.reloadAmmoUI.gameObject.SetActive(true);
             isReloading = true; // 开始换弹
-            reloadCooldownTimer = reloadTime; // 重置换弹CD计时器
+            reloadCooldownTimer = (reloadTime/player.ammoReloading); // 重置换弹CD计时器
         }
     
         if (Time.time >= nextFireTime)
         {
-            nextFireTime = Time.time + fireRate * (1 - player.fireRateUp); // 根据当前武器的射速调整开火时间
+            nextFireTime = Time.time + fireRate / player.fireRate; // 根据当前武器的射速调整开火时间
 
             // 播放发射特效
             firePartices?.Play();
@@ -103,4 +103,5 @@ public class Weapon : MonoBehaviour
         player.canFire = true;
         player.reloadAmmoUI.gameObject.SetActive(false);
     }
+    
 }

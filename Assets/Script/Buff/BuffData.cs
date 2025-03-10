@@ -4,17 +4,21 @@ using UnityEngine;
 public class BuffData : ScriptableObject
 {
     public string buffName;
-    public float damageUp;
-    public float fireRateUp;
-    public float ammoCapacityUp;
-    public float levelUp;
+    public float damageUp = 1;
+    public float fireRateUp = 1;
+    public float ammoCapacityUp = 1;
+    public float levelUp = 1;
+    public float ammoReloadingUp = 1;
+    public float expAreaUp = 1;
 
     public void ApplyToPlayer(PlayerControl player)
     {
-        player.damageUp *= damageUp;
-        player.fireRateUp *= fireRateUp;
-        player.ammoCapacityUp *= ammoCapacityUp;
-        player.levelUp *= levelUp;
+        player.damage *= damageUp;
+        player.fireRate *= fireRateUp;
+        player.ammoCapacity *= ammoCapacityUp;
+        player.levelGet *= levelUp;
+        player.ammoReloading *= ammoReloadingUp;
+        player.expArea.transform.localScale *= expAreaUp;
     }
     
 

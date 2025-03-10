@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class BuffManager : MonoBehaviour
 {
@@ -8,19 +10,27 @@ public class BuffManager : MonoBehaviour
     public GameObject buffManu;
     public GameObject bombPrefab; //核弹清屏
     private PlayerControl player;
-    private bool buffsAssigned;
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
     void Awake()
     {
         AssignBuffDataToChildren();
         player = FindAnyObjectByType<PlayerControl>();
     }
 
+    private void OnEnable()
+    {
+        AssignBuffDataToChildren();
+        Time.timeScale = 0;
+    }
+    private void OnDisable()
+    {
+        Time.timeScale = 1;
+    }
+
     //洗牌算法
     private void AssignBuffDataToChildren()
     {
-        if (buffDatas.Length == 0 || buffsAssigned) return;
+        if (buffDatas.Length == 0 ) return;
         
         for (int i = 0; i < buffDatas.Length; i++)
         {
@@ -39,8 +49,7 @@ public class BuffManager : MonoBehaviour
             child.GetComponent<BuffUI>().buffData = buff; 
             index++;
         }
-
-        buffsAssigned = true;
+        
     }
     
 }
