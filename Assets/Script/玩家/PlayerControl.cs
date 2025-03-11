@@ -33,7 +33,7 @@ public class PlayerControl : MonoBehaviour
     public float health = 5; // 生命值
     private float healthMax ; //初始生命
     public float moveSpeed = 5f; // 移动速度
-    public float rotationSpeed = 720f; // 旋转速度
+    public float rotationSpeed = 10f; // 旋转速度
     public float levelGet = 1; // 经验获取效率系数
     public float damage = 1; // 伤害系数
     public float fireRate = 1; // 射速系数

@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PiercingBullet : MonoBehaviour
 {
+    public float damage = 2;
     public float destroyAfter = 2f;
     public float knockbackForce = 10f;
     public GameObject hitEffectPrefab; // 命中粒子效果的预制体
@@ -38,7 +39,7 @@ public class PiercingBullet : MonoBehaviour
                 EnemyControl enemyControl = other.GetComponent<EnemyControl>();
                 if (enemyControl != null)
                 {
-                    enemyControl.Hit(defaultWeapon.damage);
+                    enemyControl.Hit(damage);
                 }
 
                 /*// 子弹溅射效果

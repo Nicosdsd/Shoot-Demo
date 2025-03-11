@@ -10,6 +10,10 @@ public class BuffData : ScriptableObject
     public float levelUp = 1;
     public float ammoReloadingUp = 1;
     public float expAreaUp = 1;
+    
+    // 机制类Buff:原地生成
+    public GameObject layingEggs; // 原地生成物体
+    public bool canLayingEggs; 
 
     public void ApplyToPlayer(PlayerControl player)
     {
@@ -19,6 +23,12 @@ public class BuffData : ScriptableObject
         player.levelGet *= levelUp;
         player.ammoReloading *= ammoReloadingUp;
         player.expArea.transform.localScale *= expAreaUp;
+        
+        // 应用机制型Buff逻辑
+        if (canLayingEggs && layingEggs != null)
+        {
+            Instantiate(layingEggs, player.transform.position, Quaternion.identity);
+        }
     }
     
 

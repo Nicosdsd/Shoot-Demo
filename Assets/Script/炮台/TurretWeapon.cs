@@ -1,13 +1,13 @@
 using UnityEngine;
-//武器发射相关
-public class Weapon : MonoBehaviour
+using UnityEngine.UI;
+
+public class TurretWeapon : MonoBehaviour
 {
-    [Header("武器管理")]
-    public string weaponName;          // 武器名称
-    public float damage;               // 武器伤害
+   [Header("武器管理")]
+    //public float damage = 1;               // 武器伤害
     public float speed = 50;            // 子弹速度
-    public float fireRate;             // 射速（每秒射击次数）
-    public float ammoMax ;           // 弹药容量
+    public float fireRate = 0.2f;             // 射速（每秒射击次数）
+    public float ammoMax  = 50;           // 弹药容量
     public float currentAmmo ; // 当前武器剩余子弹数量
     public float reloadTime = 1; //上弹时间
     
@@ -17,14 +17,14 @@ public class Weapon : MonoBehaviour
     public ParticleSystem firePartices; //发射特效
     public GameObject shellPartices; //弹壳特效
     private float nextFireTime;
-    private PlayerControl player;
+    public Slider reloadAmmoUI; //换弹UI
+
     
     private bool isReloading; // 用于跟踪是否正在换弹
     private float reloadCooldownTimer; // 用于计时的变量
     
     void Awake()
     {
-        player = FindObjectOfType<PlayerControl>();
         currentAmmo = ammoMax;
     }
 
@@ -40,7 +40,7 @@ public class Weapon : MonoBehaviour
                 isReloading = false;
             }
         
-            player.reloadAmmoUI.value = 1 - reloadCooldownTimer/(reloadTime/player.ammoReloading) + 0.1f;  //换弹进度条
+            reloadAmmoUI.value = 1 - reloadCooldownTimer/reloadTime + 0.1f;  //换弹进度条
         }
     }
 
@@ -56,16 +56,15 @@ public class Weapon : MonoBehaviour
         // 子弹耗光换回默认武器
         if (currentAmmo == 0)
         {
-            Invoke("ReloadAmmo", (reloadTime/player.ammoReloading));
-            player.canFire = false;
-            player.reloadAmmoUI.gameObject.SetActive(true);
+            Invoke("ReloadAmmo", reloadTime);
+            reloadAmmoUI.gameObject.SetActive(true);
             isReloading = true; // 开始换弹
-            reloadCooldownTimer = (reloadTime/player.ammoReloading); // 重置换弹CD计时器
+            reloadCooldownTimer = reloadTime; // 重置换弹CD计时器
         }
     
         if (Time.time >= nextFireTime)
         {
-            nextFireTime = Time.time + fireRate / player.fireRate; // 根据当前武器的射速调整开火时间
+            nextFireTime = Time.time + fireRate; // 根据当前武器的射速调整开火时间
 
             // 播放发射特效
             firePartices?.Play();
@@ -86,20 +85,13 @@ public class Weapon : MonoBehaviour
 
             currentAmmo--;
         
-            /*// 减少当前弹药数量（默认武器不消耗子弹）
-            if (player.currentWeapon.tag != "DefaultWeapon")
-            {
-                currentAmmo--;
-            }*/
-        
         }
     }
 
     void ReloadAmmo()
     {
         currentAmmo = ammoMax;
-        player.canFire = true;
-        player.reloadAmmoUI.gameObject.SetActive(false);
+        reloadAmmoUI.gameObject.SetActive(false);
     }
     
 }

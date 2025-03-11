@@ -4,6 +4,7 @@ using UnityEngine;
 // 子弹控制
 public class BulletBase : MonoBehaviour
 {
+    public float damage = 1;
     public float destroyAfter = 5f;
     public float knockbackForce = 10f;
     public GameObject hitEffectPrefab; // 命中粒子效果的预制体
@@ -12,9 +13,10 @@ public class BulletBase : MonoBehaviour
     PlayerControl player; 
     void Start()
     {
-        AudioManager.Instance.PlaySound("普通子弹");
+        //AudioManager.Instance.PlaySound("普通子弹");
         Destroy(gameObject, destroyAfter);
-        player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();
+        player = FindObjectOfType<PlayerControl>();
+       
 
         defaultWeapon = player.currentWeapon;
     }
@@ -26,7 +28,7 @@ public class BulletBase : MonoBehaviour
         {
             Rigidbody enemyRigidbody = other.GetComponent<Rigidbody>();
 
-            if (enemyRigidbody != null)
+            if (enemyRigidbody != null&& player!=null)
             {
                 Vector3 knockbackDirection = (transform.position - player.transform.position).normalized;
                 knockbackDirection.y = 0;
@@ -38,7 +40,7 @@ public class BulletBase : MonoBehaviour
                 EnemyControl enemyControl = other.GetComponent<EnemyControl>();
                 if (enemyControl != null)
                 {
-                    enemyControl.Hit(defaultWeapon.damage);
+                    enemyControl.Hit(damage);
                 }
 
                 // 子弹溅射效果
