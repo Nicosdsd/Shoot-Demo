@@ -120,6 +120,7 @@ public class EnemyControl : MonoBehaviour
             }
         }
 
+        AudioManager.Instance.PlaySound("敌人击碎",transform.position);
         Destroy(gameObject); // 销毁敌人对象本身
     }
 

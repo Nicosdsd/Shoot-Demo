@@ -22,10 +22,13 @@ public class TurretWeapon : MonoBehaviour
     
     private bool isReloading; // 用于跟踪是否正在换弹
     private float reloadCooldownTimer; // 用于计时的变量
+    private AudioManager audioManagers;
+    
     
     void Awake()
     {
         currentAmmo = ammoMax;
+        audioManagers = FindObjectOfType<AudioManager>();
     }
 
     void Update()
@@ -84,7 +87,9 @@ public class TurretWeapon : MonoBehaviour
             Destroy(shellInstance, 0.5f);
 
             currentAmmo--;
-        
+          
+            AudioManager.Instance.PlaySound("普通子弹",transform.position);
+            AudioManager.Instance.SetVolume("普通子弹", 0.3f);
         }
     }
 

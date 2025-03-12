@@ -12,7 +12,7 @@ public class PiercingBullet : MonoBehaviour
     PlayerControl player; 
     void Start()
     {
-        AudioManager.Instance.PlaySound("普通子弹");
+        AudioManager.Instance.PlaySound("普通子弹",transform.position);
         
         Destroy(gameObject, destroyAfter);
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControl>();

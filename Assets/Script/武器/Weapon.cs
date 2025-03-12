@@ -86,6 +86,7 @@ public class Weapon : MonoBehaviour
 
             currentAmmo--;
         
+            AudioManager.Instance.PlaySound("普通子弹",transform.position);
             /*// 减少当前弹药数量（默认武器不消耗子弹）
             if (player.currentWeapon.tag != "DefaultWeapon")
             {

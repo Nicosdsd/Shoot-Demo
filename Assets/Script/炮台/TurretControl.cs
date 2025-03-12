@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -10,14 +11,20 @@ public class TurretControl : MonoBehaviour
     private Vector3 fireDirection; // 瞄准方向
     public float rotationSpeed = 10f; // 旋转速度
     public TurretWeapon currentWeapon; // 当前装备武器（假设有一个Weapon类处理射击）
-    private float lastShotTime; 
-    
-    
+    private float lastShotTime;
+
+
+    private void Start()
+    {
+        
+       
+    }
 
     void Update()
     {
         // 索敌
         currentTarget = FindClosestTarget(autoAimRadius);
+        
         
     }
     
@@ -53,6 +60,7 @@ public class TurretControl : MonoBehaviour
         {
             //开火
             currentWeapon.Fire(fireDirection);
+           
         }
     }
 

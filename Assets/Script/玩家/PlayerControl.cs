@@ -214,7 +214,7 @@ public class PlayerControl : MonoBehaviour
             playerAni?.SetTrigger("Hit");
             camAnim?.SetTrigger("CameraShakeTrigger");
             HitEffect.SetActive(true);
-            AudioManager.Instance.PlaySound("主角受伤");
+            AudioManager.Instance.PlaySound("主角受伤",transform.position);
             GetComponent<Renderer>().material = blinkMat;
         }
 

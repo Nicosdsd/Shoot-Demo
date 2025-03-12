@@ -4,13 +4,31 @@ using System.Collections.Generic;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
-    
-    private Dictionary<string, AudioClip> audioClips;
-    private AudioSource audioSource;
 
-    void Awake()
+    [System.Serializable]
+    public class Sound
     {
-        // 确保只有一个实例存在
+        public string name;                // 音效名称
+        public AudioClip clip;             // 音效资源
+        [Range(0f, 1f)]
+        public float volume = 1f;          // 默认音量
+        [Range(0f, 10f)]
+        public float minInterval;     // 最小播放间隔（秒）
+        public bool enableSpatialSound ;   // 是否开启立体声效果
+        public float maxDistance = 50f;    // 声音最大可听距离（仅在立体声模式下生效）
+        public float minDistance = 1f;     // 声音不衰减的最小距离（仅在立体声模式下生效）
+
+        [HideInInspector]
+        public float lastPlayedTime = -Mathf.Infinity; // 上次播放时间
+    }
+
+    public Sound[] sounds;
+
+    private Dictionary<string, Sound> soundDictionary;
+
+    private void Awake()
+    {
+        // Implement Singleton pattern
         if (Instance == null)
         {
             Instance = this;
@@ -22,47 +40,87 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        audioSource = gameObject.AddComponent<AudioSource>();
-
-        // 初始化音频剪辑字典
-        audioClips = new Dictionary<string, AudioClip>();
-
-        // 加载音效资源
-        LoadAudioClips();
-    }
-
-    // 加载音效资源
-    private void LoadAudioClips()
-    {
-        AudioClip[] clips = Resources.LoadAll<AudioClip>("Audio"); // 假设你的音效文件存放在Resources/Audio文件夹中
-        foreach (var clip in clips)
+        soundDictionary = new Dictionary<string, Sound>();
+        foreach (Sound sound in sounds)
         {
-            audioClips[clip.name] = clip;
+            soundDictionary[sound.name] = sound;
         }
     }
 
-    // 播放音效
-    public void PlaySound(string clipName)
+    /// <summary>
+    /// 在指定的位置播放音效 （支持开启/关闭立体声效果）
+    /// </summary>
+    /// <param name="name">音效名称</param>
+    /// <param name="position">世界坐标位置（仅在立体声模式下生效）</param>
+    public void PlaySound(string name, Vector3 position)
     {
-        if (audioClips.ContainsKey(clipName))
+        if (soundDictionary.TryGetValue(name, out Sound sound))
         {
-            audioSource.PlayOneShot(audioClips[clipName]);
+            float currentTime = Time.time;
+
+            // 检查是否满足最小播放间隔
+            if (currentTime - sound.lastPlayedTime >= sound.minInterval)
+            {
+                // 创建一个临时AudioSource用于播放音效
+                GameObject tempAudioSourceObj = new GameObject("TempAudioSource_" + name);
+                tempAudioSourceObj.transform.position = position;
+
+                AudioSource audioSource = tempAudioSourceObj.AddComponent<AudioSource>();
+                audioSource.clip = sound.clip;
+                audioSource.volume = sound.volume;
+
+                if (sound.enableSpatialSound)
+                {
+                    // 配置3D音效参数以开启立体声效果
+                    audioSource.spatialBlend = 1f;                          // 完全使用3D音效
+                    audioSource.minDistance = sound.minDistance;           // 最大音量的最小距离
+                    audioSource.maxDistance = sound.maxDistance;           // 音效完全听不到的最大距离
+                    audioSource.rolloffMode = AudioRolloffMode.Linear;     // 设置为线性衰减（也可以选择其他模式）
+                }
+                else
+                {
+                    // 关闭立体声效果，使用2D音效
+                    audioSource.spatialBlend = 0f;                          // 完全使用2D音效
+                }
+
+                audioSource.Play();
+                Destroy(tempAudioSourceObj, sound.clip.length);           // 播放结束销毁对象
+
+                sound.lastPlayedTime = currentTime;                       // 更新上次播放时间
+            }
+            else
+            {
+                Debug.Log($"Sound '{name}' skipped due to min interval.");
+            }
         }
         else
         {
-            Debug.LogWarning("音效未找到: " + clipName);
+            Debug.LogWarning("Sound not found: " + name);
         }
     }
 
-    // 停止当前播放的音效
-    public void StopSound()
+    public void SetVolume(string name, float volume)
     {
-        audioSource.Stop();
+        if (soundDictionary.TryGetValue(name, out Sound sound))
+        {
+            sound.volume = Mathf.Clamp01(volume);
+        }
+        else
+        {
+            Debug.LogWarning("Sound not found: " + name);
+        }
     }
 
-    // 设置音量
-    public void SetVolume(float volume)
+    public void ToggleSpatialSound(string name, bool enable)
     {
-        audioSource.volume = Mathf.Clamp01(volume); // 确保音量在0到1之间
+        if (soundDictionary.TryGetValue(name, out Sound sound))
+        {
+            sound.enableSpatialSound = enable;
+            Debug.Log($"Sound '{name}' spatial sound set to: {enable}");
+        }
+        else
+        {
+            Debug.LogWarning("Sound not found: " + name);
+        }
     }
 }
