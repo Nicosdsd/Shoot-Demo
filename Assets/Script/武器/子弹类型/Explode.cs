@@ -11,7 +11,7 @@ public class Explode : MonoBehaviour
         Destroy(gameObject, destroyTime);
     }
 
-    private void OnTriggerStay(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         // 检查是否是敌人
         if (other.CompareTag("Enemy"))

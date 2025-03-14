@@ -22,6 +22,7 @@ public class EnemyControl : MonoBehaviour
     public Material blinkMat;
     private Material defaultMat;
     public GameObject deathParticlePrefab;
+    public GameObject[] destroyItems; //死亡销毁
 
     [Header("发射物")] 
     public bool canShoot;
@@ -117,6 +118,14 @@ public class EnemyControl : MonoBehaviour
                 );
 
                 Instantiate(item, transform.position + randomOffset, Quaternion.identity);
+            }
+        }
+
+        foreach (GameObject destroyItem in destroyItems)
+        {
+            if (destroyItems.Length != 0)
+            {
+                Destroy(destroyItem);
             }
         }
 

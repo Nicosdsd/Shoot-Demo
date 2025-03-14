@@ -139,6 +139,7 @@ MonoBehaviour:
   - {fileID: 1594516158341045276, guid: 02b35d6a2a175514c976fac25faefdfc, type: 3}
   blinkMat: {fileID: 2100000, guid: 8bb48878ff60d864b9b0e6f58d8673d5, type: 2}
   deathParticlePrefab: {fileID: 204989309917258822, guid: 68c82fd7442c0a94e9840f222f2c45f1, type: 3}
+  destroyItems: []
   canShoot: 0
   targetPrefab: {fileID: 7770083783960014453, guid: ff304eab29070cc40850dccb11320c3a, type: 3}
   bulletPrefab: {fileID: 6794607939406559962, guid: 1cc4bb58e1be8314b92c045d4addf214, type: 3}
@@ -196,7 +197,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.35146728, y: 0.6135721, z: -0.6135721, w: 0.35146728}
   m_LocalPosition: {x: 0, y: -0.43, z: 0}
-  m_LocalScale: {x: 6.5194664, y: 6.5194674, z: 6.5194674}
+  m_LocalScale: {x: 3.6382535, y: 3.638254, z: 3.638254}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5139805019354649044}
@@ -208,7 +209,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4934162720040719731}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -245,8 +246,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 687cb3453a84d4dbd851dd89a32cda81, type: 3}
-  m_Color: {r: 1, g: 0.42747328, b: 0.2688679, a: 0.16470589}
+  m_Sprite: {fileID: 21300000, guid: 5c1a3aef9e1f2604999f9f6de4e31952, type: 3}
+  m_Color: {r: 0.27058828, g: 0.9728325, b: 1, a: 0.2627451}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -275,7 +276,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.9
+  m_Radius: 2.01
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &350786361344428284
 Rigidbody:

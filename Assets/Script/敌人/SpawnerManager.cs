@@ -25,6 +25,11 @@ public class SpawnerManager : MonoBehaviour
     [Header("阶段设置")]
     public SpawnStage[] spawnStages;
 
+    [Header("Boss 设置")]
+    public GameObject[] bossPrefabs; // Boss 预制体数组
+    public float bossSpawnInterval = 300f; // Boss 生成间隔时间（秒）
+    public Vector3 bossSpawnOffset = new Vector3(0, 5, 0); // Boss 生成相对于主角的偏移量
+
     [Header("生成区域设置")]
     public Vector3 enemySpawnAreaDimensions;
     public Vector3 enemySpawnAreaOffset;
@@ -33,7 +38,14 @@ public class SpawnerManager : MonoBehaviour
 
     [Header("生成限制")]
     public Transform enemyParent; // 用于存放所有生成敌人的父物体
-    public int maxEnemies = 0;     // 最大敌人总数限制
+    public int maxEnemies ;     // 最大敌人总数限制
+    
+    [Header("UI 设置")]
+    public Text timerText; // 用于显示时间
+    public GameObject stageStartUI; // 用于显示阶段开始信息的UI物体
+    public Text stageStartText;     // 阶段开始信息的文本组件
+    private bool isFirstStage = true;
+
 
     private float gameStartTime;
     private SpawnStage currentStage;
@@ -42,15 +54,34 @@ public class SpawnerManager : MonoBehaviour
     {
         gameStartTime = Time.time;
         UpdateCurrentStage();
+
+        // 启动小怪生成逻辑
         if (maxEnemies > 0)
         {
             InvokeRepeating(nameof(SpawnEnemies), 0, currentStage.spawnInterval);
         }
+        
+
+        // 启动 Boss 生成逻辑
+        StartCoroutine(SpawnBosses());
     }
 
     private void Update()
     {
         UpdateCurrentStage();
+        UpdateTimer();
+    }
+    
+    //计时器
+    private void UpdateTimer()
+    {
+        float elapsedTime = Time.time - gameStartTime;
+        // 格式化时间为 "分钟:秒"
+        string formattedTime = string.Format("{0:D2}:{1:D2}", (int)(elapsedTime) / 60, (int)(elapsedTime) % 60);
+        if (timerText != null)
+        {
+            timerText.text = formattedTime;
+        }
     }
 
     private void UpdateCurrentStage()
@@ -73,18 +104,36 @@ public class SpawnerManager : MonoBehaviour
         {
             currentStage = nextStage;
             CancelInvoke(nameof(SpawnEnemies));
-            InvokeRepeating(nameof(SpawnEnemies), 0, currentStage.spawnInterval);
-            Debug.Log($"切换到阶段: {currentStage.stageName}");
+            if (maxEnemies > 0)
+            {
+                InvokeRepeating(nameof(SpawnEnemies), 0, currentStage.spawnInterval);
+            }
+            Debug.Log($"切换到阶段: {currentStage.stageName}" + currentStage);
+            
+            // 仅当不是第一波时才显示波次警告
+            if (!isFirstStage)
+            {
+                stageStartUI.SetActive(true);
+                stageStartText.text = currentStage.stageName;
+                Invoke("StageStartUI", 2f);
+            }
+
+            // 第一波完成后，标记为 false
+            isFirstStage = false;
         }
+    }
+    //持续几秒后隐藏
+    private void StageStartUI()
+    {
+        stageStartUI.SetActive(false);
     }
 
     private void SpawnEnemies()
     {
-        if (maxEnemies <= 0) return; // 如果没有数量限制，直接返回
+        if (maxEnemies <= 0) return;
 
-        // 计算可用的空位
         int availableSlots = maxEnemies - enemyParent.childCount;
-        if (availableSlots <= 0) return; // 超过最大数量，不再生成
+        if (availableSlots <= 0) return;
 
         int enemiesToSpawn = Mathf.Min(currentStage.spawnAmount, availableSlots);
 
@@ -99,9 +148,7 @@ public class SpawnerManager : MonoBehaviour
             GameObject selectedEnemy = GetRandomEnemyPrefabForCurrentStage();
             if (selectedEnemy != null)
             {
-                // 实例化敌人并将其设置为父物体的子对象
-                GameObject newEnemy = Instantiate(selectedEnemy, randomPosition, Quaternion.identity, enemyParent);
-                // 可选：设置敌人层级或其他初始化操作
+                Instantiate(selectedEnemy, randomPosition, Quaternion.identity, enemyParent);
             }
         }
     }
@@ -137,6 +184,43 @@ public class SpawnerManager : MonoBehaviour
         }
 
         return null;
+    }
+
+    private System.Collections.IEnumerator SpawnBosses()
+    {
+        while (true)
+        {
+            // 等待 Boss 生成间隔时间
+            yield return new WaitForSeconds(bossSpawnInterval);
+
+            // 检查是否有空位
+            if (maxEnemies > 0 && enemyParent.childCount < maxEnemies)
+            {
+                // 随机选择一个 Boss 预制体
+                if (bossPrefabs.Length > 0)
+                {
+                    GameObject bossPrefab = bossPrefabs[UnityEngine.Random.Range(0, bossPrefabs.Length)];
+
+                    // 获取随机位置
+                    Vector3 randomPosition = GetRandomPositionInEnemyArea();
+                    while (IsInsideExclusionZone(randomPosition))
+                    {
+                        randomPosition = GetRandomPositionInEnemyArea();
+                    }
+
+                    // 实例化 Boss
+                    GameObject BossObj = Instantiate(bossPrefab, randomPosition, Quaternion.identity, enemyParent);
+                    BossObj.transform.position = center.position + bossSpawnOffset;
+                    Debug.Log($"生成 Boss: {bossPrefab.name}");
+                    
+                    
+                    /*//波次警告
+                    stageStartUI.SetActive(true);
+                    stageStartText.text = "出现了Boss";
+                    Invoke("StageStartUI",2f);*/
+                }
+            }
+        }
     }
 
     private void OnDrawGizmosSelected()
