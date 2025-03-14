@@ -28,7 +28,7 @@ public class BulletBase : MonoBehaviour
         {
             Rigidbody enemyRigidbody = other.GetComponent<Rigidbody>();
 
-            if (enemyRigidbody != null&& player!=null)
+            if (enemyRigidbody != null && player!=null)
             {
                 Vector3 knockbackDirection = (transform.position - player.transform.position).normalized;
                 knockbackDirection.y = 0;
