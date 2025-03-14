@@ -18,6 +18,7 @@ public class Weapon : MonoBehaviour
     public GameObject shellPartices; //弹壳特效
     private float nextFireTime;
     private PlayerControl player;
+    public bool isAddWeapon;
     
     private bool isReloading; // 用于跟踪是否正在换弹
     private float reloadCooldownTimer; // 用于计时的变量
@@ -39,7 +40,12 @@ public class Weapon : MonoBehaviour
             {
                 isReloading = false;
             }
-        
+
+            if (isAddWeapon )//外置武器不要装弹UI
+            {
+                return;
+            }
+            
             player.reloadAmmoUI.value = 1 - reloadCooldownTimer/(reloadTime/player.ammoReloading) + 0.1f;  //换弹进度条
         }
     }
@@ -57,10 +63,16 @@ public class Weapon : MonoBehaviour
         if (currentAmmo == 0)
         {
             Invoke("ReloadAmmo", (reloadTime/player.ammoReloading));
-            player.canFire = false;
-            player.reloadAmmoUI.gameObject.SetActive(true);
             isReloading = true; // 开始换弹
             reloadCooldownTimer = (reloadTime/player.ammoReloading); // 重置换弹CD计时器
+            
+            if (isAddWeapon )//外置武器不要装弹UI
+            {
+                return;
+            }
+            
+            player.canFire = false;
+            player.reloadAmmoUI.gameObject.SetActive(true);
         }
     
         if (Time.time >= nextFireTime)
@@ -99,6 +111,12 @@ public class Weapon : MonoBehaviour
     void ReloadAmmo()
     {
         currentAmmo = ammoMax;
+        
+        if (isAddWeapon )//外置武器不要装弹UI
+        {
+            return;
+        }
+        
         player.canFire = true;
         player.reloadAmmoUI.gameObject.SetActive(false);
     }

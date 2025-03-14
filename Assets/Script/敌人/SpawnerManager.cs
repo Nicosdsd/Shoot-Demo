@@ -1,72 +1,122 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 public class SpawnerManager : MonoBehaviour
 {
-    [Header("普通敌人设置")]
-    public GameObject[] normalEnemyPrefabs;  // 普通敌人预制体数组
-    [Header("精英敌人设置")]
-    public GameObject[] eliteEnemyPrefabs;   // 精英敌人预制体数组
-    public float eliteSpawnDelay = 30f;      // 游戏开始后多少秒开始出现精英敌人
-    [Range(0, 1)] public float eliteSpawnChance = 0.2f; // 精英敌人生成概率
+    [Serializable]
+    public class SpawnStage
+    {
+        public string stageName;
+        public float startTime;
+        public float spawnInterval;
+        public int spawnAmount;
+        public EnemyType[] enemyTypes;
+    }
 
-    [Header("生成设置")]
-    public float spawnInterval = 3f;         // 敌人生成间隔
-    public int spawnAmount = 5;              // 每波生成数量
-    
+    [Serializable]
+    public class EnemyType
+    {
+        public string name;
+        public GameObject[] enemyPrefabs;
+        public float spawnChance;
+    }
+
+    [Header("阶段设置")]
+    public SpawnStage[] spawnStages;
+
     [Header("生成区域设置")]
-    public Vector3 enemySpawnAreaDimensions; // 生成区域尺寸
-    public Vector3 enemySpawnAreaOffset;     // 生成区域偏移位置
-    public Transform center;                 // 生成中心点
-    public float exclusionZoneRadius = 2f;   // 中心禁止生成区域半径
+    public Vector3 enemySpawnAreaDimensions;
+    public Vector3 enemySpawnAreaOffset;
+    public Transform center;
+    public float exclusionZoneRadius;
 
-    private float gameStartTime;             // 游戏开始时间记录
-    public Text timerText;
+    [Header("生成限制")]
+    public Transform enemyParent; // 用于存放所有生成敌人的父物体
+    public int maxEnemies = 0;     // 最大敌人总数限制
+
+    private float gameStartTime;
+    private SpawnStage currentStage;
 
     private void Start()
     {
         gameStartTime = Time.time;
-        InvokeRepeating(nameof(SpawnEnemies), 0, spawnInterval);
+        UpdateCurrentStage();
+        if (maxEnemies > 0)
+        {
+            InvokeRepeating(nameof(SpawnEnemies), 0, currentStage.spawnInterval);
+        }
     }
 
     private void Update()
     {
-        float elapsedTime = Time.time - gameStartTime;
-        int minutes = (int)(elapsedTime / 60);
-        int seconds = (int)(elapsedTime % 60);
+        UpdateCurrentStage();
+    }
 
-        timerText.text = string.Format("时间：{0:D2}:{1:D2}", minutes, seconds);
+    private void UpdateCurrentStage()
+    {
+        float elapsedTime = Time.time - gameStartTime;
+        SpawnStage nextStage = null;
+
+        foreach (var stage in spawnStages)
+        {
+            if (elapsedTime >= stage.startTime)
+            {
+                if (nextStage == null || stage.startTime > nextStage.startTime)
+                {
+                    nextStage = stage;
+                }
+            }
+        }
+
+        if (nextStage != null && nextStage != currentStage)
+        {
+            currentStage = nextStage;
+            CancelInvoke(nameof(SpawnEnemies));
+            InvokeRepeating(nameof(SpawnEnemies), 0, currentStage.spawnInterval);
+            Debug.Log($"切换到阶段: {currentStage.stageName}");
+        }
     }
 
     private void SpawnEnemies()
     {
-        for (int i = 0; i < spawnAmount; i++)
+        if (maxEnemies <= 0) return; // 如果没有数量限制，直接返回
+
+        // 计算可用的空位
+        int availableSlots = maxEnemies - enemyParent.childCount;
+        if (availableSlots <= 0) return; // 超过最大数量，不再生成
+
+        int enemiesToSpawn = Mathf.Min(currentStage.spawnAmount, availableSlots);
+
+        for (int i = 0; i < enemiesToSpawn; i++)
         {
             Vector3 randomPosition;
             do
             {
                 randomPosition = GetRandomPositionInEnemyArea();
             } while (IsInsideExclusionZone(randomPosition));
-            
-            GameObject selectedEnemy = GetRandomEnemyPrefab();
-            Instantiate(selectedEnemy, randomPosition, Quaternion.identity);
+
+            GameObject selectedEnemy = GetRandomEnemyPrefabForCurrentStage();
+            if (selectedEnemy != null)
+            {
+                // 实例化敌人并将其设置为父物体的子对象
+                GameObject newEnemy = Instantiate(selectedEnemy, randomPosition, Quaternion.identity, enemyParent);
+                // 可选：设置敌人层级或其他初始化操作
+            }
         }
     }
-
 
     private Vector3 GetRandomPositionInEnemyArea()
     {
         float halfWidth = enemySpawnAreaDimensions.x * 0.5f;
         float halfHeight = enemySpawnAreaDimensions.y * 0.5f;
         float halfDepth = enemySpawnAreaDimensions.z * 0.5f;
-        
+
         Vector3 centerPosition = center.position + enemySpawnAreaOffset;
 
-        float randomX = Random.Range(centerPosition.x - halfWidth, centerPosition.x + halfWidth);
-        float randomY = Random.Range(centerPosition.y - halfHeight, centerPosition.y + halfHeight);
-        float randomZ = Random.Range(centerPosition.z - halfDepth, centerPosition.z + halfDepth);
+        float randomX = UnityEngine.Random.Range(centerPosition.x - halfWidth, centerPosition.x + halfWidth);
+        float randomY = UnityEngine.Random.Range(centerPosition.y - halfHeight, centerPosition.y + halfHeight);
+        float randomZ = UnityEngine.Random.Range(centerPosition.z - halfDepth, centerPosition.z + halfDepth);
 
         return new Vector3(randomX, randomY, randomZ);
     }
@@ -76,31 +126,28 @@ public class SpawnerManager : MonoBehaviour
         return Vector3.Distance(position, center.position) < exclusionZoneRadius;
     }
 
-    // 获取随机敌人类型（包含精英敌人逻辑）
-    private GameObject GetRandomEnemyPrefab()
+    private GameObject GetRandomEnemyPrefabForCurrentStage()
     {
-        bool canSpawnElite = Time.time - gameStartTime >= eliteSpawnDelay;
+        foreach (var enemyType in currentStage.enemyTypes)
+        {
+            if (UnityEngine.Random.value <= enemyType.spawnChance && enemyType.enemyPrefabs.Length > 0)
+            {
+                return enemyType.enemyPrefabs[UnityEngine.Random.Range(0, enemyType.enemyPrefabs.Length)];
+            }
+        }
 
-        if (canSpawnElite && eliteEnemyPrefabs.Length > 0 && Random.value <= eliteSpawnChance)
-        {
-            return eliteEnemyPrefabs[Random.Range(0, eliteEnemyPrefabs.Length)];
-        }
-        else
-        {
-            return normalEnemyPrefabs[Random.Range(0, normalEnemyPrefabs.Length)];
-        }
+        return null;
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.color = new Color(1, 0, 0, 0.5f);
-        if (center != null)
+        if (enemyParent != null)
         {
-            Gizmos.DrawCube(center.position + enemySpawnAreaOffset, enemySpawnAreaDimensions);
+            Gizmos.color = new Color(1, 0, 0, 0.5f);
+            Gizmos.DrawCube(enemyParent.position + enemySpawnAreaOffset, enemySpawnAreaDimensions);
 
-            // Draw exclusion zone
             Gizmos.color = new Color(0, 0, 1, 0.5f);
-            Gizmos.DrawSphere(center.position, exclusionZoneRadius);
+            Gizmos.DrawSphere(enemyParent.position, exclusionZoneRadius);
         }
     }
 }

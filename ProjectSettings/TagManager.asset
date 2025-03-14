@@ -13,6 +13,7 @@ TagManager:
   - Weapon
   - ExpArea
   - Gift
+  - AddWeapon
   layers:
   - Default
   - TransparentFX

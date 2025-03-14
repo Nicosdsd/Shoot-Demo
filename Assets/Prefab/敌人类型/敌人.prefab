@@ -130,14 +130,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   attack: 1
   speed: 5
-  rotationSpeed: 4
+  rotationSpeed: 5
   attackForce: {x: 10, y: 5}
-  health: 2
-  maxHealth: 2
-  deathParticlePrefab: {fileID: 204989309917258822, guid: fbd33188b4f36194280132e3e256dac0, type: 3}
+  health: 1
+  maxHealth: 1
   dropItems:
   - {fileID: 1594516158341045276, guid: 02b35d6a2a175514c976fac25faefdfc, type: 3}
   blinkMat: {fileID: 2100000, guid: 8bb48878ff60d864b9b0e6f58d8673d5, type: 2}
+  deathParticlePrefab: {fileID: 204989309917258822, guid: fbd33188b4f36194280132e3e256dac0, type: 3}
+  canShoot: 0
+  targetPrefab: {fileID: 0}
+  bulletPrefab: {fileID: 0}
+  launchAngle: 45
+  shootInterval: 2
+  destoryBullet: 1
 --- !u!65 &7531536566714920968
 BoxCollider:
   m_ObjectHideFlags: 0

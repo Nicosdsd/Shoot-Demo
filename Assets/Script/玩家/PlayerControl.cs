@@ -42,7 +42,6 @@ public class PlayerControl : MonoBehaviour
 
     [Header("射击")] 
     public bool canFire = true;
-   // public Weapon defaultWeapon;
     public Weapon currentWeapon;
     public Animator camAnim;
     private WeaponManager weaponManager;

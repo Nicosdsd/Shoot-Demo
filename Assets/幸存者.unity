@@ -1795,7 +1795,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 9, y: 9}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -2216,19 +2216,19 @@ MonoBehaviour:
     maxDistance: 50
     minDistance: 1
     lastPlayedTime: -Infinity
-  - name: "\u83B7\u53D6\u7ECF\u9A8C"
-    clip: {fileID: 8300000, guid: efc7742f92c185645a2f86b46c92ddb5, type: 3}
+  - name: "\u654C\u4EBA\u51FB\u788E"
+    clip: {fileID: 8300000, guid: 1118b96589d825d4ca7730eaff8ae709, type: 3}
     volume: 0.5
-    minInterval: 0
+    minInterval: 0.1
     enableSpatialSound: 0
     maxDistance: 50
     minDistance: 1
     lastPlayedTime: -Infinity
-  - name: "\u654C\u4EBA\u51FB\u788E"
-    clip: {fileID: 8300000, guid: 1118b96589d825d4ca7730eaff8ae709, type: 3}
-    volume: 0.3
+  - name: "\u83B7\u53D6\u7ECF\u9A8C"
+    clip: {fileID: 8300000, guid: efc7742f92c185645a2f86b46c92ddb5, type: 3}
+    volume: 0.5
     minInterval: 0.1
-    enableSpatialSound: 1
+    enableSpatialSound: 0
     maxDistance: 50
     minDistance: 1
     lastPlayedTime: -Infinity
@@ -3329,7 +3329,7 @@ GameObject:
   - component: {fileID: 933874711}
   - component: {fileID: 933874710}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: "\u65F6\u95F4"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4514,6 +4514,71 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Weapon: {fileID: 8561290778286337905, guid: 8dbba1e6e0bf9974b95f72d2734d5e9b, type: 3}
   selectImage: {fileID: 859085347}
+--- !u!1001 &1346438545
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 718300871703093148, guid: 5d2b9fd7eb9325f40ac06631354dfb9f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 8.42
+      objectReference: {fileID: 0}
+    - target: {fileID: 718300871703093148, guid: 5d2b9fd7eb9325f40ac06631354dfb9f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.615
+      objectReference: {fileID: 0}
+    - target: {fileID: 718300871703093148, guid: 5d2b9fd7eb9325f40ac06631354dfb9f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 718300871703093148, guid: 5d2b9fd7eb9325f40ac06631354dfb9f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 718300871703093148, guid: 5d2b9fd7eb9325f40ac06631354dfb9f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 718300871703093148, guid: 5d2b9fd7eb9325f40ac06631354dfb9f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 718300871703093148, guid: 5d2b9fd7eb9325f40ac06631354dfb9f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 718300871703093148, guid: 5d2b9fd7eb9325f40ac06631354dfb9f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 718300871703093148, guid: 5d2b9fd7eb9325f40ac06631354dfb9f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 718300871703093148, guid: 5d2b9fd7eb9325f40ac06631354dfb9f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5218702391668713702, guid: 5d2b9fd7eb9325f40ac06631354dfb9f, type: 3}
+      propertyPath: reloadTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6513721722915215283, guid: 5d2b9fd7eb9325f40ac06631354dfb9f, type: 3}
+      propertyPath: m_Name
+      value: "\u70AE\u5854"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6513721722915215283, guid: 5d2b9fd7eb9325f40ac06631354dfb9f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5d2b9fd7eb9325f40ac06631354dfb9f, type: 3}
 --- !u!1 &1354047371
 GameObject:
   m_ObjectHideFlags: 0
@@ -6032,7 +6097,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 9, y: 9}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -6796,6 +6861,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c8320979aa198224e958c7d0d2f862b4, type: 2}
   - {fileID: 11400000, guid: e6954ef4acce13f4ba45e918ca7296d3, type: 2}
   - {fileID: 11400000, guid: 409c9618a5e367d4b93237d660ccee26, type: 2}
+  - {fileID: 11400000, guid: a681dc54e24cc7d438e5c835039316d1, type: 2}
+  - {fileID: 11400000, guid: 691fa57b16885c64a86dcba1ba9f16cf, type: 2}
+  - {fileID: 11400000, guid: 01754dfe54059d9428e94a4ea07cdb4b, type: 2}
   buffManu: {fileID: 1689125145}
   bombPrefab: {fileID: 8140581971359726223, guid: 40a0da9850c671341b6e5a88b967358b, type: 3}
 --- !u!1 &1849605875 stripped
@@ -6893,20 +6961,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8305c0ebded04a8409d775a78b0547f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalEnemyPrefabs:
-  - {fileID: 203470639039350454, guid: ff4e510b03f9ecd4ea6f296cb1fc29e9, type: 3}
-  - {fileID: 203470639039350454, guid: 05477557b28c60b4d88a65f9800359cf, type: 3}
-  eliteEnemyPrefabs:
-  - {fileID: 203470639039350454, guid: 793a8c60cbf044e48ae7b289de2dd650, type: 3}
-  eliteSpawnDelay: 20
-  eliteSpawnChance: 0.1
-  spawnInterval: 5
-  spawnAmount: 10
+  spawnStages:
+  - stageName: "\u9636\u6BB51"
+    startTime: 0
+    spawnInterval: 5
+    spawnAmount: 3
+    enemyTypes:
+    - name: "\u666E\u901A\u602A"
+      enemyPrefabs:
+      - {fileID: 203470639039350454, guid: ff4e510b03f9ecd4ea6f296cb1fc29e9, type: 3}
+      spawnChance: 1
+  - stageName: "\u9636\u6BB52"
+    startTime: 20
+    spawnInterval: 4
+    spawnAmount: 6
+    enemyTypes:
+    - name: "\u654C\u4EBA"
+      enemyPrefabs:
+      - {fileID: 203470639039350454, guid: ff4e510b03f9ecd4ea6f296cb1fc29e9, type: 3}
+      spawnChance: 0.5
+    - name: "\u654C\u4EBA1"
+      enemyPrefabs:
+      - {fileID: 203470639039350454, guid: 05477557b28c60b4d88a65f9800359cf, type: 3}
+      spawnChance: 0.5
+  - stageName: "\u9636\u6BB53"
+    startTime: 40
+    spawnInterval: 2
+    spawnAmount: 10
+    enemyTypes:
+    - name: "\u7CBE\u82F1\u602A1"
+      enemyPrefabs:
+      - {fileID: 203470639039350454, guid: 793a8c60cbf044e48ae7b289de2dd650, type: 3}
+      spawnChance: 0.05
+    - name: "\u654C\u4EBA1"
+      enemyPrefabs:
+      - {fileID: 203470639039350454, guid: 05477557b28c60b4d88a65f9800359cf, type: 3}
+      spawnChance: 0.25
+    - name: "\u654C\u4EBA"
+      enemyPrefabs:
+      - {fileID: 203470639039350454, guid: ff4e510b03f9ecd4ea6f296cb1fc29e9, type: 3}
+      spawnChance: 0.7
   enemySpawnAreaDimensions: {x: 40, y: 0, z: 110}
   enemySpawnAreaOffset: {x: 0, y: 0, z: 25}
   center: {fileID: 267713293}
   exclusionZoneRadius: 8
-  timerText: {fileID: 933874710}
+  enemyParent: {fileID: 1865830063}
+  maxEnemies: 100
 --- !u!4 &1865830063
 Transform:
   m_ObjectHideFlags: 0
@@ -7855,3 +7955,4 @@ SceneRoots:
   - {fileID: 1865830063}
   - {fileID: 573094727}
   - {fileID: 1468416733}
+  - {fileID: 1346438545}
