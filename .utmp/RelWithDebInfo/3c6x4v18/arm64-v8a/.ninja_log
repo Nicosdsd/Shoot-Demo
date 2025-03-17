@@ -1,19 +1,10 @@
 # ninja log v5
-1541	2103	7588039345945858	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	b939c03a68782da3
-0	2018	7588039331952803	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	bcfeb3a14fc38285
-268	2020	7588039335851220	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	24c244c58befec4
-1778	2384	7588039348707300	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	991662ce22332f8c
-529	2020	7588039335876164	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	5cec4d5b9fcb8895
-774	2020	7588039338373117	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	9695221baffabe3f
-2384	2920	7588039354083334	F:/UnityNewProject/Shoot Demo/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/3c6x4v18/obj/arm64-v8a/libgame.so	43f79755a27d5bd8
-1035	2021	7588039340959448	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	2bd2d5f75a4f65ce
-1295	2023	7588039345114764	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	dda614b47f46c9bb
-4	1252	7636472125771698	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	9695221baffabe3f
-157	1254	7636472127485704	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	5cec4d5b9fcb8895
 324	1288	7636472130099410	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	bcfeb3a14fc38285
-592	1358	7636472130765306	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	2bd2d5f75a4f65ce
 844	1701	7636472134206628	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	b939c03a68782da3
 478	1763	7636472134802314	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	24c244c58befec4
-721	1846	7636472135644914	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	dda614b47f46c9bb
+157	1254	7636472127485704	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	5cec4d5b9fcb8895
 986	2008	7636472137263658	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	991662ce22332f8c
+4	1252	7636472125771698	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	9695221baffabe3f
+592	1358	7636472130765306	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	2bd2d5f75a4f65ce
 2008	2447	7636472141667059	F:/UnityNewProject/Shoot Demo/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/3c6x4v18/obj/arm64-v8a/libgame.so	43f79755a27d5bd8
+721	1846	7636472135644914	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	dda614b47f46c9bb

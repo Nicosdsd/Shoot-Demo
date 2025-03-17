@@ -160,7 +160,7 @@ public class PlayerControl : MonoBehaviour
         {
             //开火
             //playerAni?.SetTrigger("Fire");
-            camAnim?.SetTrigger("CameraShakeTrigger");
+            //camAnim?.SetTrigger("CameraShakeTrigger"); //震屏
             currentWeapon.Fire(fireDirection);
         }
     }
