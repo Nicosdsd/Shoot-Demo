@@ -230,15 +230,15 @@ PrefabInstance:
     - target: {fileID: -4683669308469848369, guid: 0f3cd11feb8046c4195cfa768046c401, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 248e0fc468c993a4e8dcd02ca4e0930c, type: 2}
+      objectReference: {fileID: 2100000, guid: 7b2002beac039d74ab7712ab69a87e3e, type: 2}
     - target: {fileID: -1461304994638716399, guid: 0f3cd11feb8046c4195cfa768046c401, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 248e0fc468c993a4e8dcd02ca4e0930c, type: 2}
+      objectReference: {fileID: 2100000, guid: 7b2002beac039d74ab7712ab69a87e3e, type: 2}
     - target: {fileID: -804731622281664130, guid: 0f3cd11feb8046c4195cfa768046c401, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 248e0fc468c993a4e8dcd02ca4e0930c, type: 2}
+      objectReference: {fileID: 2100000, guid: 7b2002beac039d74ab7712ab69a87e3e, type: 2}
     - target: {fileID: -516098083770646512, guid: 0f3cd11feb8046c4195cfa768046c401, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -261,7 +261,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0f3cd11feb8046c4195cfa768046c401, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4203493926264177186}
+      addedObject: {fileID: 4042522689837441512}
   m_SourcePrefab: {fileID: 100100000, guid: 0f3cd11feb8046c4195cfa768046c401, type: 3}
 --- !u!4 &4863819163042010720 stripped
 Transform:
@@ -273,7 +273,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0f3cd11feb8046c4195cfa768046c401, type: 3}
   m_PrefabInstance: {fileID: 4969010526251528587}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4203493926264177186
+--- !u!114 &4042522689837441512
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -365,9 +365,9 @@ MonoBehaviour:
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
   outlineGradientInLocalSpace: 0
-  outlineWidth: 0.5
+  outlineWidth: 0.1
   outlineBlurPasses: 2
-  outlineQuality: 3
+  outlineQuality: 0
   outlineEdgeMode: 0
   outlineEdgeThreshold: 0.995
   outlineSharpness: 1
