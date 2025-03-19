@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ToonColor
+  m_Name: ToonColor 2
   m_Shader: {fileID: 4800000, guid: b72962dcddc12be41aea99269f27d9f4, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -47,16 +47,16 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _ShadowRange: 0
+    - _ShadowRange: 0.53
     - _SpecularGloss: 10
-    - _SpecularRange: 0.31
+    - _SpecularRange: 0.168
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 1, g: 0.76862746, b: 0.13725491, a: 1}
+    - _MainColor: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
     - _Rim: {r: 0, g: 1, b: 5, a: 0}
-    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ShadowColor: {r: 0.8, g: 0.38039216, b: 0.19215687, a: 1}
-    - _SpecularColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
+    - _RimColor: {r: 0.5188679, g: 0.5164204, b: 0.51687896, a: 1}
+    - _ShadowColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SpecularColor: {r: 0.8867924, g: 0.8867924, b: 0.8867924, a: 0.9490196}
     - _Vector0: {r: 0, g: 2.18, b: 4.2, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
