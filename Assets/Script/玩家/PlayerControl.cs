@@ -9,7 +9,7 @@ public class PlayerControl : MonoBehaviour
     private Rigidbody rb;
     private Vector3 movement;
     private SystemManager systemManager;
-    private Animator playerAni;
+    public Animator playerAni;
 
     [Header("基础")]
     //标识
@@ -61,7 +61,6 @@ public class PlayerControl : MonoBehaviour
         rb.freezeRotation = true; // 防止物理旋转
         aimIconPrefab?.gameObject.SetActive(false); // 初始禁用准星图标
         systemManager = FindAnyObjectByType<SystemManager>();
-        playerAni = GetComponent<Animator>();
         defaultMat = GetComponent<Renderer>().material;
         weaponManager = FindAnyObjectByType<WeaponManager>();
         currentWeapon = GetComponentInChildren<Weapon>();
@@ -76,6 +75,10 @@ public class PlayerControl : MonoBehaviour
             float moveX = leftJoystick.Horizontal + Input.GetAxis("Horizontal");
             float moveZ = leftJoystick.Vertical + Input.GetAxis("Vertical");
             movement = new Vector3(moveX, 0, moveZ).normalized;
+            
+            // 新增动画控制
+                float movementSpeed = new Vector3(currentVelocity.x, 0, currentVelocity.z).magnitude;
+                playerAni.SetFloat("Speed", movementSpeed);
         }
         
         //位移
