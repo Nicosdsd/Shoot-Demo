@@ -56,20 +56,24 @@ public class EnemyControl : MonoBehaviour
     }
     
 
-    void FixedUpdate() // 推荐使用 FixedUpdate 因为牵涉到物理模拟
+    void FixedUpdate() 
     {
         if (player == null) return;
 
         // 计算敌人与玩家之间的方向向量
         Vector3 direction = (player.transform.position - transform.position).normalized;
 
-        // 使用 AddForce 按方向施加力进行移动（ForceMode.Acceleration 保证恒速）
-        //rb.AddForce(direction * speed, ForceMode.Acceleration);
-        rb.linearVelocity = direction * speed;
+        // 获取当前速度并保持Y分量，以让重力影响Y轴
+        Vector3 currentVelocity = rb.linearVelocity;
+        Vector3 targetVelocity = new Vector3(direction.x * speed, currentVelocity.y, direction.z * speed);
+
+        // 应用新的速度（仅在X和Z轴移动）
+        rb.linearVelocity = targetVelocity;
+
         // 控制敌人朝向玩家（逐步旋转以平滑过渡，看起来更自然）
         Quaternion targetRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z)); // 忽略 Y 轴变化
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-        
+
         // 检查敌人是否死亡
         if (health <= 0)
         {
