@@ -65,11 +65,11 @@ Material:
     - _SpecularRange: 0.31
     m_Colors:
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 0.9528302, g: 0.37379545, b: 0.05842829, a: 1}
+    - _MainColor: {r: 0.8962264, g: 0.38825098, b: 0.20714669, a: 1}
     - _OutlineColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-    - _Rim: {r: 0, g: 1, b: 5, a: 0}
-    - _RimColor: {r: 1, g: 1, b: 1, a: 1}
-    - _ShadowColor: {r: 0.5754717, g: 0.29393658, b: 0.17101282, a: 1}
+    - _Rim: {r: 0, g: 1, b: 10, a: 0}
+    - _RimColor: {r: 0, g: 0, b: 0, a: 1}
+    - _ShadowColor: {r: 0.7735849, g: 0.3782191, b: 0.20799215, a: 1}
     - _SpecularColor: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
     - _Vector0: {r: 0, g: 2.18, b: 4.2, a: 0}
   m_BuildTextureStacks: []

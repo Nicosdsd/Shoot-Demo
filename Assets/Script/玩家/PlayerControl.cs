@@ -101,6 +101,8 @@ public class PlayerControl : MonoBehaviour
 
     }
     
+   
+    
     //角色移动
     private void Movement()
     {

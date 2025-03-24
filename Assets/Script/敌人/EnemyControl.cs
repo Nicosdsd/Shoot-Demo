@@ -7,6 +7,7 @@ using Random = UnityEngine.Random;
 public class EnemyControl : MonoBehaviour
 {
     [Header("基础")]
+    //public Animator playerAni;
     public float attack = 1;
     public float speed = 5;
     public float rotationSpeed = 5; // 控制旋转跟随速度
@@ -73,7 +74,9 @@ public class EnemyControl : MonoBehaviour
         // 控制敌人朝向玩家（逐步旋转以平滑过渡，看起来更自然）
         Quaternion targetRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z)); // 忽略 Y 轴变化
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
-
+        // 新增动画控制
+        //playerAni.SetFloat("Speed", targetVelocity.magnitude);
+        
         // 检查敌人是否死亡
         if (health <= 0)
         {
