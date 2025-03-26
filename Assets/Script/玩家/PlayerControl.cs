@@ -190,7 +190,7 @@ public class PlayerControl : MonoBehaviour
 
         foreach (Collider hitCollider in hitColliders)
         {
-            if (hitCollider.CompareTag("Enemy")) // 确保只检查带有 "Enemy" 标签的对象
+            if (hitCollider.CompareTag("Enemy") && !hitCollider.GetComponent<EnemyControl>().isDead) // 确保只检查带有 "Enemy" 标签的对象
             {
                 Vector3 directionToTarget = hitCollider.transform.position - transform.position;
                 float dSqrToTarget = directionToTarget.sqrMagnitude;

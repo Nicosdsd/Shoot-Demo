@@ -142,8 +142,9 @@ MonoBehaviour:
   dropItems:
   - {fileID: 1594516158341045276, guid: 02b35d6a2a175514c976fac25faefdfc, type: 3}
   blinkMat: {fileID: 2100000, guid: 8bb48878ff60d864b9b0e6f58d8673d5, type: 2}
-  deathParticlePrefab: {fileID: 204989309917258822, guid: 7aa4fd15d25ae894b832ff02bf69e788, type: 3}
+  deathParticlePrefab: {fileID: 5867907483655835861, guid: 42c041fdcbca79e4abf72c993feef158, type: 3}
   destroyItems: []
+  isDead: 0
   canShoot: 0
   targetPrefab: {fileID: 0}
   bulletPrefab: {fileID: 0}
@@ -169,8 +170,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.5, y: 1.5, z: 1.5}
-  m_Center: {x: 0, y: 0.4, z: 0}
+  m_Size: {x: 2, y: 2.4417694, z: 2}
+  m_Center: {x: 0, y: 0.87088466, z: 0}
 --- !u!1 &540273982991325093
 GameObject:
   m_ObjectHideFlags: 0

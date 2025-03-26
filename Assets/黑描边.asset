@@ -84,7 +84,7 @@ MonoBehaviour:
   outlineSharpness: 1
   outlineDownsampling: 1
   outlineContourStyle: 0
-  outlineVisibility: 0
+  outlineVisibility: 1
   outlineIndependent: 0
   outlineMaskMode: 0
   glow: 0

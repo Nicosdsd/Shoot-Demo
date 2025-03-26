@@ -26,7 +26,7 @@ public class EnemyControl : MonoBehaviour
     private Material defaultMat;
     public GameObject deathParticlePrefab;
     public GameObject[] destroyItems; //死亡销毁
-    private bool isDead = false;//死亡约束
+    public bool isDead;//死亡约束
     
     [Header("发射物")] 
     public bool canShoot;
@@ -111,6 +111,16 @@ public class EnemyControl : MonoBehaviour
         isDead = true;
         speed = 0;
         rotationSpeed = 0;
+        
+        /*// 添加击飞效果力
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            Vector3 knockbackDirection =  (transform.position - player.transform.position).normalized; 
+            float knockbackStrength = 100f; // 你可以根据需要调整这个值来控制力量的大小
+            rb.AddForce(knockbackDirection * knockbackStrength, ForceMode.Impulse);
+        }*/
+        
         
         // 播放一次性死亡粒子效果
         if (deathParticlePrefab != null)
