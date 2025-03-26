@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class Billboard : MonoBehaviour {
     Transform m_Camera;
 

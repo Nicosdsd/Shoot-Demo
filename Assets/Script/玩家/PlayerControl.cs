@@ -77,8 +77,11 @@ public class PlayerControl : MonoBehaviour
             movement = new Vector3(moveX, 0, moveZ).normalized;
             
             // 新增动画控制
-                float movementSpeed = new Vector3(currentVelocity.x, 0, currentVelocity.z).magnitude;
+                float movementSpeed = new Vector3(currentVelocity.x, 0, currentVelocity.z).magnitude * moveSpeed * 0.006f;
+                
                 playerAni.SetFloat("Speed", movementSpeed);
+                //print("速度" + movementSpeed);
+                
         }
         
         //位移

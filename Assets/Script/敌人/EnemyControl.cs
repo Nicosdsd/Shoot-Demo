@@ -7,7 +7,8 @@ using Random = UnityEngine.Random;
 public class EnemyControl : MonoBehaviour
 {
     [Header("基础")]
-    //public Animator playerAni;
+    public Animator playerAni;
+    public string speedAnimName;
     public float attack = 1;
     public float speed = 5;
     public float rotationSpeed = 5; // 控制旋转跟随速度
@@ -18,13 +19,15 @@ public class EnemyControl : MonoBehaviour
     private PlayerControl player;//玩家控制器
     private Rigidbody rb;
     
+    
     [Header("受击")]
     private float blinkTime = 0.2f;
     public Material blinkMat;
     private Material defaultMat;
     public GameObject deathParticlePrefab;
     public GameObject[] destroyItems; //死亡销毁
-
+    private bool isDead = false;//死亡约束
+    
     [Header("发射物")] 
     public bool canShoot;
     public GameObject targetPrefab;      // 目标点
@@ -75,8 +78,12 @@ public class EnemyControl : MonoBehaviour
         Quaternion targetRotation = Quaternion.LookRotation(new Vector3(direction.x, 0, direction.z)); // 忽略 Y 轴变化
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         // 新增动画控制
-        //playerAni.SetFloat("Speed", targetVelocity.magnitude);
         
+        float movementSpeed = targetVelocity.magnitude * speed * 0.02f;
+        playerAni.SetFloat(speedAnimName, movementSpeed);
+        
+        //print("速度" + movementSpeed);
+
         // 检查敌人是否死亡
         if (health <= 0)
         {
@@ -99,6 +106,12 @@ public class EnemyControl : MonoBehaviour
 
     void Die()
     {
+        // 死亡约束
+        if (isDead) return; 
+        isDead = true;
+        speed = 0;
+        rotationSpeed = 0;
+        
         // 播放一次性死亡粒子效果
         if (deathParticlePrefab != null)
         {
@@ -109,7 +122,7 @@ public class EnemyControl : MonoBehaviour
             particle.transform.rotation = Quaternion.LookRotation(particleDirection);
 
             // 销毁粒子对象自身
-            Destroy(particle, 2f); // 2秒后销毁实例
+            Destroy(particle, 1f); // 2秒后销毁实例
         }
 
         // 循环生成掉落物品
@@ -137,7 +150,8 @@ public class EnemyControl : MonoBehaviour
         }
 
         AudioManager.Instance.PlaySound("敌人击碎",transform.position);
-        Destroy(gameObject); // 销毁敌人对象本身
+        Destroy(gameObject,0.5f); // 销毁敌人对象本身
+        playerAni.SetBool("Die", true);
     }
 
     private void OnCollisionEnter(Collision other)
