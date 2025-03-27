@@ -79,7 +79,7 @@ public class EnemyControl : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         // 新增动画控制
         
-        float movementSpeed = targetVelocity.magnitude * speed * 0.02f;
+        float movementSpeed = targetVelocity.magnitude * speed * 0.04f;
         playerAni.SetFloat(speedAnimName, movementSpeed);
         
         //print("速度" + movementSpeed);

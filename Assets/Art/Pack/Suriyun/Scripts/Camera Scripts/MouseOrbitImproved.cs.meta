@@ -9,3 +9,10 @@ MonoImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 211520
+  packageName: Dino Shark
+  packageVersion: 2.0
+  assetPath: Assets/Suriyun/Scripts/Camera Scripts/MouseOrbitImproved.cs
+  uploadId: 584022
