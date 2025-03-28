@@ -1,14 +1,17 @@
 using System;
 using System.Collections;
+using HighlightPlus;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+
 
 public class EnemyControl : MonoBehaviour
 {
     [Header("基础")]
     public Animator playerAni;
     public string speedAnimName;
+    public bool canMove = true;
     public float attack = 1;
     public float speed = 5;
     public float rotationSpeed = 5; // 控制旋转跟随速度
@@ -21,9 +24,10 @@ public class EnemyControl : MonoBehaviour
     
     
     [Header("受击")]
-    private float blinkTime = 0.2f;
-    public Material blinkMat;
-    private Material defaultMat;
+    private float blinkTime = 0.15f;
+    /*public Material blinkMat;
+    private Material defaultMat;*/
+    public HighlightEffect highlightPlus;
     public GameObject deathParticlePrefab;
     public GameObject[] destroyItems; //死亡销毁
     public bool isDead;//死亡约束
@@ -44,7 +48,7 @@ public class EnemyControl : MonoBehaviour
         // 初始化血量
         health = maxHealth;
 
-        defaultMat = GetComponent<Renderer>().material;
+        //defaultMat = GetComponent<Renderer>().material;
         // 获取自身的 Rigidbody 组件
         rb = GetComponent<Rigidbody>();
 
@@ -62,7 +66,7 @@ public class EnemyControl : MonoBehaviour
 
     void FixedUpdate() 
     {
-        if (player == null) return;
+        if (player == null && !canMove) return;
 
         // 计算敌人与玩家之间的方向向量
         Vector3 direction = (player.transform.position - transform.position).normalized;
@@ -94,14 +98,19 @@ public class EnemyControl : MonoBehaviour
     public void Hit(float damage)
     {
         health -= damage;
-        GetComponent<Renderer>().material = blinkMat;
+        playerAni.SetTrigger("Damage");
+        canMove = false;
+        //GetComponent<Renderer>().material = blinkMat;
+        highlightPlus.overlay = 1;
         Invoke("LateHit",blinkTime);
         StartCoroutine(LateHit());
     }
     private IEnumerator LateHit()
     {
         yield return new WaitForSeconds(blinkTime);
-        GetComponent<Renderer>().material = defaultMat;
+        //GetComponent<Renderer>().material = defaultMat;
+        highlightPlus.overlay = 0;
+        canMove = true;
     }
 
     void Die()
@@ -109,8 +118,7 @@ public class EnemyControl : MonoBehaviour
         // 死亡约束
         if (isDead) return; 
         isDead = true;
-        speed = 0;
-        rotationSpeed = 0;
+        canMove = false;
         
         /*// 添加击飞效果力
         Rigidbody rb = GetComponent<Rigidbody>();
