@@ -66,7 +66,7 @@ public class EnemyControl : MonoBehaviour
 
     void FixedUpdate() 
     {
-        if (player == null && !canMove) return;
+        if (player == null || !canMove) return;
 
         // 计算敌人与玩家之间的方向向量
         Vector3 direction = (player.transform.position - transform.position).normalized;
@@ -98,10 +98,10 @@ public class EnemyControl : MonoBehaviour
     public void Hit(float damage)
     {
         health -= damage;
-        playerAni.SetTrigger("Damage");
+       // playerAni.SetTrigger("Damage");
         canMove = false;
         //GetComponent<Renderer>().material = blinkMat;
-        highlightPlus.overlay = 1;
+        highlightPlus.overlay = 0.9f;
         Invoke("LateHit",blinkTime);
         StartCoroutine(LateHit());
     }
@@ -109,7 +109,7 @@ public class EnemyControl : MonoBehaviour
     {
         yield return new WaitForSeconds(blinkTime);
         //GetComponent<Renderer>().material = defaultMat;
-        highlightPlus.overlay = 0;
+        highlightPlus.overlay =  0f;
         canMove = true;
     }
 
@@ -172,33 +172,41 @@ public class EnemyControl : MonoBehaviour
         playerAni.SetBool("Die", true);
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
-        {
-            // 玩家受到伤害
-            player.Hit(attack);
-
-            // 给玩家添加一个向后和向上的力
-            Rigidbody playerRb = other.gameObject.GetComponent<Rigidbody>();
-            if (playerRb != null)
-            {
-                // 计算一个方向向量，让玩家"弹开"
-                Vector3 knockbackDirection = (other.transform.position - transform.position).normalized;
-                knockbackDirection.y = 0; // 去掉 Y 轴的分量，保证向后的水平力
-
-                float forceStrength = attackForce.x; // 调整这个值来控制水平力度
-                float upwardForce = attackForce.y;  // 向上的力大小
-
-                // 添加水平和垂直的力
-                Vector3 force = knockbackDirection * forceStrength + Vector3.up * upwardForce;
-                playerRb.AddForce(force, ForceMode.Impulse); // Impulse 模式，立即施加冲量
-                player.canFire = false;
-                player.canMove = false;
-                
-            }
-        }
+        /*if (other.gameObject.CompareTag("Player"))
+        { 
+            Attack(other.gameObject);
+        }*/
     }
+
+    public void Attack(GameObject target)
+    {
+        playerAni.SetTrigger("Attack");
+        // 玩家受到伤害
+        player.Hit(attack);
+
+        /*// 给玩家添加一个向后和向上的力
+        Rigidbody playerRb = target.GetComponent<Rigidbody>();
+        if (playerRb != null)
+        {
+            // 计算一个方向向量，让玩家"弹开"
+            Vector3 knockbackDirection = (target.transform.position - transform.position).normalized;
+            knockbackDirection.y = 0; // 去掉 Y 轴的分量，保证向后的水平力
+
+            float forceStrength = attackForce.x; // 调整这个值来控制水平力度
+            float upwardForce = attackForce.y;  // 向上的力大小
+
+            // 添加水平和垂直的力
+            Vector3 force = knockbackDirection * forceStrength + Vector3.up * upwardForce;
+            playerRb.AddForce(force, ForceMode.Impulse); // Impulse 模式，立即施加冲量
+            player.canFire = false;
+            player.canMove = false;
+        }*/
+        
+    }
+    
+    
     
     public IEnumerator ShootingRoutine()
     {

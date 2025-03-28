@@ -334,7 +334,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   destroyAfter: 2
-  knockbackForce: 50
+  knockbackForce: 20
   hitEffectPrefab: {fileID: 6001502747594127042, guid: 647a997c8e2e2ac489a9d7749113b77f, type: 3}
   explodePrefab: {fileID: 4292861658322330741, guid: 8c7bb68c0b0d6ac44a8a1a0449ac49d6, type: 3}
 --- !u!1 &6179975659602721728

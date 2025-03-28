@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
+using HighlightPlus;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class PlayerControl : MonoBehaviour
     public float invincibleTime = 0.2f; // 无敌时间
     //材质效果
     public Material blinkMat;
+    public HighlightEffect highlightPlus; //用来做Blink
     private Material defaultMat;
     public GameObject HitEffect;
     //移动控制
@@ -222,7 +224,7 @@ public class PlayerControl : MonoBehaviour
             camAnim?.SetTrigger("CameraShakeTrigger");
             HitEffect.SetActive(true);
             AudioManager.Instance.PlaySound("主角受伤",transform.position);
-            GetComponent<Renderer>().material = blinkMat;
+            highlightPlus.overlay = 1;//blink
         }
 
     }
@@ -235,7 +237,7 @@ public class PlayerControl : MonoBehaviour
         HitEffect.SetActive(false);
         canFire = true;
         canMove = true;
-        GetComponent<Renderer>().material = defaultMat;
+        highlightPlus.overlay = 0; //blink
         if (health <= 0)
         {
             systemManager.GameOver();
