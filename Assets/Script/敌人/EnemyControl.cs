@@ -15,7 +15,7 @@ public class EnemyControl : MonoBehaviour
     public float attack = 1;
     public float speed = 5;
     public float rotationSpeed = 5; // 控制旋转跟随速度
-    public Vector2 attackForce;
+    //public Vector2 attackForce;
     public float health;
     public float maxHealth = 2;
     public GameObject[] dropItems; //掉落物
@@ -101,7 +101,7 @@ public class EnemyControl : MonoBehaviour
        // playerAni.SetTrigger("Damage");
         canMove = false;
         //GetComponent<Renderer>().material = blinkMat;
-        highlightPlus.overlay = 0.9f;
+        highlightPlus.overlay = 0.95f;
         Invoke("LateHit",blinkTime);
         StartCoroutine(LateHit());
     }

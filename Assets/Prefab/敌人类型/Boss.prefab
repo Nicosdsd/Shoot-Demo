@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1038736012447079694}
   - component: {fileID: 5054635962559246663}
   - component: {fileID: -9025946691480291440}
-  - component: {fileID: 7531536566714920968}
+  - component: {fileID: 8692998426990582454}
   m_Layer: 6
   m_Name: Boss
   m_TagString: Enemy
@@ -138,7 +138,6 @@ MonoBehaviour:
   attack: 1
   speed: 4
   rotationSpeed: 4
-  attackForce: {x: 5, y: 2}
   health: 100
   maxHealth: 100
   dropItems:
@@ -156,8 +155,8 @@ MonoBehaviour:
   launchAngle: 45
   shootInterval: 0.5
   destoryBullet: 1
---- !u!65 &7531536566714920968
-BoxCollider:
+--- !u!135 &8692998426990582454
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -175,8 +174,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2, y: 2, z: 2}
-  m_Center: {x: 0, y: 0.51, z: 0}
+  m_Radius: 1
+  m_Center: {x: 0, y: 0.5, z: 0}
 --- !u!1 &357553674306250726
 GameObject:
   m_ObjectHideFlags: 0
@@ -689,8 +688,8 @@ GameObject:
   - component: {fileID: 8963552785197339145}
   - component: {fileID: 3427059341195373272}
   m_Layer: 0
-  m_Name: ExpArea
-  m_TagString: ExpArea
+  m_Name: AttakArea
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3703,6 +3702,10 @@ PrefabInstance:
     - target: {fileID: 6498771968300082965, guid: 0d07acf2a2aa06b4fadf99936775f6a9, type: 3}
       propertyPath: m_Name
       value: "\u56F4\u5899"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6498771968300082965, guid: 0d07acf2a2aa06b4fadf99936775f6a9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7711778190625217627, guid: 0d07acf2a2aa06b4fadf99936775f6a9, type: 3}
       propertyPath: m_Enabled

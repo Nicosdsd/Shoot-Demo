@@ -137,7 +137,6 @@ MonoBehaviour:
   attack: 1
   speed: 4
   rotationSpeed: 4
-  attackForce: {x: 10, y: 5}
   health: 10
   maxHealth: 10
   dropItems:
@@ -1384,8 +1383,8 @@ GameObject:
   - component: {fileID: 350786361344428284}
   - component: {fileID: 3823920808813874422}
   m_Layer: 0
-  m_Name: ExpArea
-  m_TagString: ExpArea
+  m_Name: AttackArea
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
