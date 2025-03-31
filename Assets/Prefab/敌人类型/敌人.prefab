@@ -273,7 +273,7 @@ MonoBehaviour:
   dropItems:
   - {fileID: 1594516158341045276, guid: 02b35d6a2a175514c976fac25faefdfc, type: 3}
   highlightPlus: {fileID: 3283455695671931218}
-  deathParticlePrefab: {fileID: 5867907483655835861, guid: 42c041fdcbca79e4abf72c993feef158, type: 3}
+  deathParticlePrefab: {fileID: 1897765208491456, guid: 1af5134cfb06264448c0526d4db62aa0, type: 3}
   destroyItems: []
   isDead: 0
   canShoot: 0

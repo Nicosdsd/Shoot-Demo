@@ -146,7 +146,7 @@ MonoBehaviour:
   - {fileID: 1594516158341045276, guid: 02b35d6a2a175514c976fac25faefdfc, type: 3}
   - {fileID: 4292861658322330741, guid: 8c7bb68c0b0d6ac44a8a1a0449ac49d6, type: 3}
   highlightPlus: {fileID: 2560515954102488559}
-  deathParticlePrefab: {fileID: 5867907483655835861, guid: 42c041fdcbca79e4abf72c993feef158, type: 3}
+  deathParticlePrefab: {fileID: 1897765208491456, guid: 1af5134cfb06264448c0526d4db62aa0, type: 3}
   destroyItems:
   - {fileID: 7912308917332983474}
   isDead: 0

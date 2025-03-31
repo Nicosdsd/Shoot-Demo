@@ -111,6 +111,7 @@ public class EnemyControl : MonoBehaviour
         //GetComponent<Renderer>().material = defaultMat;
         highlightPlus.overlay =  0f;
         canMove = true;
+        
     }
 
     void Die()
@@ -138,9 +139,8 @@ public class EnemyControl : MonoBehaviour
             // 设置粒子背向玩家
             Vector3 particleDirection = (transform.position - player.transform.position).normalized;
             particle.transform.rotation = Quaternion.LookRotation(particleDirection);
-
+            particle.transform.parent = null;
             // 销毁粒子对象自身
-            Destroy(particle, 1f); // 2秒后销毁实例
         }
 
         // 循环生成掉落物品
@@ -168,8 +168,8 @@ public class EnemyControl : MonoBehaviour
         }
 
         AudioManager.Instance.PlaySound("敌人击碎",transform.position);
-        Destroy(gameObject,0.5f); // 销毁敌人对象本身
-        playerAni.SetBool("Die", true);
+        Destroy(gameObject); // 销毁敌人对象本身
+        //playerAni.SetBool("Die", true);
     }
 
     private void OnTriggerEnter(Collider other)
