@@ -150,11 +150,9 @@ MonoBehaviour:
   - {fileID: 7912308917332983474}
   isDead: 0
   canShoot: 0
-  targetPrefab: {fileID: 7770083783960014453, guid: ff304eab29070cc40850dccb11320c3a, type: 3}
   bulletPrefab: {fileID: 6794607939406559962, guid: f7136a9c9973c1348b8167594ff09a80, type: 3}
   launchAngle: 45
-  shootInterval: 0.5
-  destoryBullet: 1
+  shootInterval: 1
 --- !u!135 &8692998426990582454
 SphereCollider:
   m_ObjectHideFlags: 0

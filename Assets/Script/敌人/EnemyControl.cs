@@ -34,11 +34,11 @@ public class EnemyControl : MonoBehaviour
     
     [Header("发射物")] 
     public bool canShoot;
-    public GameObject targetPrefab;      // 目标点
+    //public GameObject targetPrefab;      // 目标点
     public GameObject bulletPrefab;  // 子弹的预制体
     public float launchAngle = 45f; // 发射角度
     public float shootInterval = 2;
-    public float destoryBullet = 1;
+    //public float destoryBullet = 1;
 
     
     void Start()
@@ -225,14 +225,14 @@ public class EnemyControl : MonoBehaviour
         // 实例化子弹目标点
         Vector3 targetPos = player.transform.position;
         targetPos.y = 0;
-        GameObject targetInstance = Instantiate(targetPrefab, targetPos, Quaternion.identity);
+        //GameObject targetInstance = Instantiate(targetPrefab, targetPos, Quaternion.identity);
 
         // 实例化子弹
         GameObject bulletInstance = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         Rigidbody bulletRigidbody = bulletInstance.GetComponent<Rigidbody>();
 
         // 计算发射所需的速度
-        Vector3 direction = targetInstance.transform.position - transform.position;
+        Vector3 direction = targetPos - transform.position;
         float h = direction.y;              // 高度差
         direction.y = 0;                    // 水平方向距离
         float distance = direction.magnitude; // 水平方向长度
@@ -249,8 +249,8 @@ public class EnemyControl : MonoBehaviour
         bulletRigidbody.linearVelocity = velocityVector;
 
         // 销毁临时对象
-        Destroy(targetInstance, destoryBullet);
-        Destroy(bulletInstance, destoryBullet);
+        /*Destroy(targetInstance, destoryBullet);
+        Destroy(bulletInstance, destoryBullet);*/
     }
     
 
