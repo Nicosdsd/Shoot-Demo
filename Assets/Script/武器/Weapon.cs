@@ -18,7 +18,8 @@ public class Weapon : MonoBehaviour
     public GameObject shellPartices; //弹壳特效
     private float nextFireTime;
     private PlayerControl player;
-    public bool isAddWeapon;
+    public bool isAddWeapon;//是否为外置武器
+    public string weaponSound; //武器音效
     
     private bool isReloading; // 用于跟踪是否正在换弹
     private float reloadCooldownTimer; // 用于计时的变量
@@ -73,6 +74,8 @@ public class Weapon : MonoBehaviour
             
             player.canFire = false;
             player.reloadAmmoUI.gameObject.SetActive(true);
+          
+            Invoke("ReloadSound", reloadTime/player.ammoReloading/4); // 防止上弹与发射音效重叠
         }
     
         if (Time.time >= nextFireTime)
@@ -98,7 +101,7 @@ public class Weapon : MonoBehaviour
 
             currentAmmo--;
         
-            AudioManager.Instance.PlaySound("普通子弹",transform.position);
+            AudioManager.Instance.PlaySound(weaponSound,transform.position);
             /*// 减少当前弹药数量（默认武器不消耗子弹）
             if (player.currentWeapon.tag != "DefaultWeapon")
             {
@@ -116,9 +119,14 @@ public class Weapon : MonoBehaviour
         {
             return;
         }
-        
+       
         player.canFire = true;
         player.reloadAmmoUI.gameObject.SetActive(false);
+       
     }
-    
+
+    void ReloadSound()
+    {
+        AudioManager.Instance.PlaySound("上弹",transform.position);
+    }
 }

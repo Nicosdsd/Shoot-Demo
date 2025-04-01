@@ -88,11 +88,6 @@ public class EnemyControl : MonoBehaviour
         
         //print("速度" + movementSpeed);
 
-        // 检查敌人是否死亡
-        if (health <= 0)
-        {
-            Die();
-        }
     }
 
     public void Hit(float damage)
@@ -104,6 +99,12 @@ public class EnemyControl : MonoBehaviour
         highlightPlus.overlay = 0.95f;
         Invoke("LateHit",blinkTime);
         StartCoroutine(LateHit());
+        // 检查敌人是否死亡
+        if (health <= 0)
+        {
+            Die();
+        }
+        AudioManager.Instance.PlaySound("击中敌人",transform.position);
     }
     private IEnumerator LateHit()
     {
@@ -167,7 +168,7 @@ public class EnemyControl : MonoBehaviour
             }
         }
 
-        AudioManager.Instance.PlaySound("敌人击碎",transform.position);
+        AudioManager.Instance.PlaySound("敌人击杀",transform.position);
         Destroy(gameObject); // 销毁敌人对象本身
         //playerAni.SetBool("Die", true);
     }

@@ -19500,14 +19500,16 @@ MonoBehaviour:
   weaponName: "\u673A\u67AA"
   damage: 2
   speed: 50
-  fireRate: 0.15
+  fireRate: 0.1
   ammoMax: 20
   currentAmmo: 0
   reloadTime: 2
-  bulletPrefab: {fileID: 2928178143791889286, guid: caddb6528f6aab74ebd9bb08c9663d55, type: 3}
+  bulletPrefab: {fileID: 2928178143791889286, guid: 67cf7a612b42397438f85d3df9e8bbee, type: 3}
   bulletSpawnPoint: {fileID: 7140404688937279448}
   firePartices: {fileID: 3399235101800937669}
   shellPartices: {fileID: 4724178208725932060, guid: b5313a8f4c01c024c8e837856c4620c2, type: 3}
+  isAddWeapon: 0
+  weaponSound: "\u673A\u67AA"
 --- !u!1001 &7306915930859662950
 PrefabInstance:
   m_ObjectHideFlags: 0

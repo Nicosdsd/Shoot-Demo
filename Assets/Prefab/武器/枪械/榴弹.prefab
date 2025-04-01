@@ -19508,6 +19508,8 @@ MonoBehaviour:
   bulletSpawnPoint: {fileID: 7140404688937279448}
   firePartices: {fileID: 3399235101800937669}
   shellPartices: {fileID: 4724178208725932060, guid: b5313a8f4c01c024c8e837856c4620c2, type: 3}
+  isAddWeapon: 0
+  weaponSound: "\u69B4\u5F39"
 --- !u!1001 &7306915930859662950
 PrefabInstance:
   m_ObjectHideFlags: 0

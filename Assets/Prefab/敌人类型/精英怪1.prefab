@@ -142,15 +142,13 @@ MonoBehaviour:
   dropItems:
   - {fileID: 1594516158341045276, guid: 02b35d6a2a175514c976fac25faefdfc, type: 3}
   highlightPlus: {fileID: 5928782476910677526}
-  deathParticlePrefab: {fileID: 1897765208491456, guid: 1af5134cfb06264448c0526d4db62aa0, type: 3}
+  deathParticlePrefab: {fileID: 2164605666129317583, guid: d14be8dcc5e1ad849833ec1861cc60b1, type: 3}
   destroyItems: []
   isDead: 0
   canShoot: 0
-  targetPrefab: {fileID: 7770083783960014453, guid: ff304eab29070cc40850dccb11320c3a, type: 3}
   bulletPrefab: {fileID: 6794607939406559962, guid: 1cc4bb58e1be8314b92c045d4addf214, type: 3}
   launchAngle: 60
   shootInterval: 2
-  destoryBullet: 1.2
 --- !u!135 &4317089146311182223
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1042,7 +1040,7 @@ MonoBehaviour:
   outlineEdgeThreshold: 0.995
   outlineSharpness: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0

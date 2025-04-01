@@ -138,21 +138,18 @@ MonoBehaviour:
   attack: 1
   speed: 5
   rotationSpeed: 5
-  attackForce: {x: 10, y: 5}
   health: 4
   maxHealth: 4
   dropItems:
   - {fileID: 1594516158341045276, guid: 02b35d6a2a175514c976fac25faefdfc, type: 3}
   highlightPlus: {fileID: 1087950638162392319}
-  deathParticlePrefab: {fileID: 1897765208491456, guid: 1af5134cfb06264448c0526d4db62aa0, type: 3}
+  deathParticlePrefab: {fileID: 2164605666129317583, guid: d14be8dcc5e1ad849833ec1861cc60b1, type: 3}
   destroyItems: []
   isDead: 0
   canShoot: 0
-  targetPrefab: {fileID: 0}
   bulletPrefab: {fileID: 0}
   launchAngle: 45
   shootInterval: 2
-  destoryBullet: 1
 --- !u!135 &5967422350609520408
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1767,7 +1764,7 @@ MonoBehaviour:
   outlineEdgeThreshold: 0.995
   outlineSharpness: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0

@@ -23,7 +23,7 @@ public class EnemyBullet : MonoBehaviour
         {
             player.Hit(attack);
         }
-        
+        AudioManager.Instance.PlaySound("小爆炸",transform.position);
         Destroy(gameObject);
     }
 }

@@ -145,7 +145,7 @@ MonoBehaviour:
   - {fileID: 1594516158341045276, guid: 02b35d6a2a175514c976fac25faefdfc, type: 3}
   - {fileID: 4292861658322330741, guid: 8c7bb68c0b0d6ac44a8a1a0449ac49d6, type: 3}
   highlightPlus: {fileID: 2560515954102488559}
-  deathParticlePrefab: {fileID: 1897765208491456, guid: 1af5134cfb06264448c0526d4db62aa0, type: 3}
+  deathParticlePrefab: {fileID: 2164605666129317583, guid: d14be8dcc5e1ad849833ec1861cc60b1, type: 3}
   destroyItems:
   - {fileID: 7912308917332983474}
   isDead: 0
@@ -1522,7 +1522,7 @@ MonoBehaviour:
   outlineEdgeThreshold: 0.995
   outlineSharpness: 1
   outlineDownsampling: 1
-  outlineVisibility: 0
+  outlineVisibility: 1
   glowBlendMode: 0
   outlineBlitDebug: 0
   outlineIndependent: 0
@@ -1581,7 +1581,7 @@ MonoBehaviour:
   targetFXStayDuration: 1.5
   targetFXVisibility: 1
   iconFX: 0
-  iconFXMesh: {fileID: 3613567641014311022, guid: 0619ab933f4044ef7bca0b64517837b3, type: 3}
+  iconFXMesh: {fileID: 0}
   iconFXLightColor: {r: 1, g: 1, b: 1, a: 1}
   iconFXDarkColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   iconFXCenter: {fileID: 0}
