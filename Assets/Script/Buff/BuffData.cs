@@ -47,8 +47,9 @@ public class BuffData : ScriptableObject
             // 将新武器挂载到炮台上
             weapon.transform.parent = turret.transform;
             
-            
-       
+            //标识武器数量
+            player.defaultWeaponNum += 1;
+
         }
     }
     

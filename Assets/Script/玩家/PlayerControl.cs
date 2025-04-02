@@ -54,7 +54,8 @@ public class PlayerControl : MonoBehaviour
     public float autoAimRadius = 20; //锁定范围
     float minAimAngleThreshold = 5f; //瞄准允许射击角度
     public GameObject expArea;
-    public Slider reloadAmmoUI; //
+    public Slider reloadAmmoUI; //换弹UI
+    public float defaultWeaponNum = 1; //当前武器数量
 
     void Start()
     {

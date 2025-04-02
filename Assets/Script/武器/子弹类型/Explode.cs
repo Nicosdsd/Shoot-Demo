@@ -5,10 +5,12 @@ public class Explode : MonoBehaviour
     public int damage = 2; 
     public float explosionForce = 15f;    // 爆炸击退力
     public float destroyTime = 0.5f;
+    public string weaponSound; //武器音效
 
     private void Start()
     {
         Destroy(gameObject, destroyTime);
+        AudioManager.Instance.PlaySound(weaponSound,transform.position);
     }
 
     private void OnTriggerEnter(Collider other)

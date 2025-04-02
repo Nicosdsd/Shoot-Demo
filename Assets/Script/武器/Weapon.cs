@@ -100,8 +100,15 @@ public class Weapon : MonoBehaviour
             Destroy(shellInstance, 0.5f);
 
             currentAmmo--;
-        
+
+            if (isAddWeapon )
+            {
+                AudioManager.Instance.SetVolume(weaponSound, 0.1f);
+            }
+            
+            //AudioManager.Instance.SetVolume(weaponSound, 1 / player.defaultWeaponNum);
             AudioManager.Instance.PlaySound(weaponSound,transform.position);
+
             /*// 减少当前弹药数量（默认武器不消耗子弹）
             if (player.currentWeapon.tag != "DefaultWeapon")
             {

@@ -169,6 +169,7 @@ public class EnemyControl : MonoBehaviour
         }
 
         AudioManager.Instance.PlaySound("敌人击杀",transform.position);
+        
         Destroy(gameObject); // 销毁敌人对象本身
         //playerAni.SetBool("Die", true);
     }

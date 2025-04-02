@@ -9015,6 +9015,7 @@ MonoBehaviour:
   autoAimRadius: 15
   expArea: {fileID: 479073792}
   reloadAmmoUI: {fileID: 1606893482}
+  defaultWeaponNum: 1
 --- !u!54 &267713295
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -19889,7 +19890,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - name: "\u51FB\u4E2D\u654C\u4EBA"
-    clip: {fileID: 8300000, guid: 0fc3632debe1fa643b1485fd240f2ea3, type: 3}
+    clip: {fileID: 8300000, guid: 63e4392d311616e4185c5eaad478d1e6, type: 3}
     volume: 0.5
     minInterval: 0.2
     enableSpatialSound: 0
@@ -19897,7 +19898,7 @@ MonoBehaviour:
     minDistance: 1
     lastPlayedTime: -Infinity
   - name: "\u654C\u4EBA\u51FB\u6740"
-    clip: {fileID: 8300000, guid: 954e85f33dff10a4d9941f80b95cbe5a, type: 3}
+    clip: {fileID: 8300000, guid: 0bf2af82852c7a4428e0de9597d66d61, type: 3}
     volume: 0.5
     minInterval: 0.2
     enableSpatialSound: 0
@@ -19936,16 +19937,24 @@ MonoBehaviour:
     maxDistance: 50
     minDistance: 1
     lastPlayedTime: -Infinity
-  - name: "\u5C0F\u7206\u70B8"
-    clip: {fileID: 8300000, guid: e7a74b46c7510634d80428d0332f96e5, type: 3}
-    volume: 0.5
+  - name: "\u7206\u70B8"
+    clip: {fileID: 8300000, guid: 25332efaad9e2b64fa0056a477bf1308, type: 3}
+    volume: 0.8
     minInterval: 0.5
-    enableSpatialSound: 1
+    enableSpatialSound: 0
+    maxDistance: 50
+    minDistance: 1
+    lastPlayedTime: -Infinity
+  - name: "\u6838\u5F39"
+    clip: {fileID: 8300000, guid: 7d2275e2c15bad84e9a08d49653fdfe1, type: 3}
+    volume: 0.8
+    minInterval: 0.5
+    enableSpatialSound: 0
     maxDistance: 50
     minDistance: 1
     lastPlayedTime: -Infinity
   - name: "\u624B\u67AA"
-    clip: {fileID: 8300000, guid: af47ed2da66d4ba42aa3abea86831361, type: 3}
+    clip: {fileID: 8300000, guid: a210febae948bbe41829c8c4cf41e96d, type: 3}
     volume: 0.5
     minInterval: 0.25
     enableSpatialSound: 0
@@ -19955,13 +19964,13 @@ MonoBehaviour:
   - name: "\u673A\u67AA"
     clip: {fileID: 8300000, guid: c1d9407920bdbfb4f894aa8e53f35f35, type: 3}
     volume: 0.5
-    minInterval: 0.579
+    minInterval: 0.8
     enableSpatialSound: 0
     maxDistance: 50
     minDistance: 1
     lastPlayedTime: -Infinity
   - name: "\u72D9\u51FB\u67AA"
-    clip: {fileID: 8300000, guid: 67f549180ff74364e922564e0c44193b, type: 3}
+    clip: {fileID: 8300000, guid: e11ac2a2a947d6e4d8ab25f394c7ef28, type: 3}
     volume: 0.5
     minInterval: 0.5
     enableSpatialSound: 0
@@ -19969,7 +19978,7 @@ MonoBehaviour:
     minDistance: 1
     lastPlayedTime: -Infinity
   - name: "\u69B4\u5F39"
-    clip: {fileID: 8300000, guid: 106a7332224cf8449ac8a2956b0eaa57, type: 3}
+    clip: {fileID: 8300000, guid: 478496767e66c9c4ab38cd6f5b073c5f, type: 3}
     volume: 0.5
     minInterval: 0.5
     enableSpatialSound: 0
