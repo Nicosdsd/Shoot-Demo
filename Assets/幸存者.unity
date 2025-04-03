@@ -214,6 +214,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 573094729}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: SetUISound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: "\u6309\u94AE\u70B9\u51FB"
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &656361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1319,7 +1331,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 31198840}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 573094729}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: SetUISound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: "\u6309\u94AE\u70B9\u51FB"
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &31198843
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19890,15 +19914,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sounds:
   - name: "\u51FB\u4E2D\u654C\u4EBA"
-    clip: {fileID: 8300000, guid: 63e4392d311616e4185c5eaad478d1e6, type: 3}
-    volume: 0.5
+    clip: {fileID: 8300000, guid: 391c9d808ed5b2d458bb639702f2c82e, type: 3}
+    volume: 0.7
     minInterval: 0.2
     enableSpatialSound: 0
     maxDistance: 50
     minDistance: 1
     lastPlayedTime: -Infinity
   - name: "\u654C\u4EBA\u51FB\u6740"
-    clip: {fileID: 8300000, guid: 0bf2af82852c7a4428e0de9597d66d61, type: 3}
+    clip: {fileID: 8300000, guid: ac5f26b98d3605f4f83e54b89f43dc94, type: 3}
     volume: 0.5
     minInterval: 0.2
     enableSpatialSound: 0
@@ -19906,15 +19930,15 @@ MonoBehaviour:
     minDistance: 1
     lastPlayedTime: -Infinity
   - name: "\u83B7\u53D6\u7ECF\u9A8C"
-    clip: {fileID: 8300000, guid: fb07045043e6a4845843a94b64008ec2, type: 3}
-    volume: 0.8
+    clip: {fileID: 8300000, guid: b3e8212a13b30ff46ae412f2312a21d6, type: 3}
+    volume: 1
     minInterval: 0.2
     enableSpatialSound: 0
     maxDistance: 50
     minDistance: 1
     lastPlayedTime: -Infinity
   - name: "\u4E3B\u89D2\u53D7\u4F24"
-    clip: {fileID: 8300000, guid: 0fc3632debe1fa643b1485fd240f2ea3, type: 3}
+    clip: {fileID: 8300000, guid: cea593b1d4a463649916a63c13379900, type: 3}
     volume: 1
     minInterval: 0.3
     enableSpatialSound: 0
@@ -19922,15 +19946,15 @@ MonoBehaviour:
     minDistance: 1
     lastPlayedTime: -Infinity
   - name: "\u811A\u5370"
-    clip: {fileID: 8300000, guid: 2d7834f39404e1d40a46afdc0943a6af, type: 3}
-    volume: 0.5
-    minInterval: 0.23
+    clip: {fileID: 8300000, guid: 37ca563737986bf4aac1835b44f64871, type: 3}
+    volume: 0.1
+    minInterval: 0.2
     enableSpatialSound: 0
     maxDistance: 50
     minDistance: 1
     lastPlayedTime: -Infinity
   - name: "\u4E0A\u5F39"
-    clip: {fileID: 8300000, guid: 4d61a50927e4e484bae05e049604a4f4, type: 3}
+    clip: {fileID: 8300000, guid: 5159db09344f7db4ebca25671874b1cb, type: 3}
     volume: 0.5
     minInterval: 0.1
     enableSpatialSound: 0
@@ -19954,7 +19978,7 @@ MonoBehaviour:
     minDistance: 1
     lastPlayedTime: -Infinity
   - name: "\u624B\u67AA"
-    clip: {fileID: 8300000, guid: a210febae948bbe41829c8c4cf41e96d, type: 3}
+    clip: {fileID: 8300000, guid: 9e2a29369724d8a489f298f7ffef43b6, type: 3}
     volume: 0.5
     minInterval: 0.25
     enableSpatialSound: 0
@@ -19962,9 +19986,9 @@ MonoBehaviour:
     minDistance: 1
     lastPlayedTime: -Infinity
   - name: "\u673A\u67AA"
-    clip: {fileID: 8300000, guid: c1d9407920bdbfb4f894aa8e53f35f35, type: 3}
+    clip: {fileID: 8300000, guid: a210febae948bbe41829c8c4cf41e96d, type: 3}
     volume: 0.5
-    minInterval: 0.8
+    minInterval: 0.1
     enableSpatialSound: 0
     maxDistance: 50
     minDistance: 1
@@ -19981,6 +20005,14 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 478496767e66c9c4ab38cd6f5b073c5f, type: 3}
     volume: 0.5
     minInterval: 0.5
+    enableSpatialSound: 0
+    maxDistance: 50
+    minDistance: 1
+    lastPlayedTime: -Infinity
+  - name: "\u6309\u94AE\u70B9\u51FB"
+    clip: {fileID: 8300000, guid: 2d7834f39404e1d40a46afdc0943a6af, type: 3}
+    volume: 1
+    minInterval: 0.1
     enableSpatialSound: 0
     maxDistance: 50
     minDistance: 1
@@ -27575,6 +27607,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 573094729}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: SetUISound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: "\u6309\u94AE\u70B9\u51FB"
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &850786600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -30060,6 +30104,7 @@ MonoBehaviour:
   expSlider: {fileID: 913494155}
   buffManu: {fileID: 1689125145}
   ScoreText: {fileID: 1086397637}
+  bombPrefab: {fileID: 8140581971359726223, guid: 40a0da9850c671341b6e5a88b967358b, type: 3}
 --- !u!1001 &914746134
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44063,7 +44108,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1328543895}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 573094729}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: SetUISound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: "\u6309\u94AE\u70B9\u51FB"
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1328543895
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45087,6 +45144,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 573094729}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: SetUISound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: "\u6309\u94AE\u70B9\u51FB"
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1354047374
@@ -52432,7 +52501,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1574005675}
   m_Layer: 5
-  m_Name: PlayerInfo
+  m_Name: "\u73A9\u5BB6\u4FE1\u606F"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56367,6 +56436,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 573094729}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: SetUISound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: "\u6309\u94AE\u70B9\u51FB"
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1660519671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -59978,7 +60059,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1785641248}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 573094729}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: SetUISound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: "\u6309\u94AE\u70B9\u51FB"
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1785641248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62001,7 +62094,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3315896166046290444, guid: c8e8703d80fd1174fab053f943f77b5d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1110
+      value: -960
       objectReference: {fileID: 0}
     - target: {fileID: 4046254888891683841, guid: c8e8703d80fd1174fab053f943f77b5d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -62029,7 +62122,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4046254888891683841, guid: c8e8703d80fd1174fab053f943f77b5d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1110
+      value: -960
       objectReference: {fileID: 0}
     - target: {fileID: 6090455920185041875, guid: c8e8703d80fd1174fab053f943f77b5d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -62153,7 +62246,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8940561439733127309, guid: c8e8703d80fd1174fab053f943f77b5d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1110
+      value: -960
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -72224,7 +72317,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2112802719}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 573094729}
+        m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
+        m_MethodName: SetUISound
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: "\u6309\u94AE\u70B9\u51FB"
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2112802719
 MonoBehaviour:
   m_ObjectHideFlags: 0

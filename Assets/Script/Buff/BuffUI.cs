@@ -19,6 +19,6 @@ public class BuffUI : MonoBehaviour
         buffData.ApplyToPlayer(player);
         transform.parent.gameObject.SetActive(false);
         buffManu.SetActive(false);
-        Instantiate(bombPrefab, player.transform.position, Quaternion.identity);
+        //Instantiate(bombPrefab, player.transform.position, Quaternion.identity);
     }
 }

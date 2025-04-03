@@ -123,4 +123,11 @@ public class AudioManager : MonoBehaviour
             Debug.LogWarning("Sound not found: " + name);
         }
     }
+
+    public void SetUISound(string soundName)
+    {
+        /*Time.timeScale = 1;
+        Instance.PlaySound(soundName,transform.position);*/
+
+    }
 }

@@ -103,7 +103,7 @@ public class Weapon : MonoBehaviour
 
             if (isAddWeapon )
             {
-                AudioManager.Instance.SetVolume(weaponSound, 0.1f);
+                AudioManager.Instance.SetVolume(weaponSound, 0.2f);
             }
             
             //AudioManager.Instance.SetVolume(weaponSound, 1 / player.defaultWeaponNum);

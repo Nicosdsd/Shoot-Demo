@@ -20,6 +20,8 @@ public class PlayerExp : MonoBehaviour
     public GameObject buffManu;
     public Text ScoreText;
     
+    public GameObject bombPrefab; //核弹清屏
+    
     private void Awake()
     {
         player = FindAnyObjectByType<PlayerControl>();
@@ -48,6 +50,13 @@ public class PlayerExp : MonoBehaviour
         currentExp -= expToNextLevel;
         expToNextLevel *= expGrowthRate;
         UpdateUI();
+        Time.timeScale = 0.8f;
+        Invoke("BuffActive",1);
+        Instantiate(bombPrefab, player.transform.position, Quaternion.identity);
+    }
+
+    void BuffActive()
+    {
         buffManu.SetActive(true);
     }
 

@@ -67,6 +67,5 @@ public class SystemManager : MonoBehaviour
         gameOver.SetActive(true);
     }
     
-
-
+    
 }
