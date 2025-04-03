@@ -19906,8 +19906,8 @@ MonoBehaviour:
     minDistance: 1
     lastPlayedTime: -Infinity
   - name: "\u83B7\u53D6\u7ECF\u9A8C"
-    clip: {fileID: 8300000, guid: efc7742f92c185645a2f86b46c92ddb5, type: 3}
-    volume: 0.1
+    clip: {fileID: 8300000, guid: fb07045043e6a4845843a94b64008ec2, type: 3}
+    volume: 0.8
     minInterval: 0.2
     enableSpatialSound: 0
     maxDistance: 50
@@ -19922,9 +19922,9 @@ MonoBehaviour:
     minDistance: 1
     lastPlayedTime: -Infinity
   - name: "\u811A\u5370"
-    clip: {fileID: 8300000, guid: dff215e5c08542749a27b6e4d40e6287, type: 3}
-    volume: 0
-    minInterval: 0.8
+    clip: {fileID: 8300000, guid: 2d7834f39404e1d40a46afdc0943a6af, type: 3}
+    volume: 0.5
+    minInterval: 0.23
     enableSpatialSound: 0
     maxDistance: 50
     minDistance: 1
