@@ -10,7 +10,7 @@ public class Exp : MonoBehaviour
     private PlayerControl player;
     private float OffsetAngle;// 额外旋转角度偏移
     private PlayerExp playerExp;//经验系统
-    private bool canFly;
+    public bool canFly;
     
     private void Start()
     {

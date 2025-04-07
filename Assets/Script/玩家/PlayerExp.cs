@@ -53,11 +53,16 @@ public class PlayerExp : MonoBehaviour
         Time.timeScale = 0.8f;
         Invoke("BuffActive",1);
         Instantiate(bombPrefab, player.transform.position, Quaternion.identity);
+        
     }
 
     void BuffActive()
     {
         buffManu.SetActive(true);
+        foreach (var exp in FindObjectsOfType<Exp>())
+        {
+            exp.canFly = true;
+        }
     }
 
     private void UpdateUI()

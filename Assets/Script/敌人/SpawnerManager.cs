@@ -24,6 +24,7 @@ public class SpawnerManager : MonoBehaviour
 
     [Header("阶段设置")]
     public SpawnStage[] spawnStages;
+    public GameObject getExp;
 
     [Header("Boss 设置")]
     public GameObject[] bossPrefabs; // Boss 预制体数组
@@ -110,6 +111,7 @@ public class SpawnerManager : MonoBehaviour
             }
             Debug.Log($"切换到阶段: {currentStage.stageName}" + currentStage);
             
+   
             // 仅当不是第一波时才显示波次警告
             if (!isFirstStage)
             {

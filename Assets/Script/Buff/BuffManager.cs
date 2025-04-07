@@ -7,14 +7,12 @@ public class BuffManager : MonoBehaviour
 {
     public BuffData[] buffDatas;
     private BuffData currentBuff;
-    public GameObject buffManu;
-    public GameObject bombPrefab; //核弹清屏
-    private PlayerControl player;
+ 
     
     void Awake()
     {
         AssignBuffDataToChildren();
-        player = FindAnyObjectByType<PlayerControl>();
+      
     }
 
     private void OnEnable()
