@@ -24,7 +24,6 @@ public class SpawnerManager : MonoBehaviour
 
     [Header("阶段设置")]
     public SpawnStage[] spawnStages;
-    public GameObject getExp;
 
     [Header("Boss 设置")]
     public GameObject[] bossPrefabs; // Boss 预制体数组
@@ -36,6 +35,9 @@ public class SpawnerManager : MonoBehaviour
     public Vector3 enemySpawnAreaOffset;
     public Transform center;
     public float exclusionZoneRadius;
+    
+    [Header("预警设置")]
+    public GameObject spawnAlertPrefab; // 用于生成提示的预制件
 
     [Header("生成限制")]
     public Transform enemyParent; // 用于存放所有生成敌人的父物体
@@ -141,17 +143,30 @@ public class SpawnerManager : MonoBehaviour
 
         for (int i = 0; i < enemiesToSpawn; i++)
         {
-            Vector3 randomPosition;
-            do
-            {
-                randomPosition = GetRandomPositionInEnemyArea();
-            } while (IsInsideExclusionZone(randomPosition));
+            StartCoroutine(SpawnWithAlert());
+        }
+    }
 
-            GameObject selectedEnemy = GetRandomEnemyPrefabForCurrentStage();
-            if (selectedEnemy != null)
-            {
-                Instantiate(selectedEnemy, randomPosition, Quaternion.identity, enemyParent);
-            }
+    //预警1秒后生成敌人
+    private System.Collections.IEnumerator SpawnWithAlert()
+    {
+        Vector3 randomPosition;
+        do
+        {
+            randomPosition = GetRandomPositionInEnemyArea();
+        } while (IsInsideExclusionZone(randomPosition));
+
+        GameObject alertObject = Instantiate(spawnAlertPrefab, randomPosition, Quaternion.identity);
+    
+        // 等待一秒后销毁预警物体并生成敌人
+        yield return new WaitForSeconds(1f);
+
+        Destroy(alertObject);
+
+        GameObject selectedEnemy = GetRandomEnemyPrefabForCurrentStage();
+        if (selectedEnemy != null)
+        {
+            Instantiate(selectedEnemy, randomPosition, Quaternion.identity, enemyParent);
         }
     }
 

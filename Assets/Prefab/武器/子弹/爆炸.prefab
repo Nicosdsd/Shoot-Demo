@@ -161,6 +161,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Classic_Medium_Explosion
       objectReference: {fileID: 0}
+    - target: {fileID: 1897765208491456, guid: edacf0fc41abd474da349ea9cd8aae6e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4936987887953078, guid: edacf0fc41abd474da349ea9cd8aae6e, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.24419999

@@ -92,7 +92,7 @@ public class ExpManager : MonoBehaviour
         expToNextLevel *= expGrowthRate;
         UpdateUI();
         Time.timeScale = 0.8f;
-        Invoke("BuffActive",1);
+        Invoke("BuffActive",2);
         Instantiate(bombPrefab, player.transform.position, Quaternion.identity);
         
     }
@@ -107,6 +107,7 @@ public class ExpManager : MonoBehaviour
         foreach (var exp in FindObjectsOfType<Exp>())
         {
             exp.canFly = true;
+            exp.canGetExp = false;
         }
     }
 
