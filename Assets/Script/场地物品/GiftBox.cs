@@ -8,11 +8,8 @@ public class GiftBox : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            BuffManager buffManager = FindAnyObjectByType<BuffManager>();
-            if (buffManager != null) // 空值检查
-            {
-                buffManager.gameObject.SetActive(true);
-            }
+            ExpManager expManager = FindAnyObjectByType<ExpManager>();
+            expManager.LevelUp();
         }
     }
 }

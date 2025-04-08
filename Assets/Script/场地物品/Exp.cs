@@ -9,13 +9,13 @@ public class Exp : MonoBehaviour
     public float exp = 1; //经验
     private PlayerControl player;
     private float OffsetAngle;// 额外旋转角度偏移
-    private PlayerExp playerExp;//经验系统
+    private ExpManager expManager;//经验系统
     public bool canFly;
     
     private void Start()
     {
-        player = FindObjectOfType<PlayerControl>();
-        playerExp = FindAnyObjectByType<PlayerExp>();
+        player = FindAnyObjectByType<PlayerControl>();
+        expManager = FindAnyObjectByType<ExpManager>();
         OffsetAngle = Random.Range(-maxAngle, maxAngle);
     }
 
@@ -53,8 +53,8 @@ public class Exp : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Destroy(gameObject);
-            playerExp.GainExperience(exp);//主角获取经验
-            playerExp.GainScore(exp);
+            expManager.GainExperience(exp);//主角获取经验
+            expManager.GainScore(exp);
             AudioManager.Instance.PlaySound("获取经验",transform.position);
         }
     }
