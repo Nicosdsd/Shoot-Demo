@@ -17,22 +17,20 @@ public class ExpManager : MonoBehaviour
     private float localScore;
 
     [Header("UI元素")]
-    public Text levelText;
-    public Slider expSlider;
-    public GameObject buffMenu;
-    public Text scoreText;
+    public GameObject buffMenu;//三选一
+    private InfoManager infoManager;//玩家UI信息管理
 
     [Header("Buff系统")]
     public BuffData[] buffDatas;
     public GameObject bombPrefab;
 
     [Header("Buff按钮预制件")]
-    public Transform buffButtonContainer; // 需要将原buff按钮父节点拖拽至此
+    public Transform buffButtonContainer; // buff按钮父节点
 
     private void Awake()
     {
         player = FindAnyObjectByType<PlayerControl>();
-       
+        infoManager = FindAnyObjectByType<InfoManager>();
     }
 
     //洗牌算法
@@ -75,13 +73,13 @@ public class ExpManager : MonoBehaviour
         {
             LevelUp();
         }
-        UpdateUI();
+        infoManager.UpdateExpUI(currentExp / expToNextLevel,level);//ui同步
     }
 
     public void GainScore(float score)
     {
         localScore += score;
-        scoreText.text = "分数："+ localScore;
+        infoManager.UpdateScore(localScore);
     }
     
 
@@ -90,10 +88,10 @@ public class ExpManager : MonoBehaviour
         level++;
         currentExp -= expToNextLevel;
         expToNextLevel *= expGrowthRate;
-        UpdateUI();
         Time.timeScale = 0.8f;
         Invoke("BuffActive",2);
         Instantiate(bombPrefab, player.transform.position, Quaternion.identity);
+        infoManager.UpdateExpUI(currentExp / expToNextLevel,level);//ui同步
         
     }
 
@@ -111,9 +109,5 @@ public class ExpManager : MonoBehaviour
         }
     }
 
-    private void UpdateUI()
-    {
-        levelText.text = $"等级: {level}";
-        expSlider.value = currentExp / expToNextLevel;
-    }
+   
 }

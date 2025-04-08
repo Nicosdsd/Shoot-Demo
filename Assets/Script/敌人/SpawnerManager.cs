@@ -147,7 +147,7 @@ public class SpawnerManager : MonoBehaviour
         }
     }
 
-    //预警1秒后生成敌人
+    
     private System.Collections.IEnumerator SpawnWithAlert()
     {
         Vector3 randomPosition;

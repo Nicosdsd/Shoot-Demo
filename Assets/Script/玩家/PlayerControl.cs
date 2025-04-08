@@ -14,7 +14,7 @@ public class PlayerControl : MonoBehaviour
 
     [Header("基础")]
     //标识
-    public Slider HealthSlider; // 血量进度条
+    private InfoManager infoManager;//玩家UI信息管理
     private bool isInvincible; // 标志变量，表示当前是否处于无敌状态
     public float invincibleTime = 0.2f; // 无敌时间
     //材质效果
@@ -67,6 +67,7 @@ public class PlayerControl : MonoBehaviour
         defaultMat = GetComponent<Renderer>().material;
         weaponManager = FindAnyObjectByType<WeaponManager>();
         currentWeapon = GetComponentInChildren<Weapon>();
+        infoManager = FindAnyObjectByType<InfoManager>();
     }
 
     void Update()
@@ -220,7 +221,7 @@ public class PlayerControl : MonoBehaviour
         if (health>0)
         {
             health -= damage;
-            HealthSlider.value = health / healthMax ;
+            infoManager.UpdateHealthUI(health / healthMax);
             playerAni?.SetTrigger("Hit");
             camAnim?.SetTrigger("CameraShakeTrigger");
             HitEffect.SetActive(true);
