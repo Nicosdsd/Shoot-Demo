@@ -7,6 +7,7 @@ public class EnemyExplode : MonoBehaviour
     public float explosionForce = 15f;    // 爆炸击退力
     public float destroyTime = 1;
     public string weaponSound; //武器音效
+    public float blockTime = 0.5f;
     
     private void Start()
     {
@@ -36,7 +37,7 @@ public class EnemyExplode : MonoBehaviour
             PlayerControl playerControl = other.GetComponent<PlayerControl>();
             if (playerControl != null)
             {
-                playerControl.Hit(damage,1f);
+                playerControl.Hit(damage,blockTime);
             }
         }
     }
