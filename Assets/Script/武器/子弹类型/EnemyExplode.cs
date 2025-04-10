@@ -40,5 +40,6 @@ public class EnemyExplode : MonoBehaviour
                 playerControl.Hit(damage,blockTime);
             }
         }
+        GetComponent<Collider>().enabled = false;
     }
 }
