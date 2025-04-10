@@ -13,6 +13,8 @@ public class EnemyBullet : MonoBehaviour
         boomEffect.SetActive(false);
         Destroy(gameObject,destroyTime);
     }
+    
+    
 
     private void OnCollisionEnter(Collision other)
     {
@@ -21,7 +23,7 @@ public class EnemyBullet : MonoBehaviour
         
         if (other.gameObject.CompareTag("Player"))
         {
-            player.Hit(attack);
+            player.Hit(attack,0.3f);
         }
         AudioManager.Instance.PlaySound("小爆炸",transform.position);
         Destroy(gameObject);

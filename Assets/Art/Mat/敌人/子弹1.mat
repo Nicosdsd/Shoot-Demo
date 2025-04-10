@@ -122,7 +122,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularGloss: 10
     - _SpecularHighlights: 1
-    - _SpecularRange: 0.31
+    - _SpecularRange: 0.436
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
@@ -132,12 +132,12 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 0.37824848, g: 0.56884736, b: 0.9433962, a: 1}
-    - _Rim: {r: 0, g: 1, b: 5, a: 0}
-    - _RimColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ShadowColor: {r: 0.21529014, g: 0.40277734, b: 0.7735849, a: 1}
+    - _MainColor: {r: 0.37246343, g: 0.53351915, b: 0.8490566, a: 0.54509807}
+    - _Rim: {r: 0, g: 0.8, b: 2.51, a: 0}
+    - _RimColor: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
+    - _ShadowColor: {r: 0.22801706, g: 0.42034328, b: 0.7924528, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _SpecularColor: {r: 0.26415092, g: 0.26415092, b: 0.26415092, a: 1}
+    - _SpecularColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}
     - _Vector0: {r: 0, g: 2.18, b: 4.2, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

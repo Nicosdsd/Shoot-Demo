@@ -101,7 +101,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 203470639039350454}
   serializedVersion: 4
-  m_Mass: 1
+  m_Mass: 0.5
   m_Drag: 0
   m_AngularDrag: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -146,10 +146,6 @@ MonoBehaviour:
   deathParticlePrefab: {fileID: 2164605666129317583, guid: d14be8dcc5e1ad849833ec1861cc60b1, type: 3}
   destroyItems: []
   isDead: 0
-  canShoot: 0
-  bulletPrefab: {fileID: 0}
-  launchAngle: 45
-  shootInterval: 2
 --- !u!135 &5967422350609520408
 SphereCollider:
   m_ObjectHideFlags: 0

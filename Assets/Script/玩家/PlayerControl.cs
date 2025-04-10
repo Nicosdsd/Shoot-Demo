@@ -15,8 +15,6 @@ public class PlayerControl : MonoBehaviour
     [Header("基础")]
     //标识
     private InfoManager infoManager;//玩家UI信息管理
-    private bool isInvincible; // 标志变量，表示当前是否处于无敌状态
-    public float invincibleTime = 0.2f; // 无敌时间
     //材质效果
     public Material blinkMat;
     public HighlightEffect highlightPlus; //用来做Blink
@@ -24,7 +22,9 @@ public class PlayerControl : MonoBehaviour
     public GameObject HitEffect;
     //移动控制
     public Joystick leftJoystick; // 左摇杆（移动）
-    public bool canMove = true;
+    public bool block ;//玩家控制锁定
+   // public float blockTime = 0.5f; //锁定时间
+    
     
     [Header("移动优化参数")] 
     [SerializeField] float speedLerpUp = 10f;    // 加速系数
@@ -42,8 +42,10 @@ public class PlayerControl : MonoBehaviour
     public float ammoCapacity = 1; // 弹药容量系数
     public float ammoReloading = 1; // 上弹速度系数
 
+    
+    
     [Header("射击")] 
-    public bool canFire = true;
+    public bool canFire = true; //限制武器装弹
     public Weapon currentWeapon;
     public Animator camAnim;
     private WeaponManager weaponManager;
@@ -56,6 +58,14 @@ public class PlayerControl : MonoBehaviour
     public GameObject expArea;
     public Slider reloadAmmoUI; //换弹UI
     public float defaultWeaponNum = 1; //当前武器数量
+    
+    [Header("受伤")] 
+    //public float invincibleTime = 0.3f; // 无敌时间
+    public float knockbackRadius = 5f; // 击退的影响半径
+    public float knockbackForce = 10f; // 击退的力
+    private bool isInvincible; // 标志变量，表示当前是否处于无敌状态
+
+    
 
     void Start()
     {
@@ -72,21 +82,18 @@ public class PlayerControl : MonoBehaviour
 
     void Update()
     {
-        //输入
-        if (canMove)
-        {
-            // 左摇杆控制移动输入
-            float moveX = leftJoystick.Horizontal + Input.GetAxis("Horizontal");
-            float moveZ = leftJoystick.Vertical + Input.GetAxis("Vertical");
-            movement = new Vector3(moveX, 0, moveZ).normalized;
+        if(block) return;
+        
+        // 左摇杆控制移动输入
+        float moveX = leftJoystick.Horizontal + Input.GetAxis("Horizontal");
+        float moveZ = leftJoystick.Vertical + Input.GetAxis("Vertical");
+        movement = new Vector3(moveX, 0, moveZ).normalized;
             
-            // 新增动画控制
-                float movementSpeed = new Vector3(currentVelocity.x, 0, currentVelocity.z).magnitude * moveSpeed * 0.006f;
+        // 新增动画控制
+        float movementSpeed = new Vector3(currentVelocity.x, 0, currentVelocity.z).magnitude * moveSpeed * 0.006f;
                 
-                playerAni.SetFloat("Speed", movementSpeed);
-                //print("速度" + movementSpeed);
-                
-        }
+        playerAni.SetFloat("Speed", movementSpeed);
+        //print("速度" + movementSpeed);
         
         //位移
         Movement();
@@ -104,11 +111,9 @@ public class PlayerControl : MonoBehaviour
             RotateMovement();
             aimIconPrefab?.gameObject.SetActive(false); // 若无目标，禁用准星图标
         }
-      
-
+        
     }
     
-   
     
     //角色移动
     private void Movement()
@@ -210,16 +215,17 @@ public class PlayerControl : MonoBehaviour
     }
     
     //受伤
-    public void Hit(float damage)
+    public void Hit(float damage , float blcokTime)
     {
         // 如果角色正处于无敌状态，直接退出
         if (isInvincible)
             return;
         // 触发无敌状态
-        StartCoroutine(ActivateInvincibility());
+        StartCoroutine(ActivateInvincibility(blcokTime));
         
         if (health>0)
         {
+            block = true;
             health -= damage;
             infoManager.UpdateHealthUI(health / healthMax);
             playerAni?.SetTrigger("Hit");
@@ -227,22 +233,50 @@ public class PlayerControl : MonoBehaviour
             HitEffect.SetActive(true);
             AudioManager.Instance.PlaySound("主角受伤",transform.position);
             highlightPlus.overlay = 1;//blink
+            // 对周围敌人施加击退效果
+            ApplyKnockbackToEnemies();
         }
+        else
+        {
+            systemManager.GameOver();
+        }
+       
 
     }
 
-    private IEnumerator ActivateInvincibility()
+    private IEnumerator ActivateInvincibility(float duration)
     {
         isInvincible = true; // 开始无敌
-        yield return new WaitForSeconds(invincibleTime); // 等待无敌时间
-        isInvincible = false; // 恢复正常状态
+        yield return new WaitForSeconds(duration); // 等待无敌时间
+        
+        // 恢复正常状态
+        block = false;
+        isInvincible = false;
         HitEffect.SetActive(false);
-        canFire = true;
-        canMove = true;
-        highlightPlus.overlay = 0; //blink
-        if (health <= 0)
+        highlightPlus.overlay = 0; 
+      
+    }
+    
+    //对周围敌人施加击退效果
+    private void ApplyKnockbackToEnemies()
+    {
+        // 搜索玩家周围一定半径内的敌人
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, knockbackRadius);
+        
+        foreach (Collider hitCollider in hitColliders)
         {
-            systemManager.GameOver();
+            if (hitCollider.CompareTag("Enemy"))
+            {
+                hitCollider.GetComponent<EnemyControl>().Hit(0);
+                Rigidbody enemyRb = hitCollider.GetComponent<Rigidbody>();
+                // 计算击退方向（从玩家到敌人的方向）
+                Vector3 knockbackDirection = hitCollider.transform.position - transform.position;
+                knockbackDirection.y = 0;  // 忽略y轴的影响
+                knockbackDirection.Normalize();
+                // 施加击退力
+                enemyRb.AddForce(knockbackDirection * knockbackForce, ForceMode.Impulse);
+
+            }
         }
     }
     
@@ -251,5 +285,8 @@ public class PlayerControl : MonoBehaviour
         Gizmos.color = new Color(0, 1, 0, 0.25f); // 设置Gizmos颜色为绿色，透明度为0.25
         // 在玩家的位置绘制球体表示自动锁定区域
         Gizmos.DrawSphere(transform.position, autoAimRadius);
+        
+        Gizmos.color = new Color(1, 0, 0, 0.25f); // 击退区域
+        Gizmos.DrawSphere(transform.position, knockbackRadius);
     }
 }

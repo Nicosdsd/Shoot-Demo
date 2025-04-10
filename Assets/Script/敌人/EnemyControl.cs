@@ -11,11 +11,11 @@ public class EnemyControl : MonoBehaviour
     [Header("基础")]
     public Animator playerAni;
     public string speedAnimName;
-    public bool canMove = true;
+    public bool canMove;
+    
     public float attack = 1;
     public float speed = 5;
     public float rotationSpeed = 5; // 控制旋转跟随速度
-    //public Vector2 attackForce;
     public float health;
     public float maxHealth = 2;
     public GameObject[] dropItems; //掉落物
@@ -31,15 +31,8 @@ public class EnemyControl : MonoBehaviour
     public GameObject deathParticlePrefab;
     public GameObject[] destroyItems; //死亡销毁
     public bool isDead;//死亡约束
+    private bool isHit;
     
-    [Header("发射物")] 
-    public bool canShoot;
-    //public GameObject targetPrefab;      // 目标点
-    public GameObject bulletPrefab;  // 子弹的预制体
-    public float launchAngle = 45f; // 发射角度
-    public float shootInterval = 2;
-    //public float destoryBullet = 1;
-
     
     void Start()
     {
@@ -66,7 +59,7 @@ public class EnemyControl : MonoBehaviour
 
     void FixedUpdate() 
     {
-        if (player == null || !canMove) return;
+        if (player == null || isHit || !canMove) return;
 
         // 计算敌人与玩家之间的方向向量
         Vector3 direction = (player.transform.position - transform.position).normalized;
@@ -85,8 +78,7 @@ public class EnemyControl : MonoBehaviour
         
         float movementSpeed = targetVelocity.magnitude * speed * 0.04f;
         playerAni.SetFloat(speedAnimName, movementSpeed);
-        
-        //print("速度" + movementSpeed);
+
 
     }
 
@@ -94,7 +86,7 @@ public class EnemyControl : MonoBehaviour
     {
         health -= damage;
        // playerAni.SetTrigger("Damage");
-        canMove = false;
+       isHit = true;
         //GetComponent<Renderer>().material = blinkMat;
         highlightPlus.overlay = 0.95f;
         Invoke("LateHit",blinkTime);
@@ -111,15 +103,17 @@ public class EnemyControl : MonoBehaviour
         yield return new WaitForSeconds(blinkTime);
         //GetComponent<Renderer>().material = defaultMat;
         highlightPlus.overlay =  0f;
-        canMove = true;
+        isHit = false;
         
     }
 
     void Die()
     {
         // 死亡约束
-        if (isDead) return; 
+        /*if (isDead) return; 
         isDead = true;
+        isHit = true;*/
+        
         canMove = false;
         
         /*// 添加击飞效果力
@@ -174,43 +168,14 @@ public class EnemyControl : MonoBehaviour
         //playerAni.SetBool("Die", true);
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        /*if (other.gameObject.CompareTag("Player"))
-        { 
-            Attack(other.gameObject);
-        }*/
-    }
-
     public void Attack(GameObject target)
     {
         playerAni.SetTrigger("Attack");
         // 玩家受到伤害
-        player.Hit(attack);
-
-        /*// 给玩家添加一个向后和向上的力
-        Rigidbody playerRb = target.GetComponent<Rigidbody>();
-        if (playerRb != null)
-        {
-            // 计算一个方向向量，让玩家"弹开"
-            Vector3 knockbackDirection = (target.transform.position - transform.position).normalized;
-            knockbackDirection.y = 0; // 去掉 Y 轴的分量，保证向后的水平力
-
-            float forceStrength = attackForce.x; // 调整这个值来控制水平力度
-            float upwardForce = attackForce.y;  // 向上的力大小
-
-            // 添加水平和垂直的力
-            Vector3 force = knockbackDirection * forceStrength + Vector3.up * upwardForce;
-            playerRb.AddForce(force, ForceMode.Impulse); // Impulse 模式，立即施加冲量
-            player.canFire = false;
-            player.canMove = false;
-        }*/
-        
+        player.Hit(attack,0.3f);
     }
     
-    
-    
-    public IEnumerator ShootingRoutine()
+    /*public IEnumerator ShootingRoutine()
     {
         // 开始射击状态
         canShoot = true;
@@ -226,47 +191,20 @@ public class EnemyControl : MonoBehaviour
     {
         // 实例化子弹目标点
         Vector3 targetPos = player.transform.position;
-        targetPos.y = 0;
-        //GameObject targetInstance = Instantiate(targetPrefab, targetPos, Quaternion.identity);
+        targetPos.y = transform.position.y;  // 确保子弹的发射高度与自身一致
 
         // 实例化子弹
         GameObject bulletInstance = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         Rigidbody bulletRigidbody = bulletInstance.GetComponent<Rigidbody>();
 
-        // 计算发射所需的速度
+        // 计算发射方向
         Vector3 direction = targetPos - transform.position;
-        float h = direction.y;              // 高度差
-        direction.y = 0;                    // 水平方向距离
-        float distance = direction.magnitude; // 水平方向长度
-        float angleRad = Mathf.Deg2Rad * launchAngle;
-
-        // 计算初速度
-        float velocity = Mathf.Sqrt(distance * -Physics.gravity.y / Mathf.Sin(2 * angleRad));
-
-        // 计算速度分量
-        Vector3 velocityVector = direction.normalized * velocity * Mathf.Cos(angleRad);
-        velocityVector.y = velocity * Mathf.Sin(angleRad);
+        direction.y = 0;     // 只保留水平分量
+        direction.Normalize(); // 归一化，确保方向向量的长度为1
         
+
         // 应用初速度
-        bulletRigidbody.linearVelocity = velocityVector;
-
-        // 销毁临时对象
-        /*Destroy(targetInstance, destoryBullet);
-        Destroy(bulletInstance, destoryBullet);*/
-    }
-    
-
-    /*public void GiftReward()
-    {
-        foreach (var weaponGift in spawnerManager.weaponGifts)
-        {
-            // 使用随机数决定是否掉落物品
-            if (Random.value < weaponGift.dropChance) // Random.value 返回 [0, 1) 的随机浮点数
-            {
-                Instantiate(weaponGift.itemPrefab, transform.position, Quaternion.identity); // 在敌人当前位置生成掉落物品
-                break; // 掉落一个物品后退出，防止掉落多个
-            }
-        }
+        bulletRigidbody.linearVelocity = direction * bulletSpeed;
     }*/
-
+    
 }

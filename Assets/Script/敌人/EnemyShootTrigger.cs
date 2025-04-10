@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemyShootTrigger : MonoBehaviour
 {
-    public EnemyControl enemyControl;
+    public EnemyShoot EnemyShoot;
     Coroutine shootingCoroutine;
     private void OnTriggerEnter(Collider other)
     {
@@ -12,7 +12,7 @@ public class EnemyShootTrigger : MonoBehaviour
             // 确保不会启动多个协程
             if (shootingCoroutine == null)
             {
-                shootingCoroutine = StartCoroutine(enemyControl.ShootingRoutine());
+                shootingCoroutine = StartCoroutine(EnemyShoot.ShootingRoutine());
             }
         }
     }
@@ -29,7 +29,7 @@ public class EnemyShootTrigger : MonoBehaviour
             }
 
             // 停止射击状态
-            enemyControl.canShoot = false;
+            EnemyShoot.canShoot = false;
         }
     }
 }
