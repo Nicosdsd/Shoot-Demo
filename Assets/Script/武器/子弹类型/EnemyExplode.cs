@@ -13,6 +13,7 @@ public class EnemyExplode : MonoBehaviour
     {
         Destroy(gameObject, destroyTime);
         AudioManager.Instance.PlaySound(weaponSound,transform.position);
+        Invoke("CloseCollider", 0.1f);
 
     }
 
@@ -40,6 +41,11 @@ public class EnemyExplode : MonoBehaviour
                 playerControl.Hit(damage,blockTime);
             }
         }
+    
+    }
+
+    void CloseCollider()
+    {
         GetComponent<Collider>().enabled = false;
     }
 }
