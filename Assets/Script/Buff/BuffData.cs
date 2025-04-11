@@ -37,15 +37,16 @@ public class BuffData : ScriptableObject
             var weapon = Instantiate(addWeaponType, addWeapon.transform.position, Quaternion.identity);
 
             // 设置炮台上的武器
-            var turretControl = turret.GetComponent<TurretControl>();
+            TurretControl turretControl = turret.GetComponent<TurretControl>();
             turretControl.currentWeapon = weapon.GetComponent<Weapon>();
             turretControl.currentWeapon.isAddWeapon = true;
 
             // 删除旧的武器挂点内容
-            Destroy(turretControl.firePoint.GetChild(0).gameObject);
+            Destroy(turretControl.weaponPos.GetChild(0).gameObject);
 
             // 将新武器挂载到炮台上
-            weapon.transform.parent = turret.transform;
+            weapon.transform.parent = turretControl.weaponPos;
+            weapon.transform.localPosition = Vector3.zero;
             
             //标识武器数量
             player.defaultWeaponNum += 1;

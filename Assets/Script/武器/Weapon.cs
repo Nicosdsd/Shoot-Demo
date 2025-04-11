@@ -21,13 +21,20 @@ public class Weapon : MonoBehaviour
     public bool isAddWeapon;//是否为外置武器
     public string weaponSound; //武器音效
     
+    public float recoilAmount = 0.1f; // 后坐力的偏移量
+    public float recoilRecoverySpeed = 2f; // 后坐力恢复速度
+    private Vector3 originalPosition; // 武器的初始位置
+    
+    
     private bool isReloading; // 用于跟踪是否正在换弹
     private float reloadCooldownTimer; // 用于计时的变量
     
-    void Awake()
+    void Start()
     {
         player = FindObjectOfType<PlayerControl>();
         currentAmmo = ammoMax;
+        
+        originalPosition = transform.localPosition; // 存储初始本地位置
     }
 
     void Update()
@@ -49,6 +56,9 @@ public class Weapon : MonoBehaviour
             
             player.reloadAmmoUI.value = 1 - reloadCooldownTimer/(reloadTime/player.ammoReloading) + 0.1f;  //换弹进度条
         }
+        
+        // 在每帧让武器的位置逐渐恢复到初始位置
+        transform.localPosition = Vector3.Lerp(transform.localPosition, originalPosition, Time.deltaTime * recoilRecoverySpeed);
     }
 
 
@@ -94,6 +104,9 @@ public class Weapon : MonoBehaviour
             // 添加力推进子弹
             Rigidbody bulletRigidbody = bulletInstance.GetComponent<Rigidbody>();
             bulletRigidbody.AddForce(fireDirection.normalized * speed, ForceMode.Impulse);
+            
+            // 移动武器模型以表现后坐力
+            transform.localPosition -= new Vector3(0, 0, recoilAmount);
 
             // 弹壳效果
             GameObject shellInstance = Instantiate(shellPartices, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
@@ -106,15 +119,8 @@ public class Weapon : MonoBehaviour
                 AudioManager.Instance.SetVolume(weaponSound, 0.2f);
             }
             
-            //AudioManager.Instance.SetVolume(weaponSound, 1 / player.defaultWeaponNum);
             AudioManager.Instance.PlaySound(weaponSound,transform.position);
-
-            /*// 减少当前弹药数量（默认武器不消耗子弹）
-            if (player.currentWeapon.tag != "DefaultWeapon")
-            {
-                currentAmmo--;
-            }*/
-        
+            
         }
     }
 

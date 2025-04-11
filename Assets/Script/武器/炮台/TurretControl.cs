@@ -13,7 +13,7 @@ public class TurretControl : MonoBehaviour
     private Vector3 fireDirection; // 瞄准方向
     public float rotationSpeed = 10f; // 旋转速度
     public Weapon currentWeapon; // 当前装备武器
-    public Transform firePoint;
+    public Transform weaponPos;
     private float lastShotTime;
     private int addWeaponNum;
 
