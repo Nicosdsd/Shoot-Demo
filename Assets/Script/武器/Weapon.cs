@@ -21,9 +21,9 @@ public class Weapon : MonoBehaviour
     public bool isAddWeapon;//是否为外置武器
     public string weaponSound; //武器音效
     
-    public float recoilAmount = 0.1f; // 后坐力的偏移量
-    public float recoilRecoverySpeed = 2f; // 后坐力恢复速度
-    public Vector3 originalPosition; // 武器的初始位置
+    public float recoilAmount = 0.5f; // 后坐力的偏移量
+    public float recoilRecoverySpeed = 5f; // 后坐力恢复速度
+    private Vector3 originalPosition; // 武器的初始位置
     
     
     private bool isReloading; // 用于跟踪是否正在换弹

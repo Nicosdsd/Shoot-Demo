@@ -19511,8 +19511,8 @@ MonoBehaviour:
   shellPartices: {fileID: 4724178208725932060, guid: b5313a8f4c01c024c8e837856c4620c2, type: 3}
   isAddWeapon: 0
   weaponSound: "\u72D9\u51FB\u67AA"
-  recoilAmount: 0.5
-  recoilRecoverySpeed: 10
+  recoilAmount: 1
+  recoilRecoverySpeed: 3
 --- !u!1001 &7306915930859662950
 PrefabInstance:
   m_ObjectHideFlags: 0
