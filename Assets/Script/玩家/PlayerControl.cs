@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 using HighlightPlus;
+using Unity.Cinemachine;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -221,23 +222,19 @@ public class PlayerControl : MonoBehaviour
         // 触发无敌状态
         StartCoroutine(ActivateInvincibility(blcokTime));
         
-        if (health>0)
-        {
-            block = true;
-            health -= damage;
-            infoManager.UpdateHealthUI(health / healthMax);
-            playerAni?.SetTrigger("Hit");
-            camAnim?.SetTrigger("CameraShakeTrigger");
-            HitEffect.SetActive(true);
-            AudioManager.Instance.PlaySound("主角受伤",transform.position);
-            highlightPlus.overlay = 1;//blink
-            // 对周围敌人施加击退效果
-            ApplyKnockbackToEnemies();
-        }
-        else
-        {
-            systemManager.GameOver();
-        }
+        block = true;
+        health -= damage;
+        infoManager.UpdateHealthUI(health / healthMax);
+        playerAni?.SetTrigger("Hit");
+        camAnim?.SetTrigger("CameraShakeTrigger");
+        HitEffect.SetActive(true);
+        AudioManager.Instance.PlaySound("主角受伤",transform.position);
+        highlightPlus.overlay = 1;//blink
+        // 对周围敌人施加击退效果
+        ApplyKnockbackToEnemies();
+        //震屏
+        FindAnyObjectByType<CinemachineImpulseSource>().GenerateImpulseWithForce(0.5f);
+       
        
 
     }
@@ -251,7 +248,12 @@ public class PlayerControl : MonoBehaviour
         block = false;
         isInvincible = false;
         HitEffect.SetActive(false);
-        highlightPlus.overlay = 0; 
+        highlightPlus.overlay = 0;
+
+        if (health < 0)
+        {
+            systemManager.GameOver();
+        }
       
     }
     

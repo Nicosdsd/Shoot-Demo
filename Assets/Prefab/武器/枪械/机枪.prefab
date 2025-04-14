@@ -19513,6 +19513,7 @@ MonoBehaviour:
   weaponSound: "\u673A\u67AA"
   recoilAmount: 0.5
   recoilRecoverySpeed: 7
+  shakeForce: 0.1
 --- !u!1001 &6742878190030242449
 PrefabInstance:
   m_ObjectHideFlags: 0

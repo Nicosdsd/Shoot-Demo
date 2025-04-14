@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 //武器发射相关
 public class Weapon : MonoBehaviour
@@ -23,17 +24,18 @@ public class Weapon : MonoBehaviour
     
     public float recoilAmount = 0.5f; // 后坐力的偏移量
     public float recoilRecoverySpeed = 5f; // 后坐力恢复速度
+    public float shakeForce = 0.1f; // 震屏强度
     private Vector3 originalPosition; // 武器的初始位置
     
-    
+    private CinemachineImpulseSource impulseSource;
     private bool isReloading; // 用于跟踪是否正在换弹
     private float reloadCooldownTimer; // 用于计时的变量
     
     void Start()
     {
-        player = FindObjectOfType<PlayerControl>();
+        player = FindAnyObjectByType<PlayerControl>();
         currentAmmo = ammoMax;
-  
+        impulseSource = FindAnyObjectByType<CinemachineImpulseSource>();
         originalPosition = transform.localPosition; // 存储初始本地位置
     }
 
@@ -69,7 +71,7 @@ public class Weapon : MonoBehaviour
             return; // 如果在换弹CD中，不能开火
         }
     
-        // 子弹耗光换回默认武器
+        // 子弹耗光
         if (currentAmmo == 0)
         {
             Invoke("ReloadAmmo", (reloadTime/player.ammoReloading));
@@ -80,9 +82,8 @@ public class Weapon : MonoBehaviour
             {
                 player.reloadAmmoUI.gameObject.SetActive(true);
             }
-          
-          
-            Invoke("ReloadSound", reloadTime/player.ammoReloading/4); // 防止上弹与发射音效重叠
+            
+            Invoke("ReloadSound", reloadTime/player.ammoReloading/4); // 错开上弹和发射音效
         }
     
         if (Time.time >= nextFireTime)
@@ -105,6 +106,12 @@ public class Weapon : MonoBehaviour
             // 移动武器模型以表现后坐力
             transform.localPosition -= new Vector3(0, 0, recoilAmount);
 
+            //外置武器不震屏
+            if (!isAddWeapon)
+            {
+                impulseSource.GenerateImpulseWithForce(shakeForce);
+            }
+            
             // 弹壳效果
             GameObject shellInstance = Instantiate(shellPartices, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
             Destroy(shellInstance, 0.5f);
