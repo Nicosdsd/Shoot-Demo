@@ -1,4 +1,5 @@
 using System;
+using HighlightPlus;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -19,6 +20,7 @@ public class SystemManager : MonoBehaviour
     public void StartScene()
     {
         Time.timeScale = 1;
+        RefreshAllHighlights();
     }
 
     /// <summary>
@@ -67,5 +69,16 @@ public class SystemManager : MonoBehaviour
         gameOver.SetActive(true);
     }
     
-    
+    public void RefreshAllHighlights()
+    {
+        // 找到场景中所有 Highlight 组件
+        var highlightComponents = FindObjectsOfType<HighlightEffect>();
+        foreach (var effect in highlightComponents)
+        {
+            if (effect.gameObject.activeInHierarchy)
+            {
+                effect.Refresh();        
+            }
+        }
+    }
 }
