@@ -19511,6 +19511,8 @@ MonoBehaviour:
   shellPartices: {fileID: 4724178208725932060, guid: b5313a8f4c01c024c8e837856c4620c2, type: 3}
   isAddWeapon: 0
   weaponSound: "\u69B4\u5F39"
+  bulletCount: 1
+  spreadAngle: 0
   recoilAmount: 1
   recoilRecoverySpeed: 2
   shakeForce: 0.3

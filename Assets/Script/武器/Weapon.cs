@@ -21,6 +21,10 @@ public class Weapon : MonoBehaviour
     private PlayerControl player;
     public bool isAddWeapon;//是否为外置武器
     public string weaponSound; //武器音效
+
+    //增加额外子弹
+    public int bulletCount = 1;
+    public float spreadAngle = 15;
     
     public float recoilAmount = 0.5f; // 后坐力的偏移量
     public float recoilRecoverySpeed = 5f; // 后坐力恢复速度
@@ -70,22 +74,21 @@ public class Weapon : MonoBehaviour
         {
             return; // 如果在换弹CD中，不能开火
         }
-    
-        // 子弹耗光
-        if (currentAmmo == 0)
+
+        if (currentAmmo < bulletCount)
         {
-            Invoke("ReloadAmmo", (reloadTime/player.ammoReloading));
+            Invoke("ReloadAmmo", (reloadTime / player.ammoReloading));
             isReloading = true; // 开始换弹
-            reloadCooldownTimer = (reloadTime/player.ammoReloading); // 重置换弹CD计时器
-            
-            if (!isAddWeapon)//外置武器不要装弹UI
+            reloadCooldownTimer = (reloadTime / player.ammoReloading); // 重置换弹CD计时器
+
+            if (!isAddWeapon) //外置武器不要装弹UI
             {
                 player.reloadAmmoUI.gameObject.SetActive(true);
+                Invoke("ReloadSound", reloadTime / player.ammoReloading / 4); // 错开上弹和发射音效
             }
             
-            Invoke("ReloadSound", reloadTime/player.ammoReloading/4); // 错开上弹和发射音效
         }
-    
+
         if (Time.time >= nextFireTime)
         {
             nextFireTime = Time.time + fireRate / player.fireRate; // 根据当前武器的射速调整开火时间
@@ -93,16 +96,43 @@ public class Weapon : MonoBehaviour
             // 播放发射特效
             firePartices?.Play();
 
-            // 创建子弹实例
-            GameObject bulletInstance = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
+            for (int i = 0; i < bulletCount; i++)
+            {
+                // 计算当前子弹散射的角度
+                float angle = spreadAngle * (i - bulletCount / 2) / bulletCount;
+                Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.up);
 
-            // 调整子弹的朝向（让子弹的 forward 与 fireDirection 对齐）
-            bulletInstance.transform.rotation = Quaternion.LookRotation(fireDirection);
+                // 创建子弹实例
+                GameObject bulletInstance = Instantiate(bulletPrefab, bulletSpawnPoint.position, Quaternion.identity);
 
-            // 添加力推进子弹
-            Rigidbody bulletRigidbody = bulletInstance.GetComponent<Rigidbody>();
-            bulletRigidbody.AddForce(fireDirection.normalized * speed, ForceMode.Impulse);
-            
+                // 调整子弹的朝向（让子弹的 forward 与经过旋转的 fireDirection 对齐）
+                Vector3 spreadDirection = rotation * fireDirection;
+                bulletInstance.transform.rotation = Quaternion.LookRotation(spreadDirection);
+
+                // 添加力推进子弹
+                Rigidbody bulletRigidbody = bulletInstance.GetComponent<Rigidbody>();
+                bulletRigidbody.AddForce(spreadDirection.normalized * speed, ForceMode.Impulse);
+
+                // 弹壳效果
+                GameObject shellInstance =
+                    Instantiate(shellPartices, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
+                Destroy(shellInstance, 0.5f);
+
+                currentAmmo--;
+
+                if (isAddWeapon)
+                {
+                   AudioManager.Instance.SetVolume(weaponSound, 0.2f);
+                   AudioManager.Instance.PlaySound(weaponSound, transform.position);
+                }
+                else
+                {
+                    AudioManager.Instance.SetVolume(weaponSound, 0.5f);
+                    AudioManager.Instance.PlaySound(weaponSound, transform.position);
+                }
+                
+            }
+
             // 移动武器模型以表现后坐力
             transform.localPosition -= new Vector3(0, 0, recoilAmount);
 
@@ -111,22 +141,9 @@ public class Weapon : MonoBehaviour
             {
                 impulseSource.GenerateImpulseWithForce(shakeForce);
             }
-            
-            // 弹壳效果
-            GameObject shellInstance = Instantiate(shellPartices, bulletSpawnPoint.position, bulletSpawnPoint.rotation);
-            Destroy(shellInstance, 0.5f);
-
-            currentAmmo--;
-
-            if (isAddWeapon)
-            {
-                AudioManager.Instance.SetVolume(weaponSound, 0.2f);
-            }
-            
-            AudioManager.Instance.PlaySound(weaponSound,transform.position);
-            
         }
     }
+
 
     void ReloadAmmo()
     {
