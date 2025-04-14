@@ -24,7 +24,7 @@ public class WeaponManager : MonoBehaviour
     }
     
     //切换武器
-    public void EquipRandomWeapon()
+    /*public void EquipRandomWeapon()
     {
         if (weapons.Length == 0) return;
 
@@ -41,10 +41,10 @@ public class WeaponManager : MonoBehaviour
             bulletLimit.value = 1; // 重置子弹 UI 显示
             weaponText.text = player.currentWeapon.weaponName;
         }
-    }
+    }*/
     
     //武器耗尽
-    public void WeaponOut()
+    /*public void WeaponOut()
     {
         player.canFire = false;
         //检查并销毁当前武器
@@ -56,13 +56,13 @@ public class WeaponManager : MonoBehaviour
         
         Destroy(CurrentWeapon.gameObject,1);
         Invoke("ReloadWeapon",0.5f);
-    }
+    }*/
     
     //切换武器缓冲
-    void ReloadWeapon()
+    /*void ReloadWeapon()
     {
         player.canFire = true;
-    }
+    }*/
 
     public void SelectWeapon(Weapon selectWeapon)
     {
@@ -74,12 +74,12 @@ public class WeaponManager : MonoBehaviour
     
     
     //子弹耗尽切换为默认武器
-    public void SwithDefaultWeapon()
+    /*public void SwithDefaultWeapon()
     {
         WeaponOut();
         Weapon DefaultWeapon = Instantiate(defaultWeapon, player.weaponPos);
         player.currentWeapon = DefaultWeapon;
-    }
+    }*/
     
     //武器ui显示
     void UpdateUI()

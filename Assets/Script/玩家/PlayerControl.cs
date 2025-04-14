@@ -45,10 +45,9 @@ public class PlayerControl : MonoBehaviour
     
     
     [Header("射击")] 
-    public bool canFire = true; //限制武器装弹
+    //public bool canFire = true; //限制武器装弹
     public Weapon currentWeapon;
     public Animator camAnim;
-    private WeaponManager weaponManager;
     public Transform weaponPos;
     private Transform currentTarget; // 自动瞄准的当前目标
     public Transform aimIconPrefab; //准星
@@ -57,7 +56,7 @@ public class PlayerControl : MonoBehaviour
     float minAimAngleThreshold = 5f; //瞄准允许射击角度
     public GameObject expArea;
     public Slider reloadAmmoUI; //换弹UI
-    public float defaultWeaponNum = 1; //当前武器数量
+   
     
     [Header("受伤")] 
     //public float invincibleTime = 0.3f; // 无敌时间
@@ -75,7 +74,6 @@ public class PlayerControl : MonoBehaviour
         aimIconPrefab?.gameObject.SetActive(false); // 初始禁用准星图标
         systemManager = FindAnyObjectByType<SystemManager>();
         defaultMat = GetComponent<Renderer>().material;
-        weaponManager = FindAnyObjectByType<WeaponManager>();
         currentWeapon = GetComponentInChildren<Weapon>();
         infoManager = FindAnyObjectByType<InfoManager>();
     }
@@ -173,7 +171,7 @@ public class PlayerControl : MonoBehaviour
         }
     
         // 当角度差小于设定的阈值，并且可以射击时，才允许开火
-        if (angleDifference < minAimAngleThreshold && canFire)
+        if (angleDifference < minAimAngleThreshold)
         {
             //开火
             //playerAni?.SetTrigger("Fire");

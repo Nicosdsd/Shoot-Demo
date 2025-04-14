@@ -20,6 +20,7 @@ public class TurretControl : MonoBehaviour
     private void Start()
     {
         player = FindObjectOfType<PlayerControl>();
+        currentWeapon = GetComponentInChildren<Weapon>();
         Getoffset();
     }
 

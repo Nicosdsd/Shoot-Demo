@@ -32,24 +32,23 @@ public class BuffData : ScriptableObject
         // 生成炮台，炮台装配
         if (canAddWeapon && addWeapon != null && addWeaponNum <4)
         {
-            // 创建炮台和武器实例
+            // 创建炮台实例
             var turret = Instantiate(addWeapon);
-            var weapon = Instantiate(addWeaponType, addWeapon.transform.position, Quaternion.identity);
 
-            // 设置炮台上的武器
+            // 获取炮台控制脚本
             TurretControl turretControl = turret.GetComponent<TurretControl>();
+
+            // 创建武器实例，并将其直接挂载到炮台上的武器挂点
+            var weapon = Instantiate(addWeaponType, turretControl.weaponPos);
+            
+            // 完成武器装配
             turretControl.currentWeapon = weapon.GetComponent<Weapon>();
             turretControl.currentWeapon.isAddWeapon = true;
-
-            // 删除旧的武器挂点内容
-            Destroy(turretControl.weaponPos.GetChild(0).gameObject);
-
-            // 将新武器挂载到炮台上
-            weapon.transform.parent = turretControl.weaponPos;
-            weapon.transform.localPosition = Vector3.zero;
             
-            //标识武器数量
-            player.defaultWeaponNum += 1;
+            // 设置武器在挂点内的位置为局部(0, 0, 0)
+            weapon.transform.localPosition = Vector3.zero;
+            weapon.transform.localRotation = Quaternion.identity;
+            
 
         }
     }

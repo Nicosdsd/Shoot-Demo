@@ -23,7 +23,7 @@ public class Weapon : MonoBehaviour
     
     public float recoilAmount = 0.1f; // 后坐力的偏移量
     public float recoilRecoverySpeed = 2f; // 后坐力恢复速度
-    private Vector3 originalPosition; // 武器的初始位置
+    public Vector3 originalPosition; // 武器的初始位置
     
     
     private bool isReloading; // 用于跟踪是否正在换弹
@@ -33,7 +33,7 @@ public class Weapon : MonoBehaviour
     {
         player = FindObjectOfType<PlayerControl>();
         currentAmmo = ammoMax;
-        
+  
         originalPosition = transform.localPosition; // 存储初始本地位置
     }
 
@@ -48,13 +48,12 @@ public class Weapon : MonoBehaviour
             {
                 isReloading = false;
             }
-
-            if (isAddWeapon )//外置武器不要装弹UI
-            {
-                return;
-            }
             
-            player.reloadAmmoUI.value = 1 - reloadCooldownTimer/(reloadTime/player.ammoReloading) + 0.1f;  //换弹进度条
+            if (!isAddWeapon)
+            {
+                player.reloadAmmoUI.value = 1 - reloadCooldownTimer/(reloadTime/player.ammoReloading) + 0.1f;  //换弹进度条
+            }
+           
         }
         
         // 在每帧让武器的位置逐渐恢复到初始位置
@@ -77,13 +76,11 @@ public class Weapon : MonoBehaviour
             isReloading = true; // 开始换弹
             reloadCooldownTimer = (reloadTime/player.ammoReloading); // 重置换弹CD计时器
             
-            if (isAddWeapon )//外置武器不要装弹UI
+            if (!isAddWeapon)//外置武器不要装弹UI
             {
-                return;
+                player.reloadAmmoUI.gameObject.SetActive(true);
             }
-            
-            player.canFire = false;
-            player.reloadAmmoUI.gameObject.SetActive(true);
+          
           
             Invoke("ReloadSound", reloadTime/player.ammoReloading/4); // 防止上弹与发射音效重叠
         }
@@ -114,7 +111,7 @@ public class Weapon : MonoBehaviour
 
             currentAmmo--;
 
-            if (isAddWeapon )
+            if (isAddWeapon)
             {
                 AudioManager.Instance.SetVolume(weaponSound, 0.2f);
             }
@@ -128,13 +125,12 @@ public class Weapon : MonoBehaviour
     {
         currentAmmo = ammoMax;
         
-        if (isAddWeapon )//外置武器不要装弹UI
+        
+        if (!isAddWeapon)
         {
-            return;
+            player.reloadAmmoUI.gameObject.SetActive(false);
         }
-       
-        player.canFire = true;
-        player.reloadAmmoUI.gameObject.SetActive(false);
+
        
     }
 
