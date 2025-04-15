@@ -19501,8 +19501,8 @@ MonoBehaviour:
   weaponName: "\u9730\u5F39\u67AA"
   damage: 1
   speed: 60
-  fireRate: 1
-  ammoMax: 1
+  fireRate: 0.6
+  ammoMax: 6
   currentAmmo: 0
   reloadTime: 2
   bulletPrefab: {fileID: 2928178143791889286, guid: 31f1bff058a2e6b458c05e28f92b3982, type: 3}

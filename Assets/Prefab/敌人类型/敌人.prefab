@@ -265,8 +265,8 @@ MonoBehaviour:
   speedAnimName: Run
   canMove: 1
   attack: 1
-  speed: 5
-  rotationSpeed: 5
+  speed: 6
+  rotationSpeed: 6
   health: 1
   maxHealth: 1
   dropItems:
